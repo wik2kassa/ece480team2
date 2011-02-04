@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent" android:layout_height="wrap_content">
+<ScrollView android:id="@+id/scrollView1" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_width="match_parent" android:layout_height="match_parent">
+        <Button android:layout_height="wrap_content" android:text="@string/refresh" android:id="@+id/my_button" android:onClick="RefreshButton" android:layout_width="wrap_content"></Button>
+        <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/linearLayout2">
+            <ScrollView android:layout_height="match_parent" android:layout_width="wrap_content" android:id="@+id/scrollView2">
+                <LinearLayout android:id="@+id/linearLayout3" android:layout_width="match_parent" android:layout_height="match_parent">
+                    <TextView android:layout_height="wrap_content" android:fadeScrollbars="true" android:scrollbars="vertical" android:text="TextView" android:id="@+id/my_mapview" android:layout_width="match_parent"></TextView>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+        <TextView android:layout_height="wrap_content" android:fadeScrollbars="true" android:scrollbars="vertical" android:text="@string/app_name" android:scrollbarAlwaysDrawVerticalTrack="true" android:id="@+id/my_textview" android:layout_width="fill_parent" android:keepScreenOn="true" android:cursorVisible="true"></TextView>
+    </LinearLayout>
+</ScrollView>
+<LinearLayout android:id="@+id/linearLayout4" android:layout_height="wrap_content" android:layout_width="wrap_content">
+    <EditText android:id="@+id/editText1" android:layout_width="50dip" android:textSize="10dip" android:typeface="normal" android:layout_height="40dip" android:text="@string/clear"></EditText>
+</LinearLayout>
+</LinearLayout>
