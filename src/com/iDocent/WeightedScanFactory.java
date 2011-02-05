@@ -11,22 +11,22 @@ public class WeightedScanFactory {
 		locations = new AccessPointDB();
 	}
 	
-	public WeightedScan Create(String ssid)
+	public WeightedScan Create(String mac)
 	{
-		List<Integer> loc = locations.GetLocation(ssid);
+		List<Integer> loc = locations.GetLocation(mac);
 		
 		if(loc != null)
-			return new WeightedScan(ssid, locations.GetLocation(ssid));
+			return new WeightedScan(mac, locations.GetLocation(mac));
 		else 
 			return null;
 	}
 
 	//Get a demo weighted scan that bypasses the map for location
-	public WeightedScan Create(String ssid, boolean demo) {
+	public WeightedScan Create(String mac, boolean demo) {
 		List<Integer> loc = new LinkedList<Integer>();
 		loc.add(0);
 		loc.add(0);		
 		loc.add(0);
-		return new WeightedScan(ssid, loc);
+		return new WeightedScan(mac, loc);
 	}
 }

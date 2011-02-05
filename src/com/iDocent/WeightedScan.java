@@ -6,7 +6,7 @@ import java.util.List;
 //An object to hold the important information of a access point scan
 public class WeightedScan {
 	private int level;
-	private String SSID;
+	private String MAC;
 	int posX, posY, posZ;
 	
 	private static int x=0; 
@@ -16,9 +16,9 @@ public class WeightedScan {
 	//DEMO VARIABLE
 	public int number;
 	
-	public WeightedScan(String ssid, List<Integer> pos)
+	public WeightedScan(String mac, List<Integer> pos)
 	{
-		SSID = ssid;
+		MAC = mac;
 		posX = pos.get(x);
 		posY = pos.get(y);
 		posZ = pos.get(z);
@@ -35,6 +35,6 @@ public class WeightedScan {
 		return pos;
 	}
 	
-	public String Name(){return SSID;}
+	public String Name(){return MAC;}
 	public int Num() {return level;}
 }

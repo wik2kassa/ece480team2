@@ -72,7 +72,7 @@ public class ScanTask extends TimerTask{
 				        			mRef.get().append(" Strength " + level);
 				        	        }
 				        			
-				        			WeightedScan wScan = wsFactory.Create(scan.SSID, true);
+				        			WeightedScan wScan = wsFactory.Create(scan.BSSID, true);
 				        			if(wScan != null)
 				        			{
 				        				wScan.SetLevel(level);
