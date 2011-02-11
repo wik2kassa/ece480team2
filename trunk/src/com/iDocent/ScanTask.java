@@ -13,15 +13,15 @@ import android.widget.TextView;
 //The task to be performed by the timer
 public class ScanTask extends TimerTask{
     WeakReference<TextView> textView;
-    WeakReference<TextView> mapView;
+    //WeakReference<TextView> mapView;
     WifiManager wifi;
     WeightedScanFactory wsFactory;
     
     Handler handler = new Handler();
 
-    public ScanTask(TextView text, TextView map, WifiManager w) {
+    public ScanTask(TextView text, WifiManager w) {
         textView = new WeakReference<TextView>(text);
-        mapView = new WeakReference<TextView>(map);
+        //mapView = new WeakReference<TextView>(map);
         wifi = w;
         wsFactory = new WeightedScanFactory();
     }
@@ -88,7 +88,7 @@ public class ScanTask extends TimerTask{
 //					        	        wScan.level = level;
 //					        	        count+=level;
 //					        	        weightedScans.add(wScan);}
-				        			WeightedScan wScan = wsFactory.Create(scan.BSSID, true);
+				        			WeightedScan wScan = wsFactory.Create(scan.BSSID);
 				        			if(wScan != null)
 				        			{
 				        				wScan.SetLevel(level);
@@ -100,7 +100,7 @@ public class ScanTask extends TimerTask{
 				        				count+=level;
 				        				}
 				        				
-					        			//weightedScans.add(wScan);
+					        			weightedScans.add(wScan);
 				        			}
 				        		}
 				        		if(!weightedScans.isEmpty())//DEMO CODE - for display
@@ -143,14 +143,14 @@ public class ScanTask extends TimerTask{
     	double[] loc = {0,0};
     	if(scans.size() >= 0)
     	{
-    		//Draw the "map"
-    		char[][] map = new char[12][15];		
-    		map[0]="______________\n".toCharArray();
-    		for(int i=1;i<=10;i++)
-    		{
-    			map[i]="|------------|\n".toCharArray();
-    		}
-			map[11]="______________ ".toCharArray(); 
+//    		//Draw the "map"
+//    		char[][] map = new char[12][15];		
+//    		map[0]="______________\n".toCharArray();
+//    		for(int i=1;i<=10;i++)
+//    		{
+//    			map[i]="|------------|\n".toCharArray();
+//    		}
+//			map[11]="______________ ".toCharArray(); 
 			
 			//DEMO positions
 			//int pos[] = {1,1,10,12,1,12,10,1};
@@ -167,27 +167,29 @@ public class ScanTask extends TimerTask{
 				//}
 			}
 			
-			if((int)loc[0] != 0 && (int)loc[1] != 0 && (int)loc[0] <= 10 && (int)loc[1] <= 12)
-				map[(int)loc[0]][(int)loc[1]] = 'x';
+			textView.get().append("\n\n( " + loc[0] + ",\n " + loc[1] + ")\n"); 
+			
+//			if((int)loc[0] != 0 && (int)loc[1] != 0 && (int)loc[0] <= 10 && (int)loc[1] <= 12)
+//				map[(int)loc[0]][(int)loc[1]] = 'x';
 			
 
-			String text = new String();
-			for(int i=0; i<12; i++)
-			{
-				for(int j=0; j<15; j++)
-					text += map[i][j];
-			}
-			if(mapView != null && mapView.get() != null)
-			{
-				mapView.get().setText(text + "\n\n(" + loc[0] +", "+loc[1]+")");
-			}
+//			String text = new String();
+//			for(int i=0; i<12; i++)
+//			{
+//				for(int j=0; j<15; j++)
+//					text += map[i][j];
+//			}
+//			if(mapView != null && mapView.get() != null)
+//			{
+//				mapView.get().setText(text + "\n\n(" + loc[0] +", "+loc[1]+")");
+//			}
     	}
     	else
     	{
-			if(mapView != null && mapView.get() != null)
-			{
-				mapView.get().setText("Not enough access points");
-			}
+//			if(mapView != null && mapView.get() != null)
+//			{
+//				mapView.get().setText("Not enough access points");
+//			}
     	}
     }
 }
