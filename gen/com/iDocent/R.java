@@ -14,12 +14,11 @@ public final class R {
         public static final int icon=0x7f020000;
     }
     public static final class id {
-        public static final int editText1=0x7f050007;
+        public static final int editText1=0x7f050006;
         public static final int linearLayout1=0x7f050001;
         public static final int linearLayout2=0x7f050004;
         public static final int my_button=0x7f050002;
-        public static final int my_mapview=0x7f050005;
-        public static final int my_textview=0x7f050006;
+        public static final int my_textview=0x7f050005;
         public static final int scrollView1=0x7f050000;
         public static final int scrollView2=0x7f050003;
     }
