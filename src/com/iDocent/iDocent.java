@@ -104,5 +104,4 @@ public class iDocent extends Activity {
     		timer.scheduleAtFixedRate(scanner, 0, scanRate);
     	}
     }
-
 }
