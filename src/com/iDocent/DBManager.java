@@ -18,15 +18,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 public class DBManager {
 
 	private HttpClient client;	
-	private String server;
+	private final String server = "http://480team2.dyndns-server.com";
 	
 	public DBManager(){
 		client = new DefaultHttpClient();
 	}
 	
 	public void Query(String MAC){
-		HttpPost post = new HttpPost("http://480team2.dyndns-server.com");
-		post.setEntity(new UrlEncodedFormEntity());
+		HttpPost post = new HttpPost(server);
+		//post.setEntity(new UrlEncodedFormEntity());
 	}
 
 }
