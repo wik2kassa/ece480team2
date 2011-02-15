@@ -19,7 +19,7 @@ public class ScanTask extends TimerTask{
     
     Handler handler = new Handler();
 
-    public ScanTask(TextView text, WifiManager w) {
+    public ScanTask(TextView text, TextView map, WifiManager w) {
         textView = new WeakReference<TextView>(text);
         //mapView = new WeakReference<TextView>(map);
         wifi = w;
@@ -64,7 +64,7 @@ public class ScanTask extends TimerTask{
 			        			//create a weighted scan and save it in the list
 				        		for (ScanResult scan : scans) 
 				        		{
-				        	        int level = WifiManager.calculateSignalLevel(scan.level, 20);
+				        	        int level = WifiManager.calculateSignalLevel(scan.level, 30);
 			        				
 				        	        //DEMO CODE - for display
 				        	        {
@@ -143,14 +143,14 @@ public class ScanTask extends TimerTask{
     	double[] loc = {0,0};
     	if(scans.size() >= 0)
     	{
-//    		//Draw the "map"
-//    		char[][] map = new char[12][15];		
-//    		map[0]="______________\n".toCharArray();
-//    		for(int i=1;i<=10;i++)
-//    		{
-//    			map[i]="|------------|\n".toCharArray();
-//    		}
-//			map[11]="______________ ".toCharArray(); 
+    		//Draw the "map"
+    		char[][] map = new char[12][15];		
+    		map[0]="______________\n".toCharArray();
+    		for(int i=1;i<=10;i++)
+    		{
+    			map[i]="|------------|\n".toCharArray();
+    		}
+			map[11]="______________ ".toCharArray(); 
 			
 			//DEMO positions
 			//int pos[] = {1,1,10,12,1,12,10,1};
@@ -169,8 +169,8 @@ public class ScanTask extends TimerTask{
 			
 			textView.get().append("\n\n( " + loc[0] + ",\n " + loc[1] + ")\n"); 
 			
-//			if((int)loc[0] != 0 && (int)loc[1] != 0 && (int)loc[0] <= 10 && (int)loc[1] <= 12)
-//				map[(int)loc[0]][(int)loc[1]] = 'x';
+			if((int)loc[0] != 0 && (int)loc[1] != 0 && (int)loc[0] <= 10 && (int)loc[1] <= 12)
+				map[(int)loc[0]][(int)loc[1]] = 'x';
 			
 
 //			String text = new String();
@@ -179,17 +179,17 @@ public class ScanTask extends TimerTask{
 //				for(int j=0; j<15; j++)
 //					text += map[i][j];
 //			}
-//			if(mapView != null && mapView.get() != null)
-//			{
-//				mapView.get().setText(text + "\n\n(" + loc[0] +", "+loc[1]+")");
-//			}
+			if(mapView != null && mapView.get() != null)
+			{
+				mapView.get().setText(/*text + */"\n\n(" + loc[0] +", "+loc[1]+")");
+			}
     	}
     	else
     	{
-//			if(mapView != null && mapView.get() != null)
-//			{
-//				mapView.get().setText("Not enough access points");
-//			}
+			if(mapView != null && mapView.get() != null)
+			{
+				mapView.get().setText("Not enough access points");
+			}
     	}
     }
 }

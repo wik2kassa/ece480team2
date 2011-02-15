@@ -27,39 +27,29 @@ public class AccessPointDB {
 	private void FillMap()
 	{
 		LinkedList<Integer> loc = new LinkedList<Integer>();
-		loc.add(x, 1);
-		loc.add(y, 2);
+		loc.add(x, 0);
+		loc.add(y, 0);
 		loc.add(z, 0);
 		//"00:14:d1:e9:f5:64"
 		accessPoints.put("00:14:d1:e9:f5:63", loc);//BLUE
 		loc = new LinkedList<Integer>();
-		loc.add(x, 3);
-		loc.add(y, 4);
+		loc.add(x, 46);
+		loc.add(y, 0);
 		loc.add(z, 0);
 		//"00:14:d1:ea:06:c2"
 		accessPoints.put("00:14:d1:ea:06:c1", loc);//GREEN
 		loc = new LinkedList<Integer>();
-		loc.add(x, 5);
-		loc.add(y, 6);
+		loc.add(x, 66);
+		loc.add(y, 0);
 		loc.add(z, 0);
 		//"00:14:d1:ea:06:96"
 		accessPoints.put("00:14:d1:ea:06:95", loc);//ORANGE
 		loc = new LinkedList<Integer>();
-		loc.add(x, 7);
-		loc.add(y, 8);
+		loc.add(x, 30);
+		loc.add(y, 0);
 		loc.add(z, 0);
 		//"00:14:d1:e9:f5:6a"
 		accessPoints.put("00:14:d1:e9:f5:69", loc);//YELLOW
-		loc = new LinkedList<Integer>();
-		loc.add(x, 9);
-		loc.add(y, 10);
-		loc.add(z, 0);
-		accessPoints.put("00:1a:70:d7:3b:bf", loc);//Linksys
-		loc = new LinkedList<Integer>();
-		loc.add(x, 11);
-		loc.add(y, 12);
-		loc.add(z, 0);
-		accessPoints.put("00:24:01:75:c8:b9", loc);//DLink
 	}
 	
 	/*
