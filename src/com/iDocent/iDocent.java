@@ -20,7 +20,6 @@ public class iDocent extends Activity {
 
 	//Layout objects
 	TextView textStatus;
-	//TextView mapStatus;
 	EditText edit;
 	
 	//Timer objects
@@ -39,7 +38,6 @@ public class iDocent extends Activity {
       
         //Get the objects described in the layout xml file main.xml
         textStatus = (TextView) findViewById(R.id.my_textview);
-       // mapStatus = (TextView) findViewById(R.id.my_mapview);
         edit = (EditText) findViewById(R.id.editText1);
         
         //Initialize the text fields in the layout objects
@@ -54,7 +52,7 @@ public class iDocent extends Activity {
 		
         //Start the timer running the scanner
 		timer = new Timer();		
-		scanner = new ScanTask(textStatus, wifi);// mapStatus, wifi);		
+		scanner = new ScanTask(textStatus, wifi);	
 		timer.scheduleAtFixedRate(scanner, 0, scanRate);
     }
     /*
@@ -100,7 +98,7 @@ public class iDocent extends Activity {
     		timer.cancel();
     		timer.purge();
     		timer = new Timer();
-    		scanner = new ScanTask(textStatus, wifi);//mapStatus, wifi);
+    		scanner = new ScanTask(textStatus, wifi);
     		timer.scheduleAtFixedRate(scanner, 0, scanRate);
     	}
     }
