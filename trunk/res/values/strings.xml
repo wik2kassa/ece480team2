@@ -5,4 +5,6 @@
     <string name="Refresh"></string>
     <string name="refresh">Refresh</string>
     <string name="clear"></string>
+    <string name="refresh_rate">Refresh Rate</string>
+    <string name="set">Set</string>
 </resources>

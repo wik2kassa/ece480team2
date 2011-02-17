@@ -6,14 +6,23 @@ import com.iDocent.R;
 import com.iDocent.ScanTask;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.SearchManager.OnDismissListener;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.speech.tts.*;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -21,6 +30,7 @@ import android.content.Intent;
 
 //Main activity class
 public class iDocent extends Activity implements OnInitListener{
+	static final int DIALOG_SET_SCAN_RATE = 0;
 	WifiManager wifi;
 	
 	//TTS Stuff
@@ -29,12 +39,12 @@ public class iDocent extends Activity implements OnInitListener{
 
 	//Layout objects
 	TextView textStatus;
-	EditText edit;
+	Menu menu;
 	
 	//Timer objects
 	Timer timer;	
 	ScanTask scanner;
-	int scanRate = 50000;
+	Integer scanRate = 50000;
 	
 	//Boolean to turn off wifi at the end of the app if it was off at the start
 	boolean wifiWasEnabled;
@@ -47,15 +57,7 @@ public class iDocent extends Activity implements OnInitListener{
       
         //Get the objects described in the layout xml file main.xml
         textStatus = (TextView) findViewById(R.id.my_textview);
-<<<<<<< .mine
-        //mapStatus = (TextView) findViewById(R.id.my_mapview);
-=======
->>>>>>> .r17
-        edit = (EditText) findViewById(R.id.editText1);
-        
-        //Initialize the text fields in the layout objects
-        Integer val = scanRate / 1000;
-        edit.setText(val.toString());       
+      
         //mapStatus.setText("");
         
         //Obtain access to and turn on WiFi
@@ -91,6 +93,11 @@ public class iDocent extends Activity implements OnInitListener{
 			this.finish();
 			return true;
     	}
+    	//else if(keyCode == 82)//Menu key
+    	//{
+    		
+			//return true;
+    	//}
     	else
     		return super.onKeyDown(keyCode, event);
     }
@@ -101,7 +108,7 @@ public class iDocent extends Activity implements OnInitListener{
 	 * Parameters : View view 
 	 * Returns : void
 	*/
-    public void RefreshButton(View view){
+    public void RefreshButton(){
     	ResetTimer();
     	scanner.run();
     }
@@ -114,14 +121,11 @@ public class iDocent extends Activity implements OnInitListener{
     private void ResetTimer(){
     	scanner.SetTextView(textStatus);
     	//tts.speak("Timer Reset", TextToSpeech.QUEUE_ADD, null);
-    	if(Integer.parseInt(edit.getText().toString()) != scanRate / 1000){
-    		scanRate = Integer.parseInt(edit.getText().toString()) * 1000;
-    		timer.cancel();
-    		timer.purge();
-    		timer = new Timer();
-    		scanner = new ScanTask(textStatus, wifi);
-    		timer.scheduleAtFixedRate(scanner, 0, scanRate);
-    	}
+		timer.cancel();
+		timer.purge();
+		timer = new Timer();
+		scanner = new ScanTask(textStatus, wifi);
+		timer.scheduleAtFixedRate(scanner, 0, scanRate);
     }
     
     public void onActivityResult(int requestCode, int resultCode, Intent Data){
@@ -138,7 +142,7 @@ public class iDocent extends Activity implements OnInitListener{
     		}
     	}
     }
-	@Override
+	//@Override
 	public void onInit(int status) {
 		if(status == TextToSpeech.SUCCESS){
 			
@@ -148,6 +152,49 @@ public class iDocent extends Activity implements OnInitListener{
 		}
 		
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu, menu);
+	    return true;
+	}
 
-
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	    case R.id.refresh:
+	        RefreshButton();
+	        return true;
+	    case R.id.activate_edit:	 
+	        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+	        final EditText input = new EditText(this);
+	        input.setText(((Integer)(scanRate/1000)).toString());
+	        input.setWidth(150);
+	        input.setGravity(Gravity.RIGHT);
+	        alert.setView(input);
+	        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int whichButton) {
+	                String value = input.getText().toString().trim();
+	                Toast.makeText(getApplicationContext(), value,
+	                        Toast.LENGTH_SHORT).show();
+	                scanRate = Integer.parseInt(value) * 1000;
+	                RefreshButton();
+	            }
+	        });
+	 
+	        alert.setNegativeButton("Cancel",
+	                new DialogInterface.OnClickListener() {
+	                    public void onClick(DialogInterface dialog, int whichButton) {
+	                        dialog.cancel();
+	                    }
+	                });
+	        
+	        alert.show();
+	    	return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
+	    }
+	}
 }
