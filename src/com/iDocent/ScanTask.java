@@ -117,12 +117,11 @@ public class ScanTask extends TimerTask{
 				loc[0] += scan.GetPos().get(0) * (double)scan.Num()/(double)count;
 				loc[1] += scan.GetPos().get(1) * (double)scan.Num()/(double)count;
 			}
-			
-			textView.get().append("\n\n( " + loc[0] + ",\n " + loc[1] + ")\n"); 			
+						
 
 			if(textView != null && textView.get() != null)
 			{
-				textView.get().setText(/*text + */"\n\n(" + loc[0] +", "+loc[1]+")\n");
+				textView.get().append("\n\n( " + loc[0] + ",\n " + loc[1] + ")\n"); 
 			}
     	}
     	else
