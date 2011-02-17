@@ -177,9 +177,9 @@ public class iDocent extends Activity implements OnInitListener{
 	        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface dialog, int whichButton) {
 	                String value = input.getText().toString().trim();
-	                Toast.makeText(getApplicationContext(), value,
-	                        Toast.LENGTH_SHORT).show();
 	                scanRate = Integer.parseInt(value) * 1000;
+	                Toast.makeText(getApplicationContext(), ((Integer)(scanRate/1000)).toString(),
+	                        Toast.LENGTH_SHORT).show();
 	                RefreshButton();
 	            }
 	        });
@@ -187,11 +187,14 @@ public class iDocent extends Activity implements OnInitListener{
 	        alert.setNegativeButton("Cancel",
 	                new DialogInterface.OnClickListener() {
 	                    public void onClick(DialogInterface dialog, int whichButton) {
+	                        Toast.makeText(getApplicationContext(), ((Integer)(scanRate/1000)).toString(),
+	                                Toast.LENGTH_SHORT).show();
 	                        dialog.cancel();
 	                    }
 	                });
 	        
 	        alert.show();
+	        
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);

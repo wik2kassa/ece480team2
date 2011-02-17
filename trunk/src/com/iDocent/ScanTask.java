@@ -1,8 +1,10 @@
 package com.iDocent;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.TimerTask;
 
 import android.net.wifi.ScanResult;
@@ -46,6 +48,7 @@ public class ScanTask extends TimerTask{
 	        			
 	        			//Keep track of all available access points in a list
 	        			List<WeightedScan> weightedScans = new LinkedList<WeightedScan>();
+	        			Map<String, WeightedScan> scannedAPs = new HashMap<String, WeightedScan>();
 	        			for(int i=0; i<16; i++)
 	        			{
 			        		if(wifi.startScan())
@@ -60,34 +63,68 @@ public class ScanTask extends TimerTask{
 					        		for (ScanResult scan : scans) 
 					        		{
 					        	        int level = WifiManager.calculateSignalLevel(scan.level, 30);
-					        			
-					        			WeightedScan wScan = wsFactory.Create(scan.BSSID);
-					        			if(wScan != null)
-					        			{
-					        				wScan.SetLevel(level);
-					        				
-					        				count+=level;
-					        				
-						        			weightedScans.add(wScan);
-					        			}
-					        		}
-					        		if(!weightedScans.isEmpty())//DEMO CODE - for display
-					        		{
-						        		textView.get().append("\n\n");
-						        		for (WeightedScan wscan : weightedScans)
-						        		{
-						        			textView.get().append(wscan.Name() + " " + wscan.Num() + "/" + count + 
-						        					"\n" + wscan.GetPos().get(0) + " " + wscan.GetPos().get(1) + "\n");
-						        		}
-						        		
+					        	        
+					        	        WeightedScan ws = scannedAPs.get(scan.BSSID);
+					        	        
+					        	        if(ws != null)
+					        	        {
+					        	        	ws.SetLevel(ws.GetLevel()+level);
+				        	        		count+=level;
+					        	        }
+					        	        else
+					        	        {
+						        			WeightedScan wScan = wsFactory.Create(scan.BSSID);
+						        			if(wScan != null)
+						        			{
+						        				wScan.SetLevel(level);
+						        				count+=level;
+							        			weightedScans.add(wScan);
+							        			scannedAPs.put(wScan.Name(), wScan);
+						        			}
+					        	        }
+					        	        
+					        	        //An alternate way that saves some memory but takes longer
+//					        	        boolean addNew = true;
+//					        	        for(WeightedScan s : weightedScans)
+//					        	        {
+//					        	        	if(s.Name().equals(scan.BSSID))
+//					        	        	{
+//					        	        		s.SetLevel(s.GetLevel()+level);
+//					        	        		count+=level;
+//					        	        		addNew = false;
+//					        	        	}
+//					        	        }
+//					        			
+//					        	        if(addNew)
+//					        	        {
+//						        			WeightedScan wScan = wsFactory.Create(scan.BSSID);
+//						        			if(wScan != null)
+//						        			{
+//						        				wScan.SetLevel(level);
+//						        				count+=level;
+//							        			weightedScans.add(wScan);
+//						        			}
+//					        	        }
 					        		}
 				        		}
 				        		else
 				        		{
-				        			textView.get().append("\nScanning...");
+				        			textView.get().setText("WiFi Scanner\nScanning...");
 				        		}
 			        		}
 	        			}
+	        			
+		        		if(!weightedScans.isEmpty())//DEMO CODE - for display
+		        		{
+			        		textView.get().append("\n\n");
+			        		for (WeightedScan wscan : weightedScans)
+			        		{
+			        			textView.get().append(wscan.Name() + " " + wscan.GetLevel() + "/" + count + 
+			        					"\n" + wscan.GetPos().get(0) + " " + wscan.GetPos().get(1) + "\n");
+			        		}
+			        		
+		        		}
+		        		
 	        			Map(weightedScans, count);
 	        		}
 	        		else
@@ -114,8 +151,8 @@ public class ScanTask extends TimerTask{
 			//Calculations of position
 			for(WeightedScan scan : scans)
 			{	
-				loc[0] += scan.GetPos().get(0) * (double)scan.Num()/(double)count;
-				loc[1] += scan.GetPos().get(1) * (double)scan.Num()/(double)count;
+				loc[0] += scan.GetPos().get(0) * (double)scan.GetLevel()/(double)count;
+				loc[1] += scan.GetPos().get(1) * (double)scan.GetLevel()/(double)count;
 			}
 						
 
