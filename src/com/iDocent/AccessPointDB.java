@@ -26,30 +26,28 @@ public class AccessPointDB {
 	*/
 	private void FillMap()
 	{
-		LinkedList<Integer> loc = new LinkedList<Integer>();
-		loc.add(x, 0);
-		loc.add(y, 0);
-		loc.add(z, 0);
 		//"00:14:d1:e9:f5:64"
-		accessPoints.put("00:14:d1:e9:f5:63", loc);//BLUE
-		loc = new LinkedList<Integer>();
-		loc.add(x, 46);
-		loc.add(y, 0);
-		loc.add(z, 0);
+		AddAccessPoint("00:14:d1:e9:f5:63", 0, 0, 0);//BLUE
+
 		//"00:14:d1:ea:06:c2"
-		accessPoints.put("00:14:d1:ea:06:c1", loc);//GREEN
-		loc = new LinkedList<Integer>();
-		loc.add(x, 66);
-		loc.add(y, 0);
-		loc.add(z, 0);
+		AddAccessPoint("00:14:d1:ea:06:c1", 46, 0, 0);//GREEN
+
 		//"00:14:d1:ea:06:96"
-		accessPoints.put("00:14:d1:ea:06:95", loc);//ORANGE
-		loc = new LinkedList<Integer>();
-		loc.add(x, 30);
-		loc.add(y, 0);
-		loc.add(z, 0);
+		AddAccessPoint("00:14:d1:ea:06:95", 66, 0, 0);//ORANGE
+
 		//"00:14:d1:e9:f5:6a"
-		accessPoints.put("00:14:d1:e9:f5:69", loc);//YELLOW
+		AddAccessPoint("00:14:d1:e9:f5:69", 30, 0, 0);//YELLOW
+		
+		AddAccessPoint("C0:C1:C0:45:BE:7D", 10, 10, 0);
+	}
+	
+	private void AddAccessPoint(String mac, int X, int Y, int Z)
+	{
+		LinkedList<Integer> loc = new LinkedList<Integer>();
+		loc.add(x, X);
+		loc.add(y, Y);
+		loc.add(z, Z);
+		accessPoints.put(mac.toLowerCase(), loc);
 	}
 	
 	/*
@@ -60,7 +58,7 @@ public class AccessPointDB {
 	 */
 	public List<Integer> GetLocation(String mac)
 	{
-		List<Integer> pos = accessPoints.get(mac);
+		List<Integer> pos = accessPoints.get(mac.toLowerCase());
 		if(pos != null)
 		{
 			return pos;

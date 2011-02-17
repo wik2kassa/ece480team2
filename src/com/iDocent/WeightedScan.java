@@ -5,9 +5,9 @@ import java.util.List;
 
 //An object to hold the important information of a access point scan
 public class WeightedScan {
-	public int level;
-	public String MAC;
-	public int posX, posY, posZ;
+	private int level;
+	private String MAC;
+	private int posX, posY, posZ;
 	
 	private static int x=0; 
 	private static int y=1; 
@@ -24,8 +24,7 @@ public class WeightedScan {
 		posZ = pos.get(z);
 	}
 
-	public void SetLevel(int l){level = l;}
-	
+	public void SetLevel(int l){level = l;}	
 		
 	public List<Integer> GetPos(){
 		List<Integer> pos = new LinkedList<Integer>();
@@ -36,5 +35,5 @@ public class WeightedScan {
 	}
 	
 	public String Name(){return MAC;}
-	public int Num() {return level;}
+	public int GetLevel() {return level;}
 }
