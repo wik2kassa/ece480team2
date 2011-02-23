@@ -62,7 +62,7 @@ public class ScanTask extends TimerTask{
 				        			//create a weighted scan and save it in the list
 					        		for (ScanResult scan : scans) 
 					        		{
-					        	        int level = WifiManager.calculateSignalLevel(scan.level, 30);
+					        	        int level = WifiManager.calculateSignalLevel(scan.level, 20);
 					        	        
 					        	        WeightedScan ws = scannedAPs.get(scan.BSSID);
 					        	        

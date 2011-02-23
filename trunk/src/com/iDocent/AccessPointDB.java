@@ -38,7 +38,7 @@ public class AccessPointDB {
 		//"00:14:d1:e9:f5:6a"
 		AddAccessPoint("00:14:d1:e9:f5:69", 30, 0, 0);//YELLOW
 		
-		AddAccessPoint("C0:C1:C0:45:BE:7D", 10, 10, 0);
+		//AddAccessPoint("C0:C1:C0:45:BE:7D", 10, 10, 0);
 	}
 	
 	private void AddAccessPoint(String mac, int X, int Y, int Z)
