@@ -142,7 +142,7 @@ public class iDocent extends Activity implements OnInitListener{
     		}
     	}
     }
-	//@Override
+	@Override
 	public void onInit(int status) {
 		if(status == TextToSpeech.SUCCESS){
 			
