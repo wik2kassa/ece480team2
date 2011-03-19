@@ -7,12 +7,10 @@ import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 
 class Renderer implements GLSurfaceView.Renderer {
-	private Map test;
-	private Square square;
+	private Map map;
 	
 	public Renderer(){
-		test = new Map();
-		square = new Square();
+		map = new Map();
 	}
 	
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -52,10 +50,7 @@ class Renderer implements GLSurfaceView.Renderer {
 		// Replace the current matrix with the identity matrix
 		gl.glLoadIdentity();
 		gl.glTranslatef(0, 0, -4); 
-        test.Draw(gl);
-        
-		// Draw our square.
-		square.Draw(gl); // ( NEW )
+        map.Draw(gl);
 		
 		// Replace the current matrix with the identity matrix
 		gl.glLoadIdentity(); // OpenGL docs        
