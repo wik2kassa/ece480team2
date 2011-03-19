@@ -9,6 +9,8 @@ public class Map extends GraphicsObject{
 	
 	public Map(){
 		Children = new Vector<GraphicsObject>();
+		
+		Children.add(new Line(-1,-1, 1,1));
 	}
 
 	@Override

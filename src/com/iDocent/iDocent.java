@@ -62,7 +62,7 @@ public class iDocent extends Activity implements OnInitListener{
         setContentView(mGLView);
       
         //Get the objects described in the layout xml file main.xml
-        textStatus = (TextView) findViewById(R.id.my_textview);
+        //textStatus = (TextView) findViewById(R.id.my_textview);
       
         //mapStatus.setText("");
         
@@ -74,7 +74,15 @@ public class iDocent extends Activity implements OnInitListener{
         //Start the timer running the scanner
 		timer = new Timer();		
 		scanner = new ScanTask(textStatus, wifi);	
-		timer.scheduleAtFixedRate(scanner, 0, scanRate);
+		//timer.scheduleAtFixedRate(scanner, 0, scanRate);
+		
+		//textStatus.setText("iDocent\n");
+		//textStatus.append("Access Points\tStrength" +
+		//		"\n\nAccess Point 1:\t\t15\n" +
+		//		"Access Point 2:\t\t5\n" +
+		//		"Access Point 3:\t\t10\n" +
+		//		"\n Coordinates" +
+		//		"\n\nX: 15, Y: 5\n");
 		
 		//Test for TTS
 		Intent checkIntent = new Intent();
