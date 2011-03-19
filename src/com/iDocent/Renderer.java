@@ -9,6 +9,10 @@ import android.opengl.GLU;
 class Renderer implements GLSurfaceView.Renderer {
 	private Map map;
 	
+	private float posX = -75;
+	private float posY = 100;
+	private float zoom = -300;
+	
 	public Renderer(){
 		map = new Map();
 	}
@@ -49,10 +53,16 @@ class Renderer implements GLSurfaceView.Renderer {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		// Replace the current matrix with the identity matrix
 		gl.glLoadIdentity();
-		gl.glTranslatef(-75, 100, -300); 
+		gl.glTranslatef(posX, posY, zoom); 
         map.Draw(gl);
 		
 		// Replace the current matrix with the identity matrix
 		gl.glLoadIdentity(); // OpenGL docs        
     }
+
+	public void UpdateLocation(float x, float y) {
+		posX = x;
+		posY = y;
+		map.UpdateLoction(posX, posY);
+	}
 }

@@ -39,14 +39,17 @@ public class iDocent extends Activity implements OnInitListener{
 	private int MY_DATA_CHECK_CODE = 0;
 
 	//Layout objects
-	TextView textStatus;
 	Menu menu;
     private GLSurfaceView mGLView;
+    private Renderer mRenderer;
 	
 	//Timer objects
 	Timer timer;	
 	ScanTask scanner;
 	Integer scanRate = 50000;
+	
+	//locations
+	float posX, posY;
 	
 	//Boolean to turn off wifi at the end of the app if it was off at the start
 	boolean wifiWasEnabled;
@@ -58,7 +61,8 @@ public class iDocent extends Activity implements OnInitListener{
         //setContentView(R.layout.main);
         
         mGLView = new GLSurfaceView(this);
-        mGLView.setRenderer(new Renderer());
+        mRenderer = new Renderer();
+        mGLView.setRenderer(mRenderer);
         setContentView(mGLView);
       
         //Get the objects described in the layout xml file main.xml
@@ -73,16 +77,7 @@ public class iDocent extends Activity implements OnInitListener{
 		
         //Start the timer running the scanner
 		timer = new Timer();		
-		scanner = new ScanTask(textStatus, wifi);	
-		//timer.scheduleAtFixedRate(scanner, 0, scanRate);
-		
-		//textStatus.setText("iDocent\n");
-		//textStatus.append("Access Points\tStrength" +
-		//		"\n\nAccess Point 1:\t\t15\n" +
-		//		"Access Point 2:\t\t5\n" +
-		//		"Access Point 3:\t\t10\n" +
-		//		"\n Coordinates" +
-		//		"\n\nX: 15, Y: 5\n");
+		scanner = new ScanTask(this, wifi);	
 		
 		//Test for TTS
 		Intent checkIntent = new Intent();
@@ -133,12 +128,10 @@ public class iDocent extends Activity implements OnInitListener{
 	 * Returns : void
 	*/
     private void ResetTimer(){
-    	scanner.SetTextView(textStatus);
-    	//tts.speak("Timer Reset", TextToSpeech.QUEUE_ADD, null);
 		timer.cancel();
 		timer.purge();
 		timer = new Timer();
-		scanner = new ScanTask(textStatus, wifi);
+		scanner = new ScanTask(this, wifi);
 		timer.scheduleAtFixedRate(scanner, 0, scanRate);
     }
     
@@ -225,5 +218,12 @@ public class iDocent extends Activity implements OnInitListener{
     protected void onResume() {
         super.onResume();
         mGLView.onResume();
+    }
+    
+    public void UpdateLocation(float x, float y)
+    {
+    	posX = x;
+    	posY = y;
+    	mRenderer.UpdateLocation(posX, posY);
     }
 }
