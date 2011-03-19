@@ -16,8 +16,8 @@ public class Line extends GraphicsObject{
 	private short[] indices = {0, 1,};
 	
 	public Line(float  x1, float y1,float  x2, float y2){
-		float vertices[] = {x1,y1,0,
-							x2,y2,0};
+		float vertices[] = {x1,-y1,0,
+							x2,-y2,0};
 		
 		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
 		vbb.order(ByteOrder.nativeOrder());
