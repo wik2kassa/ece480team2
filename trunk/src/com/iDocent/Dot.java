@@ -14,46 +14,11 @@ public class Dot extends GraphicsObject{
 	private short[] indices = {0, 1, 2, 3};
 	
 	public Dot(float x1, float y1){
-		float vertices[] = {x1-2, y1+2,0,
-							x1+2, y1-2,0,
-							x1+2, y1+2,0,
-							x1-2, y1-2,0};
-
-		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
-		vbb.order(ByteOrder.nativeOrder());
-		vertexBuffer = vbb.asFloatBuffer();
-		vertexBuffer.put(vertices);
-		vertexBuffer.position(0);
-
-		// 	short is 2 bytes, therefore we multiply the number if 
-		// 	vertices with 2.
-		ByteBuffer ibb = ByteBuffer.allocateDirect(indices.length * 2);
-		ibb.order(ByteOrder.nativeOrder());
-		indexBuffer = ibb.asShortBuffer();
-		indexBuffer.put(indices);
+		UpdateLocation(x1, y1);
 		indexBuffer.position(0);
 	}
 	@Override
 	public void Draw(GL10 gl) {
-		float vertices[] = {x1-2, y1+2,0,
-				x1+2, y1-2,0,
-				x1+2, y1+2,0,
-				x1-2, y1-2,0};
-
-		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
-		vbb.order(ByteOrder.nativeOrder());
-		vertexBuffer = vbb.asFloatBuffer();
-		vertexBuffer.put(vertices);
-		vertexBuffer.position(0);
-		
-		// 	short is 2 bytes, therefore we multiply the number if 
-		// 	vertices with 2.
-		ByteBuffer ibb = ByteBuffer.allocateDirect(indices.length * 2);
-		ibb.order(ByteOrder.nativeOrder());
-		indexBuffer = ibb.asShortBuffer();
-		indexBuffer.put(indices);
-		indexBuffer.position(0);
-
 		// Counter-clockwise winding.
 		gl.glFrontFace(GL10.GL_CCW);
 		// Enable face culling.
@@ -81,6 +46,25 @@ public class Dot extends GraphicsObject{
 	public void UpdateLocation(float x, float y){
 		x1 = x;
 		y1 = y;
+		
+		float vertices[] = {x1-2, y1+2,0,
+				x1+2, y1-2,0,
+				x1+2, y1+2,0,
+				x1-2, y1-2,0};
+
+		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
+		vbb.order(ByteOrder.nativeOrder());
+		vertexBuffer = vbb.asFloatBuffer();
+		vertexBuffer.put(vertices);
+		vertexBuffer.position(0);
+		
+		// 	short is 2 bytes, therefore we multiply the number if 
+		// 	vertices with 2.
+		ByteBuffer ibb = ByteBuffer.allocateDirect(indices.length * 2);
+		ibb.order(ByteOrder.nativeOrder());
+		indexBuffer = ibb.asShortBuffer();
+		indexBuffer.put(indices);
+		indexBuffer.position(0);
 	}
 	
 	

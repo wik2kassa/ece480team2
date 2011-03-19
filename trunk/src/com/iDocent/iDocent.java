@@ -46,7 +46,7 @@ public class iDocent extends Activity implements OnInitListener{
 	//Timer objects
 	Timer timer;	
 	ScanTask scanner;
-	Integer scanRate = 100;
+	Integer scanRate = 1000;
 	
 	//locations
 	float posX, posY;
@@ -64,11 +64,6 @@ public class iDocent extends Activity implements OnInitListener{
         mRenderer = new Renderer();
         mGLView.setRenderer(mRenderer);
         setContentView(mGLView);
-      
-        //Get the objects described in the layout xml file main.xml
-        //textStatus = (TextView) findViewById(R.id.my_textview);
-      
-        //mapStatus.setText("");
         
         //Obtain access to and turn on WiFi
         wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -78,6 +73,7 @@ public class iDocent extends Activity implements OnInitListener{
         //Start the timer running the scanner
 		timer = new Timer();		
 		scanner = new ScanTask(this, wifi);	
+		timer.scheduleAtFixedRate(scanner, 0, scanRate);
 		
 		//Test for TTS
 		Intent checkIntent = new Intent();
