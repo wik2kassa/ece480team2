@@ -46,7 +46,7 @@ public class iDocent extends Activity implements OnInitListener{
 	//Timer objects
 	Timer timer;	
 	ScanTask scanner;
-	Integer scanRate = 50000;
+	Integer scanRate = 100;
 	
 	//locations
 	float posX, posY;

@@ -18,6 +18,9 @@ public class ScanTask extends TimerTask{
     WeightedScanFactory wsFactory;
     iDocent miD;
     
+    float dX = 20; 
+    float dY = 20;
+    
     Handler handler = new Handler();
 
     public ScanTask(iDocent iD, WifiManager w) {
@@ -81,6 +84,7 @@ public class ScanTask extends TimerTask{
 	        		}
 	            }
         });
+        Map(null, -1);
     }
     
     /*
@@ -93,21 +97,22 @@ public class ScanTask extends TimerTask{
     private void Map(List<WeightedScan> scans, int count)
     {
     	float[] loc = {0,0};
-    	if(scans.size() >= 0)
-    	{			
-			//Calculations of position
-			for(WeightedScan scan : scans)
-			{	
-				loc[0] += scan.GetPos().get(0) * (float)scan.GetLevel()/(float)count;
-				loc[1] += scan.GetPos().get(1) * (float)scan.GetLevel()/(float)count;
-			}			
-    	}
-    	else
-    	{
-
-    	}
-    	
-    	miD.UpdateLocation(loc[0], loc[1]);
+//    	if(scans.size() >= 0)
+//    	{			
+//			//Calculations of position
+//			for(WeightedScan scan : scans)
+//			{	
+//				loc[0] += scan.GetPos().get(0) * (float)scan.GetLevel()/(float)count;
+//				loc[1] += scan.GetPos().get(1) * (float)scan.GetLevel()/(float)count;
+//			}			
+//    	}
+//    	else
+//    	{
+//
+//    	}
+    	dX = dX+1;
+    	miD.UpdateLocation(dX, -dY);
+    	//miD.UpdateLocation(loc[0], -loc[1]);
     }
 }
 
