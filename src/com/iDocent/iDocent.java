@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.app.SearchManager.OnDismissListener;
 import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -40,6 +41,7 @@ public class iDocent extends Activity implements OnInitListener{
 	//Layout objects
 	TextView textStatus;
 	Menu menu;
+    private GLSurfaceView mGLView;
 	
 	//Timer objects
 	Timer timer;	
@@ -53,7 +55,11 @@ public class iDocent extends Activity implements OnInitListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        //setContentView(R.layout.main);
+        
+        mGLView = new GLSurfaceView(this);
+        mGLView.setRenderer(new Renderer());
+        setContentView(mGLView);
       
         //Get the objects described in the layout xml file main.xml
         textStatus = (TextView) findViewById(R.id.my_textview);
@@ -200,4 +206,16 @@ public class iDocent extends Activity implements OnInitListener{
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
+	
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mGLView.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mGLView.onResume();
+    }
 }
