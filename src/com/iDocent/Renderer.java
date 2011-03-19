@@ -37,7 +37,7 @@ class Renderer implements GLSurfaceView.Renderer {
 		gl.glLoadIdentity();
 		// Calculate the aspect ratio of the window
 		GLU.gluPerspective(gl, 45.0f, (float) w / (float) h, 0.1f,
-				100.0f);
+				400.0f);
 		// Select the modelview matrix
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		// Reset the modelview matrix
@@ -49,7 +49,7 @@ class Renderer implements GLSurfaceView.Renderer {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		// Replace the current matrix with the identity matrix
 		gl.glLoadIdentity();
-		gl.glTranslatef(0, 0, -4); 
+		gl.glTranslatef(-75, 100, -300); 
         map.Draw(gl);
 		
 		// Replace the current matrix with the identity matrix
