@@ -11,6 +11,8 @@ class Renderer implements GLSurfaceView.Renderer {
 	
 	private float posX = 75;
 	private float posY = 100;
+	private float xOffset = 0;
+	private float yOffset = 0;
 	private float zoom = -300;
 	
 	public Renderer(){
@@ -19,7 +21,7 @@ class Renderer implements GLSurfaceView.Renderer {
 	
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
     	// Set the background color to black ( rgba ).
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
+		gl.glClearColor(255.0f, 255.0f, 255.0f, 0.5f);
 		// Enable Smooth Shading, default not really needed.
 		gl.glShadeModel(GL10.GL_SMOOTH);
 		// Depth buffer setup.
@@ -53,7 +55,7 @@ class Renderer implements GLSurfaceView.Renderer {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		// Replace the current matrix with the identity matrix
 		gl.glLoadIdentity();
-		gl.glTranslatef(-posX, posY, zoom); 
+		gl.glTranslatef(-(posX+xOffset), -(posY+yOffset), zoom); 
         map.Draw(gl);
 		
 		// Replace the current matrix with the identity matrix
@@ -64,5 +66,27 @@ class Renderer implements GLSurfaceView.Renderer {
 		posX = x;
 		posY = y;
 		map.UpdateLoction(posX, posY);
+	}
+
+	public void zoomOut() {
+		zoom -= 50;
+		if(zoom <= -350)
+			zoom = -350;
+	}
+
+	public void zoomIn() {
+		zoom += 50;
+		if(zoom >= -50)
+			zoom = -50;
+	}
+
+	public void MoveCamera(float x, float y) {
+		xOffset = -x;
+		yOffset = y;
+	}
+	
+	public void CenterCamera()
+	{
+		xOffset = yOffset = 0;
 	}
 }

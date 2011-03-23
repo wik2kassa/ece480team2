@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/group1">
-        <item android:title="Refresh" android:enabled="true" android:id="@+id/refresh"></item>
-        <item android:title="Edit Refresh Rate" android:id="@+id/activate_edit"></item>
+        <item android:title="Zoom out" android:id="@+id/zoom_out"></item><item android:title="Zoom in" android:id="@+id/zoom_in"></item>
+        
+        
     </group>
 
 </menu> 

@@ -36,6 +36,7 @@ public class Line extends GraphicsObject{
 
 	@Override
 	public void Draw(GL10 gl) {
+		gl.glColor4x(0, 0, 0, 0);
 		// Counter-clockwise winding.
 		gl.glFrontFace(GL10.GL_CCW);
 		// Enable face culling.
