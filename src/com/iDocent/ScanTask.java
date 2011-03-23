@@ -26,6 +26,8 @@ public class ScanTask extends TimerTask{
     public ScanTask(iDocent iD, WifiManager w) {
     	miD = iD;
         wifi = w;
+        dX = miD.getPosX();
+        dY = miD.getPosY();
         wsFactory = new WeightedScanFactory();
     }
 
@@ -42,7 +44,7 @@ public class ScanTask extends TimerTask{
         			//Keep track of all available access points in a list
         			List<WeightedScan> weightedScans = new LinkedList<WeightedScan>();
         			Map<String, WeightedScan> scannedAPs = new HashMap<String, WeightedScan>();
-        			for(int i=0; i<16; i++)
+        			for(int i=0; i<8; i++)
         			{
 		        		if(wifi.startScan())
 		        		{			        			
@@ -97,21 +99,21 @@ public class ScanTask extends TimerTask{
     private void Map(List<WeightedScan> scans, int count)
     {
     	float[] loc = {0,0};
-//    	if(scans.size() >= 0)
-//    	{			
-//			//Calculations of position
-//			for(WeightedScan scan : scans)
-//			{	
-//				loc[0] += scan.GetPos().get(0) * (float)scan.GetLevel()/(float)count;
-//				loc[1] += scan.GetPos().get(1) * (float)scan.GetLevel()/(float)count;
-//			}			
-//    	}
-//    	else
-//    	{
-//
-//    	}
-    	dX = dX+1;
-    	miD.UpdateLocation(dX, -dY);
+    	if(scans.size() >= 0)
+    	{			
+			//Calculations of position
+			for(WeightedScan scan : scans)
+			{	
+				loc[0] += scan.GetPos().get(0) * (float)scan.GetLevel()/(float)count;
+				loc[1] += scan.GetPos().get(1) * (float)scan.GetLevel()/(float)count;
+			}			
+    	}
+    	else
+    	{
+
+    	}
+    	//dX = dX+1;
+    	miD.UpdateLocation(loc[0], -loc[1]);
     	//miD.UpdateLocation(loc[0], -loc[1]);
     }
 }

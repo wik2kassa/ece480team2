@@ -7,7 +7,7 @@ import java.util.List;
 public class WeightedScan {
 	private int level;
 	private String MAC;
-	private int posX, posY, posZ;
+	private Float posX, posY, posZ;
 	
 	private static int x=0; 
 	private static int y=1; 
@@ -16,18 +16,18 @@ public class WeightedScan {
 	//DEMO VARIABLE
 	public int number;
 	
-	public WeightedScan(String mac, List<Integer> pos)
+	public WeightedScan(String mac, List<Float> loc)
 	{
 		MAC = mac;
-		posX = pos.get(x);
-		posY = pos.get(y);
-		posZ = pos.get(z);
+		posX = loc.get(x);
+		posY = loc.get(y);
+		posZ = loc.get(z);
 	}
 
 	public void SetLevel(int l){level = l;}	
 		
-	public List<Integer> GetPos(){
-		List<Integer> pos = new LinkedList<Integer>();
+	public List<Float> GetPos(){
+		List<Float> pos = new LinkedList<Float>();
 		pos.add(posX);
 		pos.add(posY);
 		pos.add(posZ);
