@@ -81,8 +81,8 @@ class Renderer implements GLSurfaceView.Renderer {
 	}
 
 	public void MoveCamera(float x, float y) {
-		xOffset = -x;
-		yOffset = y;
+		xOffset = -x*zoom/-350f;
+		yOffset = y*zoom/-350f;
 	}
 	
 	public void CenterCamera()

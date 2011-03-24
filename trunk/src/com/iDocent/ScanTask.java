@@ -44,7 +44,7 @@ public class ScanTask extends TimerTask{
         			//Keep track of all available access points in a list
         			List<WeightedScan> weightedScans = new LinkedList<WeightedScan>();
         			Map<String, WeightedScan> scannedAPs = new HashMap<String, WeightedScan>();
-        			for(int i=0; i<8; i++)
+        			for(int i=0; i<2; i++)
         			{
 		        		if(wifi.startScan())
 		        		{			        			
