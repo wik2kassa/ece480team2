@@ -3,7 +3,6 @@ package com.iDocent;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TreeMap;
 
 //A database that will map an ssid to an xyz location
 public class AccessPointDB {
