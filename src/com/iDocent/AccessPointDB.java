@@ -81,16 +81,16 @@ public class AccessPointDB {
 		AddAccessPoint("00:24:6c:d5:c7:d0", 131.5f,72.4f,0f);
 		
 		//1-34
-		AddAccessPoint("00:24:6c:d5:7f:20", 131.5f,124.4f,0f);
-		AddAccessPoint("00:24:6c:d5:7f:30", 131.5f,124.4f,0f);
+		AddAccessPoint("00:24:6c:d0:7f:20", 131.5f,124.4f,0f);
+		AddAccessPoint("00:24:6c:d0:7f:30", 131.5f,124.4f,0f);
 		
 		//1-35
-		AddAccessPoint("00:24:6c:d5:6a:80", 131.5f,172.4f,0f);
-		AddAccessPoint("00:24:6c:d5:6a:90", 131.5f,172.4f,0f);
+		AddAccessPoint("00:24:6c:d0:6a:80", 131.5f,172.4f,0f);
+		AddAccessPoint("00:24:6c:d0:6a:90", 131.5f,172.4f,0f);
 		
 		//1-36
-		AddAccessPoint("00:24:6c:d5:84:20", 131.5f,220.4f,0f);
-		AddAccessPoint("00:24:6c:d5:84:30", 131.5f,220.4f,0f);
+		AddAccessPoint("00:24:6c:d0:84:20", 131.5f,220.4f,0f);
+		AddAccessPoint("00:24:6c:d0:84:30", 131.5f,220.4f,0f);
 		
 		//AddAccessPoint("C0:C1:C0:45:BE:7D", 10, 10, 0);
 	}
