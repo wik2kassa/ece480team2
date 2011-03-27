@@ -27,8 +27,9 @@ public class Map extends GraphicsObject{
 		Children.add(new Line(24.5f,-28.4f, 120,-28.4f));
 		Children.add(new Line(143.5f,-16.4f, 143.5f,-28.4f));
 		Children.add(new Line(132,-28.4f, 143.5f,-28.4f));
-		Children.add(new Line(120,-28.4f, 120,-153.4f));
-		Children.add(new Line(132,-28.4f, 132,-153.4f));
+		Children.add(new Line(120,-28.4f, 120,-183.4f));
+		Children.add(new Line(132,-28.4f, 132,-183.4f));
+		Children.add(new Line(132, -153.4f, 142, -153.4f));
 	}
 
 	@Override
@@ -41,8 +42,17 @@ public class Map extends GraphicsObject{
 
 	public void UpdateLoction(float x, float y) {
 		posX = x;
-		posY = y;
-		mDot.UpdateLocation(posX, posY);
+		posY = -y;
+		if(posY > 28.4)
+			posX = (132f+120f)/2.0f;
+		else if(posX < 120)
+			posY = (28.4f+16.4f)/2.0f;
+		else if(posY < 28.4 && posX > 120)
+		{
+			posX = (132f+120f)/2.0f;
+			posY = (28.4f+16.4f)/2.0f;
+		}
+		mDot.UpdateLocation(posX, -posY);
 	}
 
 }

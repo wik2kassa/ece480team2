@@ -18,16 +18,14 @@ public class ScanTask extends TimerTask{
     WeightedScanFactory wsFactory;
     iDocent miD;
     
-    float dX = 20; 
-    float dY = 20;
+    float[] oldX = new float[2]; 
+    float[] oldY = new float[2];
     
     Handler handler = new Handler();
 
     public ScanTask(iDocent iD, WifiManager w) {
     	miD = iD;
         wifi = w;
-        dX = miD.getPosX();
-        dY = miD.getPosY();
         wsFactory = new WeightedScanFactory();
     }
 
@@ -44,7 +42,7 @@ public class ScanTask extends TimerTask{
         			//Keep track of all available access points in a list
         			List<WeightedScan> weightedScans = new LinkedList<WeightedScan>();
         			Map<String, WeightedScan> scannedAPs = new HashMap<String, WeightedScan>();
-        			for(int i=0; i<2; i++)
+        			for(int i=0; i<8; i++)
         			{
 		        		if(wifi.startScan())
 		        		{			        			
@@ -57,7 +55,12 @@ public class ScanTask extends TimerTask{
 			        			//create a weighted scan and save it in the list
 				        		for (ScanResult scan : scans) 
 				        		{
-				        	        int level = WifiManager.calculateSignalLevel(scan.level, 20);
+				        			if(scan.BSSID.equals("00:24:6c:d0:84:20")||scan.BSSID.equals("00:24:6c:d0:84:30"))
+				        			{
+				        				int x =5;
+				        				System.out.println(x);
+				        			}
+				        			int level = WifiManager.calculateSignalLevel(scan.level, 20);
 				        	        
 				        	        WeightedScan ws = scannedAPs.get(scan.BSSID);
 				        	        
@@ -86,7 +89,7 @@ public class ScanTask extends TimerTask{
 	        		}
 	            }
         });
-        Map(null, -1);
+        //Map(null, -1);
     }
     
     /*
@@ -99,7 +102,7 @@ public class ScanTask extends TimerTask{
     private void Map(List<WeightedScan> scans, int count)
     {
     	float[] loc = {0,0};
-    	if(scans.size() >= 0)
+    	if(scans.size() > 0)
     	{			
 			//Calculations of position
 			for(WeightedScan scan : scans)
@@ -113,8 +116,14 @@ public class ScanTask extends TimerTask{
 
     	}
     	//dX = dX+1;
-    	miD.UpdateLocation(loc[0], -loc[1]);
-    	//miD.UpdateLocation(loc[0], -loc[1]);
+    	float alpha = 0.1f;
+    	float filteredX = oldX[0]*alpha+loc[0]*(1-alpha);
+    	float filteredY = oldY[0]*alpha+loc[0]*(1-alpha);
+    	oldX[1] = oldX[0];
+    	oldY[1] = oldY[0];
+    	oldX[0] = loc[0];
+    	oldY[0] = loc[1];
+    	miD.UpdateLocation(filteredX, -filteredY);
     }
 }
 
