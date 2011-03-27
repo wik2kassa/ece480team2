@@ -70,6 +70,7 @@ public class iDocent extends Activity implements OnInitListener{
         mGLView = new GLSurfaceView(this);
         mRenderer = new Renderer();
         mGLView.setRenderer(mRenderer);
+        mGLView.setKeepScreenOn(true);
         setContentView(mGLView);
         
         //Obtain access to and turn on WiFi
@@ -107,9 +108,11 @@ public class iDocent extends Activity implements OnInitListener{
     	{
     		//End the app gracefully
 			timer.cancel();	
+			timer.purge();
 			wifi.setWifiEnabled(wifiWasEnabled);
 			tts.speak("Goodbye", TextToSpeech.QUEUE_FLUSH, null);
 			tts.shutdown();
+			mGLView.setKeepScreenOn(false);
 			this.finish();
 			return true;
     	}
