@@ -9,27 +9,32 @@ import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 
-public class ScanResultReceiver extends BroadcastReceiver {
+public class ScanResultReceiver extends BroadcastReceiver{
 	WifiManager wifi = null;
     WeightedScanFactory wsFactory;
     iDocent miD;
     
+	private float sumX = 0;
+	private float sumY = 0;
+	private int count = 0;
+    
 	private static int x=0; 
 	private static int y=1; 
 	private static int z=2; 
+    
+    private float[] oldX = new float[2]; 
+    private float[] oldY = new float[2];
+    
+	private int iterations = 0;
 	
-	float sumX = 0;
-	float sumY = 0;
-	int count = 0;
-    
-    float[] oldX = new float[2]; 
-    float[] oldY = new float[2];
-    
-	int iterations = 0;
+	private List<ScanResult> scans;
+	
+	Thread t;
 
 	public ScanResultReceiver(iDocent iD) {
 		miD = iD;
         wsFactory = new WeightedScanFactory();
+		wsFactory.StartScanLoop();
 	}
 
 	@Override
@@ -41,26 +46,19 @@ public class ScanResultReceiver extends BroadcastReceiver {
 		{		    		
 			wifi.startScan();
 			iterations++;
-			List<ScanResult> scans = wifi.getScanResults(); // Returns a <list> of scanResults
-			if(scans != null && !scans.isEmpty())
-			{			        			
-				//Go through the list of scans, give them a value from 1-20 based on strength, then
-				//create a weighted scan and save it in the list
-				for (ScanResult scan : scans) 
-				{
-					int level = WifiManager.calculateSignalLevel(scan.level, 20);
-			        
-					WeightedScan wScan = wsFactory.Create(scan.BSSID);
-					if(wScan != null)
-					{
-						wScan.SetLevel(level);
-						sumX += level*wScan.GetPos().get(x);
-						sumY += level*wScan.GetPos().get(y);
-						count+=level;
-					}
-				}
-			}
+			scans = wifi.getScanResults(); // Returns a <list> of scanResults
+			ScanCounter sc = new ScanCounter(this, scans, wsFactory);
+			t = new Thread(sc);
+			t.setName("Scan Counter");
+			t.start();
 		}	
+	}
+	
+	public void UpdateSums(float sX, float sY, int count)
+	{
+		sumX = sX;
+		sumY = sY;
+		this.count = count;
 	}
 
 	private void Map(float sX, float sY, int count) {
@@ -101,5 +99,9 @@ public class ScanResultReceiver extends BroadcastReceiver {
 			sumY = 0;
 		}
 	}
-
+	
+	public void End()
+	{
+		wsFactory.EndScanLoop();
+	}
 }
