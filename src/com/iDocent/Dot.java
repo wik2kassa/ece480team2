@@ -1,6 +1,7 @@
 package com.iDocent;
 
 import java.nio.*;
+import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -33,7 +34,7 @@ public class Dot extends GraphicsObject{
 		// coordinates to use when rendering.
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
 		
-		gl.glDrawElements(GL10.GL_LINES, indices.length,
+		gl.glDrawElements(GL10.GL_TRIANGLE_FAN, indices.length,
 				GL10.GL_UNSIGNED_SHORT, indexBuffer);
 		
 		// Disable the vertices buffer.
@@ -51,6 +52,26 @@ public class Dot extends GraphicsObject{
 				x1+2, y1-2,0,
 				x1+2, y1+2,0,
 				x1-2, y1-2,0};
+		//ArrayList<Float> v = new ArrayList<Float>();
+		//double angle = 0;
+		//Push Back Center		
+		//v.add(x);
+		//v.add(y);
+		
+		//Outside vertices
+		//float x1 = 2;
+		//float y2 = 2;
+		//for(int i = 0; i < 360.0; i++){
+		//	x1 = (float) (x * Math.cos(i * (3.14159/180.)) - (y * Math.sin(i * (3.14159/180.))));
+		//	y1 = (float) (x * Math.sin(i * (3.14159/180.)) + (y * Math.cos(i * (3.14159/180.))));
+		//	v.add(x1);
+		//	v.add(y1);
+		//}
+		
+		//float[] vertices = new float [v.size()];
+		//for(int i = 0; i< v.size(); i++){
+		//	vertices[i] = v.get(i);
+		//}
 
 		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
 		vbb.order(ByteOrder.nativeOrder());
