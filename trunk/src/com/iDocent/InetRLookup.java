@@ -97,4 +97,8 @@ public class InetRLookup {
 			e.printStackTrace();
 		}
 	}
+
+	public boolean isConnected() {
+		return connected;
+	}
 }

@@ -29,7 +29,8 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	
 	private List<ScanResult> scans;
 	
-	Thread t;
+	private Thread t;
+	boolean loaded = false;
 
 	public ScanResultReceiver(iDocent iD) {
 		miD = iD;
@@ -47,18 +48,26 @@ public class ScanResultReceiver extends BroadcastReceiver{
 			wifi.startScan();
 			iterations++;
 			scans = wifi.getScanResults(); // Returns a <list> of scanResults
-			ScanCounter sc = new ScanCounter(this, scans, wsFactory);
-			t = new Thread(sc);
-			t.setName("Scan Counter");
-			t.start();
+			if(scans != null)
+			{
+				if((t==null || !t.isAlive()))
+				{
+					ScanCounter sc = new ScanCounter(this, scans, wsFactory);
+					t = new Thread(sc);
+					t.setName("Scan Counter");
+					t.start();
+					loaded = true;
+				}
+			}
 		}	
 	}
 	
 	public void UpdateSums(float sX, float sY, int count)
 	{
-		sumX = sX;
-		sumY = sY;
-		this.count = count;
+		sumX += sX;
+		sumY += sY;
+		this.count += count;
+		UpdateLocation();
 	}
 
 	private void Map(float sX, float sY, int count) {
