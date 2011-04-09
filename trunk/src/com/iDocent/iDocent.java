@@ -27,6 +27,7 @@ import android.widget.Toast;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.speech.tts.*;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.content.Intent;
@@ -77,16 +78,22 @@ public class iDocent extends Activity implements OnInitListener{
         wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         wifiWasEnabled = wifi.isWifiEnabled();
         wifi.setWifiEnabled(true);
+        
+		//Set up to capture Wi-Fi scan results ready event
+        ScanResultReceiver SRR = new ScanResultReceiver(this);
+		IntentFilter i = new IntentFilter();
+		i.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+		registerReceiver(SRR,i);
 		
         //Start the timer running the scanner
 		timer = new Timer();		
-		scanner = new ScanTask(this, wifi);	
+		scanner = new ScanTask(wifi, SRR);	
 		timer.scheduleAtFixedRate(scanner, 0, scanRate);
 		
 		//Test for TTS
 		Intent checkIntent = new Intent();
 		checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-		startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
+		startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);	
     }
 
 	/**
@@ -107,6 +114,7 @@ public class iDocent extends Activity implements OnInitListener{
     	if(keyCode == 4)//Back key
     	{
     		//End the app gracefully
+    		scanner.cancel();
 			timer.cancel();	
 			timer.purge();
 			wifi.setWifiEnabled(wifiWasEnabled);
@@ -122,7 +130,6 @@ public class iDocent extends Activity implements OnInitListener{
     
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-
 		if(event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			xStart=event.getX();
