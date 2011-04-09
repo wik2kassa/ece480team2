@@ -44,7 +44,7 @@ public class ScanTask extends TimerTask{
 
 			private void UpdateLocation() {
 				count = 0;
-				SRR.UpdateLocation();				
+				//SRR.UpdateLocation();				
 			}
         });
     }

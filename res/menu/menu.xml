@@ -4,7 +4,8 @@
         <item android:title="Zoom out" android:id="@+id/zoom_out"></item><item android:title="Zoom in" android:id="@+id/zoom_in"></item>
         
         
-    </group>
+    <item android:title="List" android:id="@+id/list"></item></group>
+    
 
 </menu> 
     
