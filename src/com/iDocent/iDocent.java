@@ -62,6 +62,8 @@ public class iDocent extends Activity implements OnInitListener{
 	//Boolean to turn off wifi at the end of the app if it was off at the start
 	boolean wifiWasEnabled;
 	
+	ScanResultReceiver SRR;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +82,7 @@ public class iDocent extends Activity implements OnInitListener{
         wifi.setWifiEnabled(true);
         
 		//Set up to capture Wi-Fi scan results ready event
-        ScanResultReceiver SRR = new ScanResultReceiver(this);
+        SRR = new ScanResultReceiver(this);
 		IntentFilter i = new IntentFilter();
 		i.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 		registerReceiver(SRR,i);
@@ -121,7 +123,10 @@ public class iDocent extends Activity implements OnInitListener{
 			tts.speak("Goodbye", TextToSpeech.QUEUE_FLUSH, null);
 			tts.shutdown();
 			mGLView.setKeepScreenOn(false);
+			SRR.End();
+			this.onBackPressed();
 			this.finish();
+			System.exit(0);
 			return true;
     	}
     	else

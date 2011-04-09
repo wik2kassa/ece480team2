@@ -29,4 +29,12 @@ public class WeightedScanFactory {
 		loc.add(0f);
 		return new WeightedScan(mac, loc);
 	}
+
+	public void StartScanLoop() {
+		locations.StartScanLoop();		
+	}
+
+	public void EndScanLoop() {
+		locations.EndScanLoop();
+	}
 }

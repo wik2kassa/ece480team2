@@ -1,12 +1,16 @@
 package com.iDocent;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
 //A database that will map an ssid to an xyz location
 public class AccessPointDB {
 	private HashMap<String, LinkedList<Float>> accessPoints;
+	private HashSet<String> notInDB;
+	
+    InetRLookup irl;
 	
 	private static int x=0; 
 	private static int y=1; 
@@ -15,7 +19,9 @@ public class AccessPointDB {
 	public AccessPointDB()
 	{
 		accessPoints = new HashMap<String, LinkedList<Float>>();
-		FillMap();
+		irl = new InetRLookup();
+		notInDB = new HashSet<String>();
+		//FillMap();
 	}
 	
 	/**
@@ -143,7 +149,31 @@ public class AccessPointDB {
 		{
 			return pos;
 		}
+		if(!notInDB.contains(mac))
+		{
+			irl.setMac("\'"+mac.toLowerCase()+"\'");
+			irl.run();
+			if(irl.WasFound())
+			{
+				Float[] coords = irl.getCoords();
+				
+				AddAccessPoint(mac.toLowerCase(), coords[x], coords[y], coords[z]);
+				return accessPoints.get(mac.toLowerCase());
+			}
+			else
+			{
+				notInDB.add(mac);
+			}
+		}
 		
 		return null;
+	}
+
+	public void StartScanLoop() {
+		irl.Connect();
+	}
+
+	public void EndScanLoop() {
+		irl.Disconnect();
 	}
 }

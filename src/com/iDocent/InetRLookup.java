@@ -1,5 +1,6 @@
 package com.iDocent;
 
+import java.lang.reflect.Array;
 import java.net.*;
 import java.io.*;
 
@@ -8,31 +9,45 @@ public class InetRLookup {
 	private final String DNS = "480team2.dyndns-server.com";
 	private final int Port = 1024;
 	
-	double coords [];
+	Socket conn;
+	DataInputStream is;
+	PrintStream os;
+	
+	Float coords [];
+	
+	boolean found;
+	boolean connected;
+	
+	public boolean WasFound()
+	{
+		return found;
+	}
 	
 	public InetRLookup(){
-		coords = new double[3];
+		coords = new Float[3];
+		found = false;
+		connected = false;
 	}
-
+	
 	public void run() {
-		try {
-			Socket conn = new Socket(DNS,Port);
-			DataInputStream is = new DataInputStream(conn.getInputStream());
-			PrintStream os = new PrintStream(conn.getOutputStream());
-			
-			os.println("get-router-coord " + mac);
-			String tmp;
-			while((tmp = is.readLine()) != null && tmp != "INVALID COMMAND"){
-				String args [] = tmp.split(" ");
-				if (args[0].equals(mac)){
-					coords[0] = Double.valueOf(args[1]);
-					coords[1] = Double.valueOf(args[2]);
-					coords[2] = Double.valueOf(args[3]);
-					break;
+		try {		
+			if(connected)
+			{
+				os.println("get-router-coord " + mac);
+				String tmp;
+				while((tmp = is.readLine()) != null && tmp != "INVALID COMMAND"){
+					String args [] = tmp.split(" ");
+					if(args[0].equals("ERROR:") || (Array.getLength(args) < 4))
+						break;
+					if (args[0].equals(mac)){
+						coords[0] = Float.valueOf(args[1]);
+						coords[1] = Float.valueOf(args[2]);
+						coords[2] = Float.valueOf(args[3]);
+						found = true;
+						break;
+					}
 				}
 			}
-			os.println("quit");			
-			conn.close();
 		} 
 		catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -48,7 +63,38 @@ public class InetRLookup {
 		mac = x;
 	}
 	
-	public double[] getCoords(){
+	public Float[] getCoords(){
+		found = false;
 		return coords;
+	}
+
+	public void Connect() {
+		try {
+			conn = new Socket(DNS,Port);
+			is = new DataInputStream(conn.getInputStream());
+			os = new PrintStream(conn.getOutputStream());
+			if(conn != null && is != null && os != null)
+				connected = true;
+		} 
+		catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void Disconnect() {
+		connected = false;
+		os.println("quit");			
+		try {
+			conn.close();
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
