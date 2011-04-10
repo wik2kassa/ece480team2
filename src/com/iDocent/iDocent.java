@@ -6,6 +6,7 @@ import java.util.Timer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
@@ -19,8 +20,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //Main activity class
 public class iDocent extends Activity implements OnInitListener{
@@ -43,7 +49,7 @@ public class iDocent extends Activity implements OnInitListener{
 	
 	//locations
 	float posX=20;
-	float posY=20;
+	float posY=-20;
 	
 	float xStart=0;
 	float yStart=0;
@@ -64,6 +70,8 @@ public class iDocent extends Activity implements OnInitListener{
         mGLView.setRenderer(mRenderer);
         mGLView.setKeepScreenOn(true);
         setContentView(mGLView);
+        
+        UpdateLocation(posX, posY);
         
         //Obtain access to and turn on WiFi
         wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -218,21 +226,48 @@ public class iDocent extends Activity implements OnInitListener{
 	    // Handle item selection
 	    switch (item.getItemId()) {
 		case R.id.zoom_in:
+	    	tts.speak("Zoom In", TextToSpeech.QUEUE_FLUSH, null);
 	    	ZoomInButton();
 	    	return true;
 		case R.id.zoom_out:
+	    	tts.speak("Zoom Out", TextToSpeech.QUEUE_FLUSH, null);
 			ZoomOutButton();
 			return true;
-	    case R.id.list:	 
+	    case R.id.list:
+	    	tts.speak("Select Destination", TextToSpeech.QUEUE_FLUSH, null);
 	        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-	        final ListView input = new ListView(this);
+	        Spinner spinner = new SpokenSpinner(this, tts);
 	        
-	        ArrayList<View> views = new ArrayList<View>();
-	        TextView t = new TextView(this);
-	        t.setText("Room");
-	        views.add(t);
+	        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
+	        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	        spinner.setAdapter(adapter);
+
+	        adapter.add("Select Room Number");
+	        adapter.add("Room 1225");
 	        
-	        alert.setView(input);
+	        alert.setView(spinner);
+	        final ArrayAdapter<CharSequence> a = adapter;
+	        final Spinner s = spinner;
+	        
+          alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int whichButton) {
+        	  String selected = (a.getItem(s.getLastVisiblePosition()).toString());
+        	  if(s.getLastVisiblePosition() != 0)
+        	  {
+	              Toast.makeText(getApplicationContext(), selected,
+	                      Toast.LENGTH_SHORT).show();
+	              tts.speak("Navigating to "+selected, TextToSpeech.QUEUE_FLUSH, null);
+        	  }
+          }
+      });
+
+      alert.setNegativeButton("Cancel",
+              new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int whichButton) {
+                	  tts.speak("Canceling new room selection", TextToSpeech.QUEUE_FLUSH, null);
+                      dialog.cancel();
+                  }
+              });
 	        
 	        alert.show();
 	        
