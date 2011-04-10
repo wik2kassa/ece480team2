@@ -1,37 +1,26 @@
 package com.iDocent;
 
+import java.util.ArrayList;
 import java.util.Timer;
-
-import com.iDocent.R;
-import com.iDocent.ScanTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.SearchManager.OnDismissListener;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
-import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.speech.tts.*;
-import android.speech.tts.TextToSpeech.OnInitListener;
-import android.content.Intent;
-import android.graphics.Point;
 
 //Main activity class
 public class iDocent extends Activity implements OnInitListener{
@@ -89,7 +78,7 @@ public class iDocent extends Activity implements OnInitListener{
 		
         //Start the timer running the scanner
 		timer = new Timer();		
-		scanner = new ScanTask(wifi, SRR);	
+		scanner = new ScanTask(wifi, this);	
 		timer.scheduleAtFixedRate(scanner, 0, scanRate);
 		
 		//Test for TTS
@@ -234,34 +223,20 @@ public class iDocent extends Activity implements OnInitListener{
 		case R.id.zoom_out:
 			ZoomOutButton();
 			return true;
-//	    case R.id.activate_edit:	 
-//	        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-//	        final EditText input = new EditText(this);
-//	        input.setText(((Integer)(scanRate/1000)).toString());
-//	        input.setWidth(150);
-//	        input.setGravity(Gravity.RIGHT);
-//	        alert.setView(input);
-//	        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//	            public void onClick(DialogInterface dialog, int whichButton) {
-//	                String value = input.getText().toString().trim();
-//	                scanRate = Integer.parseInt(value) * 1000;
-//	                Toast.makeText(getApplicationContext(), ((Integer)(scanRate/1000)).toString(),
-//	                        Toast.LENGTH_SHORT).show();
-//	            }
-//	        });
-//	 
-//	        alert.setNegativeButton("Cancel",
-//	                new DialogInterface.OnClickListener() {
-//	                    public void onClick(DialogInterface dialog, int whichButton) {
-//	                        Toast.makeText(getApplicationContext(), ((Integer)(scanRate/1000)).toString(),
-//	                                Toast.LENGTH_SHORT).show();
-//	                        dialog.cancel();
-//	                    }
-//	                });
-//	        
-//	        alert.show();
-//	        
-//	    	return true;
+	    case R.id.list:	 
+	        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+	        final ListView input = new ListView(this);
+	        
+	        ArrayList<View> views = new ArrayList<View>();
+	        TextView t = new TextView(this);
+	        t.setText("Room");
+	        views.add(t);
+	        
+	        alert.setView(input);
+	        
+	        alert.show();
+	        
+	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
@@ -327,4 +302,10 @@ public class iDocent extends Activity implements OnInitListener{
     {
     	return(posY);
     }
+
+	public void EndTimer() {
+		scanner.cancel();
+		timer.cancel();	
+		timer.purge();		
+	}
 }

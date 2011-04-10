@@ -1,6 +1,5 @@
 package com.iDocent;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import android.content.BroadcastReceiver;
@@ -35,7 +34,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	public ScanResultReceiver(iDocent iD) {
 		miD = iD;
         wsFactory = new WeightedScanFactory();
-		wsFactory.StartScanLoop();
+//		wsFactory.StartScanLoop();
 	}
 
 	@Override
@@ -43,8 +42,13 @@ public class ScanResultReceiver extends BroadcastReceiver{
 		// Code to execute when SCAN_RESULTS_AVAILABLE_ACTION event occurs
 		wifi = (WifiManager) c.getSystemService(Context.WIFI_SERVICE);
 		
-		if(wifi != null && wifi.isWifiEnabled())
-		{		    		
+		if(wifi != null && wifi.isWifiEnabled() && wifi.getConnectionInfo().getBSSID()!=null)
+		{
+			if(!loaded)
+			{
+				wsFactory.StartScanLoop();
+				loaded = true;
+			}
 			wifi.startScan();
 			iterations++;
 			scans = wifi.getScanResults(); // Returns a <list> of scanResults
@@ -56,7 +60,6 @@ public class ScanResultReceiver extends BroadcastReceiver{
 					t = new Thread(sc);
 					t.setName("Scan Counter");
 					t.start();
-					loaded = true;
 				}
 			}
 		}	

@@ -87,14 +87,17 @@ public class InetRLookup {
 	}
 
 	public void Disconnect() {
-		connected = false;
-		os.println("quit");			
-		try {
-			conn.close();
-		} 
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(connected)
+		{
+			connected = false;
+			os.println("quit");			
+			try {
+				conn.close();
+			} 
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

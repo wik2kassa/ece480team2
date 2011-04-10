@@ -2,14 +2,12 @@ package com.iDocent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
 //A database that will map an ssid to an xyz location
 public class AccessPointDB {
 	private HashMap<String, LinkedList<Float>> accessPoints;
-	private HashSet<String> notInDB;
 	
 	private ArrayList<String> macs;
 	
@@ -24,7 +22,6 @@ public class AccessPointDB {
 		macs = new ArrayList<String>();
 		accessPoints = new HashMap<String, LinkedList<Float>>();
 		irl = new InetRLookup();
-		notInDB = new HashSet<String>();
 		FillMap();
 	}
 	
@@ -52,19 +49,7 @@ public class AccessPointDB {
 	 *   
 	 */
 	private void FillMap()
-	{
-//		//"00:14:d1:e9:f5:64"
-//		AddAccessPoint("00:14:d1:e9:f5:63", 0f, 0f, 0f);//BLUE
-//
-//		//"00:14:d1:ea:06:c2"
-//		AddAccessPoint("00:14:d1:ea:06:c1", 46f, 0f, 0f);//GREEN
-//
-//		//"00:14:d1:ea:06:96"
-//		AddAccessPoint("00:14:d1:ea:06:95", 66f, 0f, 0f);//ORANGE
-//
-//		//"00:14:d1:e9:f5:6a"
-//		AddAccessPoint("00:14:d1:e9:f5:69", 30f, 0f, 0f);//YELLOW
-		
+	{		
 		//1-07
 		AddAccessPoint("00:24:6c:d0:77:00", 184.5f,16.4f,0f);
 		AddAccessPoint("00:24:6c:d0:77:10", 184.5f,16.4f,0f);
@@ -118,21 +103,6 @@ public class AccessPointDB {
 	 */
 	private void AddAccessPoint(String mac, Float X, Float Y, Float Z)
 	{
-//		LinkedList<Float> loc = new LinkedList<Float>();
-//		if(Y > 28.4)
-//			X = (132f+120f)/2.0f;
-//		else if(X < 120)
-//			Y = (28.4f+16.4f)/2.0f;
-//		else if(Y < 28.4 && X > 120)
-//		{
-//			X = (132f+120f)/2.0f;
-//			Y = (28.4f+16.4f)/2.0f;
-//		}
-//		
-//		loc.add(x, X);
-//		loc.add(y, Y);
-//		loc.add(z, Z);
-//		accessPoints.put(mac.toLowerCase(), loc);
 		macs.add(mac.toLowerCase());
 	}
 	
@@ -150,29 +120,6 @@ public class AccessPointDB {
 	public List<Float> GetLocation(String mac)
 	{
 		return accessPoints.get(mac.toLowerCase());
-//		List<Float> pos = accessPoints.get(mac.toLowerCase());
-//		if(pos != null)
-//		{
-//			return pos;
-//		}
-//		if(!notInDB.contains(mac))
-//		{
-//			irl.setMac("\'"+mac.toLowerCase()+"\'");
-//			irl.run();
-//			if(irl.WasFound())
-//			{
-//				Float[] coords = irl.getCoords();
-//				
-//				AddAccessPoint(mac.toLowerCase(), coords[x], coords[y], coords[z]);
-//				return accessPoints.get(mac.toLowerCase());
-//			}
-//			else
-//			{
-//				notInDB.add(mac);
-//			}
-//		}
-		
-		//return null;
 	}
 
 	public void StartScanLoop() {

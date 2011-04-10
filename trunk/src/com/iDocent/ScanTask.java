@@ -8,18 +8,17 @@ import android.os.Handler;
 //The task to be performed by the timer
 public class ScanTask extends TimerTask{
     WifiManager wifi;
+    iDocent iD;
     
     Handler handler = new Handler();
-    
-    ScanResultReceiver SRR;
     
     boolean started = false;
     
     int count  = 0;
 
-    public ScanTask(WifiManager w, ScanResultReceiver sRR) {
+    public ScanTask(WifiManager w, iDocent iD) {
         wifi = w;
-        SRR = sRR;
+        this.iD = iD;
     }
 
     public void run() 
@@ -28,24 +27,16 @@ public class ScanTask extends TimerTask{
         {
             public void run() 
             {
-        		if(wifi.isWifiEnabled())
+        		if(wifi.isWifiEnabled() && wifi.getConnectionInfo().getBSSID()!=null)
         		{
         			if(!started)
         			{
         				wifi.startScan();
         				started = true;
+        				iD.EndTimer();        				
         			}
-        			//wifi.startScan();
-        			count++;
-        			//if(count >=9)
-        				UpdateLocation();
         		}
             }
-
-			private void UpdateLocation() {
-				count = 0;
-				//SRR.UpdateLocation();				
-			}
         });
     }
 }
