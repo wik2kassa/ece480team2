@@ -7,5 +7,6 @@
     <string name="clear"></string>
     <string name="refresh_rate">Refresh Rate</string>
     <string name="set">Set</string>
+    <string name="mute">Mute</string>
     
 </resources>

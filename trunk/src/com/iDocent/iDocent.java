@@ -1,10 +1,14 @@
 package com.iDocent;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Stack;
 import java.util.Timer;
+import java.util.jar.Attributes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,15 +18,20 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.AttributeSet;
+import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -45,11 +54,12 @@ public class iDocent extends Activity implements OnInitListener{
 	//Timer objects
 	Timer timer;	
 	ScanTask scanner;
-	Integer scanRate = 1000;
+	Integer scanRate = 250;
 	
 	//locations
 	float posX=20;
 	float posY=-20;
+	float posZ=0;
 	
 	float xStart=0;
 	float yStart=0;
@@ -58,6 +68,12 @@ public class iDocent extends Activity implements OnInitListener{
 	boolean wifiWasEnabled;
 	
 	ScanResultReceiver SRR;
+	
+	boolean accessibilityOn;
+	
+	Dialog downloadingAlert;
+	
+	LinkedList<Room> rooms;
 	
     /** Called when the activity is first created. */
     @Override
@@ -78,6 +94,9 @@ public class iDocent extends Activity implements OnInitListener{
         wifiWasEnabled = wifi.isWifiEnabled();
         wifi.setWifiEnabled(true);
         
+        AccessibilityManager access = (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
+        accessibilityOn = access.isEnabled();
+        
 		//Set up to capture Wi-Fi scan results ready event
         SRR = new ScanResultReceiver(this);
 		IntentFilter i = new IntentFilter();
@@ -93,6 +112,8 @@ public class iDocent extends Activity implements OnInitListener{
 		Intent checkIntent = new Intent();
 		checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
 		startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);	
+		
+		rooms = new LinkedList<Room>();
     }
 
 	/**
@@ -226,24 +247,30 @@ public class iDocent extends Activity implements OnInitListener{
 	    // Handle item selection
 	    switch (item.getItemId()) {
 		case R.id.zoom_in:
-	    	tts.speak("Zoom In", TextToSpeech.QUEUE_FLUSH, null);
+			if(accessibilityOn)
+				tts.speak("Zoom In", TextToSpeech.QUEUE_FLUSH, null);
 	    	ZoomInButton();
 	    	return true;
 		case R.id.zoom_out:
-	    	tts.speak("Zoom Out", TextToSpeech.QUEUE_FLUSH, null);
+			if(accessibilityOn)
+				tts.speak("Zoom Out", TextToSpeech.QUEUE_FLUSH, null);
 			ZoomOutButton();
 			return true;
-	    case R.id.list:
-	    	tts.speak("Select Destination", TextToSpeech.QUEUE_FLUSH, null);
+	    case R.id.select:
+	    	if(accessibilityOn)
+				tts.speak("Select Destination", TextToSpeech.QUEUE_FLUSH, null);
 	        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-	        Spinner spinner = new SpokenSpinner(this, tts);
+	        Spinner spinner = new SpokenSpinner(this, tts, accessibilityOn);
 	        
 	        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
 	        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	        spinner.setAdapter(adapter);
 
 	        adapter.add("Select Room Number");
-	        adapter.add("Room 1225");
+	        for(Room r : rooms)
+	        {
+	        	adapter.add(r.getNumber()+" - "+r.getType().charAt(0)+r.getType().substring(1).toLowerCase());
+	        }
 	        
 	        alert.setView(spinner);
 	        final ArrayAdapter<CharSequence> a = adapter;
@@ -257,6 +284,11 @@ public class iDocent extends Activity implements OnInitListener{
 	              Toast.makeText(getApplicationContext(), selected,
 	                      Toast.LENGTH_SHORT).show();
 	              tts.speak("Navigating to "+selected, TextToSpeech.QUEUE_FLUSH, null);
+	              String tmp [] = selected.split(" - ");
+	              String roomNum = tmp[0];
+	              NavigationDownloader nd = new NavigationDownloader(posX, posY, posZ, roomNum);
+	              Stack s = nd.GetNodes();
+	              s = nd.GetNodes();
         	  }
           }
       });
@@ -272,6 +304,40 @@ public class iDocent extends Activity implements OnInitListener{
 	        alert.show();
 	        
 	    	return true;
+	    	
+	    case R.id.sound:
+	    	if(accessibilityOn)
+				tts.speak("Sound Options", TextToSpeech.QUEUE_FLUSH, null);
+	        final AlertDialog.Builder alert2 = new AlertDialog.Builder(this);
+
+	        //bar.setPadding(15, 10, 15, 10);
+	        
+	        SeekBar b = new SeekBar(this);
+	        b.setPadding(15, 10, 15, 10);
+	        b.layout(0, 0, 30, 10);
+	        b.setMinimumWidth(30);
+	        b.forceLayout();
+	        alert2.setView(b);
+	        
+          alert2.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int whichButton) {
+	              Toast.makeText(getApplicationContext(), "yay",
+	                      Toast.LENGTH_SHORT).show();
+          }
+      });
+
+      alert2.setNegativeButton("Cancel",
+              new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int whichButton) {
+                	  tts.speak("Canceling new room selection", TextToSpeech.QUEUE_FLUSH, null);
+                      dialog.cancel();
+                  }
+              });
+	        
+	        alert2.show();
+	        
+	    	return true;
+	    	
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
@@ -342,5 +408,22 @@ public class iDocent extends Activity implements OnInitListener{
 		scanner.cancel();
 		timer.cancel();	
 		timer.purge();		
+	}
+
+	public void DownloadRooms() {
+			Thread t = new Thread(new RoomDownloader(this));
+			t.start();
+			downloadingAlert = new Dialog(this);
+			TextView v = new TextView(this);
+			v.setText("Downloading Room Locations");
+
+			downloadingAlert.setContentView(v);
+			
+			downloadingAlert.show();
+	}
+
+	public void RoomsReady(LinkedList<Room> rooms) {
+		this.rooms = rooms;
+		downloadingAlert.dismiss();	             
 	}
 }
