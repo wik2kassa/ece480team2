@@ -33,7 +33,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
 
 	public ScanResultReceiver(iDocent iD) {
 		miD = iD;
-        wsFactory = new WeightedScanFactory();
+        wsFactory = new WeightedScanFactory(miD);
 //		wsFactory.StartScanLoop();
 	}
 
@@ -46,20 +46,26 @@ public class ScanResultReceiver extends BroadcastReceiver{
 		{
 			if(!loaded)
 			{
-				wsFactory.StartScanLoop();
-				loaded = true;
+				loaded = wsFactory.StartScanLoop();
+				if(loaded)
+					miD.DownloadRooms();
 			}
+			
 			wifi.startScan();
-			iterations++;
-			scans = wifi.getScanResults(); // Returns a <list> of scanResults
-			if(scans != null)
+			
+			if(loaded)
 			{
-				if((t==null || !t.isAlive()))
+				iterations++;
+				scans = wifi.getScanResults(); // Returns a <list> of scanResults
+				if(scans != null)
 				{
-					ScanCounter sc = new ScanCounter(this, scans, wsFactory);
-					t = new Thread(sc);
-					t.setName("Scan Counter");
-					t.start();
+					if((t==null || !t.isAlive()))
+					{
+						ScanCounter sc = new ScanCounter(this, scans, wsFactory);
+						t = new Thread(sc);
+						t.setName("Scan Counter");
+						t.start();
+					}
 				}
 			}
 		}	

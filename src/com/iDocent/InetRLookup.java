@@ -6,7 +6,8 @@ import java.io.*;
 
 public class InetRLookup {
 	private String mac;
-	private final String DNS = "480team2.dyndns-server.com";
+	private final String DNS = "72.44.121.49";
+	//private final String DNS = "480team2.dyndns-server.com";
 	private final int Port = 1024;
 	
 	Socket conn;
@@ -16,7 +17,6 @@ public class InetRLookup {
 	Float coords [];
 	
 	boolean found;
-	boolean connected;
 	
 	public boolean WasFound()
 	{
@@ -26,16 +26,15 @@ public class InetRLookup {
 	public InetRLookup(){
 		coords = new Float[3];
 		found = false;
-		connected = false;
 	}
 	
 	public void run() {
 		try {		
-			if(connected)
+			if(conn != null && conn.isConnected())
 			{
 				os.println("get-router-coord " + mac);
 				String tmp;
-				while((tmp = is.readLine()) != null && tmp != "INVALID COMMAND"){
+				while((tmp = is.readLine()) != null && !tmp.equals("INVALID COMMAND")){
 					String args [] = tmp.split(" ");
 					if(args[0].equals("ERROR:") || (Array.getLength(args) < 4))
 						break;
@@ -73,8 +72,6 @@ public class InetRLookup {
 			conn = new Socket(DNS,Port);
 			is = new DataInputStream(conn.getInputStream());
 			os = new PrintStream(conn.getOutputStream());
-			if(conn != null && is != null && os != null)
-				connected = true;
 		} 
 		catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -87,9 +84,8 @@ public class InetRLookup {
 	}
 
 	public void Disconnect() {
-		if(connected)
+		if(conn != null && conn.isConnected())
 		{
-			connected = false;
 			os.println("quit");			
 			try {
 				conn.close();
@@ -102,6 +98,6 @@ public class InetRLookup {
 	}
 
 	public boolean isConnected() {
-		return connected;
+		return (conn != null && conn.isConnected());
 	}
 }

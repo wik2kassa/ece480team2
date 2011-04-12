@@ -7,8 +7,8 @@ public class WeightedScanFactory {
 	//A database that will map an ssid to an xyz location
 	AccessPointDB locations;
 	
-	public WeightedScanFactory(){
-		locations = new AccessPointDB();
+	public WeightedScanFactory(iDocent miD){
+		locations = new AccessPointDB(miD);
 	}
 	
 	public WeightedScan Create(String mac)
@@ -30,8 +30,8 @@ public class WeightedScanFactory {
 		return new WeightedScan(mac, loc);
 	}
 
-	public void StartScanLoop() {
-		locations.StartScanLoop();		
+	public boolean StartScanLoop() {
+		return locations.StartScanLoop();		
 	}
 
 	public void EndScanLoop() {
