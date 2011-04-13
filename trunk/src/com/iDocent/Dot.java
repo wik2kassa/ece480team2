@@ -12,14 +12,30 @@ public class Dot extends GraphicsObject{
 	private FloatBuffer vertexBuffer;
 	private ShortBuffer indexBuffer;
 	
+	private float[] color = new float[4];
+	
 	private short[] indices = {0, 1, 2, 3};
+	
+	public void setColor(float r, float g, float b, float a)
+	{
+		color[0] = r;
+		color[1] = g;
+		color[2] = b;
+		color[3] = a;
+	}
 	
 	public Dot(float x1, float y1){
 		UpdateLocation(x1, y1);
 		indexBuffer.position(0);
+		
+		color[0] = 0;
+		color[1] = 0;
+		color[2] = 0;
+		color[3] = 0;
 	}
 	@Override
 	public void Draw(GL10 gl) {
+		gl.glColor4f(color[0], color[1], color[2], color[3]);
 		// Counter-clockwise winding.
 		gl.glFrontFace(GL10.GL_CCW);
 		// Enable face culling.
