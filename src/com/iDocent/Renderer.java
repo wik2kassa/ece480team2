@@ -16,6 +16,7 @@ class Renderer implements GLSurfaceView.Renderer {
 	
 	private float posX = 75;
 	private float posY = 100;
+	private float posZ = 0;
 	private float xOffset = 0;
 	private float yOffset = 0;
 	private float zoom = -200;
@@ -73,10 +74,12 @@ class Renderer implements GLSurfaceView.Renderer {
 		gl.glLoadIdentity(); // OpenGL docs        
     }
 
-	public void UpdateLocation(float x, float y) {
+	public void UpdateLocation(float x, float y, float z) {
 		posX = x;
 		posY = y;
-		map.UpdateLoction(posX, posY);
+		posZ = z;
+		map.UpdateLoction(posX, posY, posZ);
+		dMap.UpdateLocation(posX, posY, posZ);
 	}
 
 	public void zoomOut() {

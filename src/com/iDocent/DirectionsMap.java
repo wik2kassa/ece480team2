@@ -12,6 +12,8 @@ public class DirectionsMap extends GraphicsObject{
 	ArrayList<Integer> nodes;
 	Vector<GraphicsObject> Children = new Vector<GraphicsObject>();
 	
+	float posX, posY, posZ;
+	
 	public void setRoute(ArrayList<Integer> nodes,
 			HashMap<Integer, Room> roomsByNumber) {
 		
@@ -50,7 +52,7 @@ public class DirectionsMap extends GraphicsObject{
 			Line l = new Line(x1, -y1, x2, -y2);
 			l.setColor(255, 0, 0, 0);
 			Children.add(l);
-			Dot d = new Dot(x1, -y1);
+			Dot d = new Dot(x1, -y1, 0);
 			d.setColor(0, 0, 255, 0);
 			Children.add(d);
 		}
@@ -60,6 +62,12 @@ public class DirectionsMap extends GraphicsObject{
 	public void Draw(GL10 gl) {
 		for(GraphicsObject g : Children)
 			g.Draw(gl);
+	}
+
+	public void UpdateLocation(float posX, float posY, float posZ) {
+		this.posX = posX;
+		this.posY = posY;
+		this.posZ = posZ;
 	}
 
 }

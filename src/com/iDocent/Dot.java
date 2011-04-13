@@ -7,7 +7,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class Dot extends GraphicsObject{
 	
-	private float x1,y1;
+	private float x1,y1,z1;
 
 	private FloatBuffer vertexBuffer;
 	private ShortBuffer indexBuffer;
@@ -24,8 +24,8 @@ public class Dot extends GraphicsObject{
 		color[3] = a;
 	}
 	
-	public Dot(float x1, float y1){
-		UpdateLocation(x1, y1);
+	public Dot(float x1, float y1, float z1){
+		UpdateLocation(x1, y1, z1);
 		indexBuffer.position(0);
 		
 		color[0] = 0;
@@ -50,7 +50,7 @@ public class Dot extends GraphicsObject{
 		// coordinates to use when rendering.
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
 		
-		gl.glDrawElements(GL10.GL_TRIANGLE_FAN, indices.length,
+		gl.glDrawElements(GL10.GL_LINES, indices.length,
 				GL10.GL_UNSIGNED_SHORT, indexBuffer);
 		
 		// Disable the vertices buffer.
@@ -60,9 +60,10 @@ public class Dot extends GraphicsObject{
 		
 	}
 	
-	public void UpdateLocation(float x, float y){
+	public void UpdateLocation(float x, float y, float z){
 		x1 = x;
 		y1 = y;
+		z1 = z;
 		
 		float vertices[] = {x1-2, y1+2,0,
 				x1+2, y1-2,0,

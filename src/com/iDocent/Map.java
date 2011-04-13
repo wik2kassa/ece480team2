@@ -9,13 +9,14 @@ public class Map extends GraphicsObject{
 	
 	private float posX;
 	private float posY;
+	private float posZ;
 	
 	private Dot mDot;
 	
 	public Map(){
 		Children = new Vector<GraphicsObject>();
 		
-		mDot = new Dot(20, -20);
+		mDot = new Dot(20, -20, 0);
 		Children.add(mDot);
 		
 		Children.add(new Line(0,-16.4f, 0,-28.4f));
@@ -40,9 +41,10 @@ public class Map extends GraphicsObject{
 		}
 	}
 
-	public void UpdateLoction(float x, float y) {
+	public void UpdateLoction(float x, float y, float z) {
 		posX = x;
 		posY = -y;
+		posZ = z;
 		if(posY > 28.4)
 			posX = (132f+120f)/2.0f;
 		else if(posX < 120)
@@ -52,7 +54,7 @@ public class Map extends GraphicsObject{
 			posX = (132f+120f)/2.0f;
 			posY = (28.4f+16.4f)/2.0f;
 		}
-		mDot.UpdateLocation(posX, -posY);
+		mDot.UpdateLocation(posX, -posY, posZ);
 	}
 
 }

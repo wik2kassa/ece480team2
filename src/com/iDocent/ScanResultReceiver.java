@@ -97,9 +97,9 @@ public class ScanResultReceiver extends BroadcastReceiver{
     	float filteredX = oldX[0]*alpha+loc[x]*(1-alpha);
     	float filteredY = oldY[0]*alpha+loc[y]*(1-alpha);
     	if(loc[x] != 0 && loc[y] != 0 && oldY[0] != 0 && oldX[0] != 0)
-    		miD.UpdateLocation(filteredX, -filteredY);
+    		miD.UpdateLocation(filteredX, -filteredY, 0);
     	else if(loc[x] != 0 && loc[y] != 0)
-    		miD.UpdateLocation(loc[x], -loc[y]);
+    		miD.UpdateLocation(loc[x], -loc[y], 0);
     	
     	oldX[1] = oldX[0];
     	oldY[1] = oldY[0];
