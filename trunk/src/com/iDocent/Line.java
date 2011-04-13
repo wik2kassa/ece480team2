@@ -10,14 +10,27 @@ public class Line extends GraphicsObject{
 
 	private FloatBuffer vertexBuffer;
 	private ShortBuffer indexBuffer;
-	
+	private float[] color = new float[4];	
 
 	// The order we like to connect them.
 	private short[] indices = {0, 1,};
 	
+	public void setColor(float r, float g, float b, float a)
+	{
+		color[0] = r;
+		color[1] = g;
+		color[2] = b;
+		color[3] = a;
+	}
+	
 	public Line(float  x1, float y1,float  x2, float y2){
 		float vertices[] = {x1,y1,0,
 							x2,y2,0};
+		
+		color[0] = 0;
+		color[1] = 0;
+		color[2] = 0;
+		color[3] = 0;
 		
 		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
 		vbb.order(ByteOrder.nativeOrder());
@@ -36,7 +49,7 @@ public class Line extends GraphicsObject{
 
 	@Override
 	public void Draw(GL10 gl) {
-		gl.glColor4x(0, 0, 0, 0);
+		gl.glColor4f(color[0], color[1], color[2], color[3]);
 		// Counter-clockwise winding.
 		gl.glFrontFace(GL10.GL_CCW);
 		// Enable face culling.

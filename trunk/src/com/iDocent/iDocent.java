@@ -1,6 +1,7 @@
 package com.iDocent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Stack;
 import java.util.Timer;
@@ -74,6 +75,7 @@ public class iDocent extends Activity implements OnInitListener{
 	Dialog downloadingAlert;
 	
 	LinkedList<Room> rooms;
+	HashMap<Integer, Room> RoomsByNumber;
 	
     /** Called when the activity is first created. */
     @Override
@@ -114,6 +116,7 @@ public class iDocent extends Activity implements OnInitListener{
 		startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);	
 		
 		rooms = new LinkedList<Room>();
+		RoomsByNumber = new HashMap<Integer, Room>();
     }
 
 	/**
@@ -286,9 +289,8 @@ public class iDocent extends Activity implements OnInitListener{
 	              tts.speak("Navigating to "+selected, TextToSpeech.QUEUE_FLUSH, null);
 	              String tmp [] = selected.split(" - ");
 	              String roomNum = tmp[0];
-	              NavigationDownloader nd = new NavigationDownloader(posX, posY, posZ, roomNum);
-	              Stack s = nd.GetNodes();
-	              s = nd.GetNodes();
+	              NavigationDownloader route = new NavigationDownloader(posX, -posY, posZ, roomNum);
+	              mRenderer.setRoute(route.GetNodes(), RoomsByNumber);             
         	  }
           }
       });
@@ -424,6 +426,10 @@ public class iDocent extends Activity implements OnInitListener{
 
 	public void RoomsReady(LinkedList<Room> rooms) {
 		this.rooms = rooms;
+		for(Room r : rooms)
+		{
+			RoomsByNumber.put(r.getNumber(), r);
+		}
 		downloadingAlert.dismiss();	             
 	}
 }

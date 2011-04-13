@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class NavigationDownloader {
@@ -15,15 +16,16 @@ public class NavigationDownloader {
 	DataInputStream is;
 	PrintStream os;
 	
-	Stack<Integer> nodes;
+	private ArrayList<Integer> nodes;
 	
-	Stack<Integer> GetNodes()
+	ArrayList<Integer> GetNodes()
 	{
 		return nodes;
 	}
 	
 	public NavigationDownloader(float posX, float posY, float posZ, String destination)
 	{
+		nodes = new ArrayList<Integer>(); 
 		try {	
 			try {
 				conn = new Socket(DNS,Port);
@@ -42,9 +44,9 @@ public class NavigationDownloader {
 			{
 				os.println("directions "+posX+" "+posY+" "+posZ+" "+destination);
 				String tmp;
-				Room r;
+
 				while((tmp = is.readLine()) != null && !tmp.equals("DONE")){
-					nodes.push(Integer.parseInt(tmp));
+					nodes.add(Integer.parseInt(tmp));
 				}
 				conn.close();
 			}

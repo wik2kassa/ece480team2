@@ -1,5 +1,9 @@
 package com.iDocent;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -8,15 +12,19 @@ import android.opengl.GLU;
 
 class Renderer implements GLSurfaceView.Renderer {
 	private Map map;
+	private DirectionsMap dMap;
 	
 	private float posX = 75;
 	private float posY = 100;
 	private float xOffset = 0;
 	private float yOffset = 0;
-	private float zoom = -300;
+	private float zoom = -200;
+	
+	boolean routeSet = false;
 	
 	public Renderer(){
 		map = new Map();
+		dMap = new DirectionsMap();
 	}
 	
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -57,6 +65,9 @@ class Renderer implements GLSurfaceView.Renderer {
 		gl.glLoadIdentity();
 		gl.glTranslatef(-(posX+xOffset), -(posY+yOffset), zoom); 
         map.Draw(gl);
+        
+        if(routeSet)
+        	dMap.Draw(gl);
 		
 		// Replace the current matrix with the identity matrix
 		gl.glLoadIdentity(); // OpenGL docs        
@@ -89,4 +100,12 @@ class Renderer implements GLSurfaceView.Renderer {
 	{
 		xOffset = yOffset = 0;
 	}
+
+	public void setRoute(ArrayList<Integer> nodes,
+			HashMap<Integer, Room> roomsByNumber) {
+		routeSet = false;
+		dMap.setRoute(nodes, roomsByNumber);		
+		routeSet = true;
+	}
+
 }
