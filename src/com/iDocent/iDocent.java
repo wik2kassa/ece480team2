@@ -289,7 +289,7 @@ public class iDocent extends Activity implements OnInitListener{
 	              tts.speak("Navigating to "+selected, TextToSpeech.QUEUE_FLUSH, null);
 	              String tmp [] = selected.split(" - ");
 	              String roomNum = tmp[0];
-	              NavigationDownloader route = new NavigationDownloader(posX, -posY, posZ, roomNum);
+	              NavigationDownloader route = new NavigationDownloader(posX, posY, posZ, roomNum);
 	              mRenderer.setRoute(route.GetNodes(), RoomsByNumber);             
         	  }
           }
@@ -372,7 +372,18 @@ public class iDocent extends Activity implements OnInitListener{
     	posX = x;
     	posY = y;
     	posZ = z;
-    	mRenderer.UpdateLocation(posX, posY, posZ);
+    	
+		if(posY > 28.4)
+			posX = (132f+120f)/2.0f;
+		else if(posX < 120)
+			posY = (28.4f+16.4f)/2.0f;
+		else if(posY < 28.4 && posX > 120)
+		{
+			posX = (132f+120f)/2.0f;
+			posY = (28.4f+16.4f)/2.0f;
+		}
+    	
+    	mRenderer.UpdateLocation(posX, -posY, posZ);
     }
     
 	/**

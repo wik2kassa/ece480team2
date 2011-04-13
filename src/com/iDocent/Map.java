@@ -43,18 +43,9 @@ public class Map extends GraphicsObject{
 
 	public void UpdateLoction(float x, float y, float z) {
 		posX = x;
-		posY = -y;
+		posY = y;
 		posZ = z;
-		if(posY > 28.4)
-			posX = (132f+120f)/2.0f;
-		else if(posX < 120)
-			posY = (28.4f+16.4f)/2.0f;
-		else if(posY < 28.4 && posX > 120)
-		{
-			posX = (132f+120f)/2.0f;
-			posY = (28.4f+16.4f)/2.0f;
-		}
-		mDot.UpdateLocation(posX, -posY, posZ);
+		mDot.UpdateLocation(posX, posY, posZ);
 	}
 
 }

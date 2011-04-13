@@ -7,6 +7,16 @@ import javax.microedition.khronos.opengles.GL10;
 public class Line extends GraphicsObject{
 	
 	private float x1,y1,x2,y2;
+	
+	public float[] getVertices()
+	{
+		float[] v = new float[4];
+		v[0]=x1;
+		v[1]=y1;
+		v[2]=x2;
+		v[3]=y2;
+		return v;
+	}
 
 	private FloatBuffer vertexBuffer;
 	private ShortBuffer indexBuffer;
@@ -24,6 +34,10 @@ public class Line extends GraphicsObject{
 	}
 	
 	public Line(float  x1, float y1,float  x2, float y2){
+		this.x1 = x1;
+		this.y1 = y1;
+		this.x2 = x2;
+		this.y2 = y2;
 		float vertices[] = {x1,y1,0,
 							x2,y2,0};
 		
