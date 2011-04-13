@@ -30,6 +30,8 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	
 	private Thread t;
 	boolean loaded = false;
+	
+	private float tempx = 20, tempy = 20;
 
 	public ScanResultReceiver(iDocent iD) {
 		miD = iD;
@@ -41,6 +43,12 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	public void onReceive(Context c, Intent i){
 		// Code to execute when SCAN_RESULTS_AVAILABLE_ACTION event occurs
 		wifi = (WifiManager) c.getSystemService(Context.WIFI_SERVICE);
+		
+    	miD.UpdateLocation(tempx, tempy, 0);
+    	if(tempx < 125)
+    		tempx+=2;
+    	else
+    		tempy+=1;
 		
 		if(wifi != null && wifi.isWifiEnabled() && wifi.getConnectionInfo().getBSSID()!=null)
 		{
@@ -93,6 +101,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
 
     	}
     	//dX = dX+1;
+    	
     	float alpha = 0.1f;
     	float filteredX = oldX[0]*alpha+loc[x]*(1-alpha);
     	float filteredY = oldY[0]*alpha+loc[y]*(1-alpha);

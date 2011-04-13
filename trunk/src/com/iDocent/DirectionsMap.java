@@ -49,6 +49,7 @@ public class DirectionsMap extends GraphicsObject{
 				x2 = (132f+120f)/2.0f;
 				y2 = (28.4f+16.4f)/2.0f;
 			}
+			
 			Line l = new Line(x1, -y1, x2, -y2);
 			l.setColor(255, 0, 0, 0);
 			Children.add(l);
@@ -61,7 +62,64 @@ public class DirectionsMap extends GraphicsObject{
 	@Override
 	public void Draw(GL10 gl) {
 		for(GraphicsObject g : Children)
-			g.Draw(gl);
+		{
+			boolean draw = true;
+			if(g instanceof Line)
+			{
+				float[] v = ((Line) g).getVertices();
+				float x2 = v[0];
+				float y2 = -v[1];
+				float x1 = v[2];
+				float y1 = -v[3];
+				
+				if(y1 > 28.4)
+					x1 = (132f+120f)/2.0f;
+				else if(x1 < 120)
+					y1 = (28.4f+16.4f)/2.0f;
+				else if(y1 < 28.4 && x1 > 120)
+				{
+					x1 = (132f+120f)/2.0f;
+					y1 = (28.4f+16.4f)/2.0f;
+				}
+				
+				if(y2 > 28.4)
+					x2 = (132f+120f)/2.0f;
+				else if(x2 < 120)
+					y2 = (28.4f+16.4f)/2.0f;
+				else if(y2 < 28.4 && x2 > 120)
+				{
+					x2 = (132f+120f)/2.0f;
+					y2 = (28.4f+16.4f)/2.0f;
+				}
+				
+				boolean up = (Math.abs(y2)-Math.abs(y1)) < 0;
+				boolean right = (x2-x1) > 0;
+				
+				if((up && Math.abs(posY) < Math.abs(y1)) || (!up && Math.abs(posY) > Math.abs(y1)) && x2 > 120)
+				{
+					draw = false;
+					if((up && Math.abs(y2) - Math.abs(posY) < 0) || (!up && Math.abs(y2)-Math.abs(posY) > 0 && posX > 120))
+					{
+						Line temp = new Line(x2, -y2, posX, posY);
+						temp.setColor(255, 0, 0, 0);
+						temp.Draw(gl);
+					}
+				}
+				else if(((right && posX > x1) ||  (!right && posX < x1)) && y2 < 28)
+				{
+					draw = false;
+					if((right && x2 - posX > 0) || (!right && x2 - posX < 0 && Math.abs(posY) < 28))
+					{
+						Line temp = new Line(x2, -y2, posX, posY);
+						temp.setColor(255, 0, 0, 0);
+						temp.Draw(gl);
+					}
+				}						
+			}	
+			
+			if(draw)
+				g.Draw(gl);
+		}
 	}
 
 	public void UpdateLocation(float posX, float posY, float posZ) {
