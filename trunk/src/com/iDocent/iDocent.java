@@ -89,7 +89,7 @@ public class iDocent extends Activity implements OnInitListener{
         mGLView.setKeepScreenOn(true);
         setContentView(mGLView);
         
-        UpdateLocation(posX, posY);
+        UpdateLocation(posX, posY, posZ);
         
         //Obtain access to and turn on WiFi
         wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -367,11 +367,12 @@ public class iDocent extends Activity implements OnInitListener{
 			y - the location in the y direction
 	 *   
 	 */
-    public void UpdateLocation(float x, float y)
+    public void UpdateLocation(float x, float y, float z)
     {
     	posX = x;
     	posY = y;
-    	mRenderer.UpdateLocation(posX, posY);
+    	posZ = z;
+    	mRenderer.UpdateLocation(posX, posY, posZ);
     }
     
 	/**
