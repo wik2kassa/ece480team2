@@ -126,7 +126,6 @@ public class AccessPointDB {
 	}
 
 	public boolean StartScanLoop() {		
-		irl.Connect();
 		//while(!irl.isConnected());
 		if(!irl.isConnected())
 			return false;
@@ -151,5 +150,10 @@ public class AccessPointDB {
 
 	public void EndScanLoop() {
 		irl.Disconnect();
+	}
+
+	public boolean Connect() {
+		irl.Connect();
+		return irl.isConnected();
 	}
 }

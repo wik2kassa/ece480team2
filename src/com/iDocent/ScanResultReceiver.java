@@ -2,11 +2,13 @@ package com.iDocent;
 
 import java.util.List;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.widget.TextView;
 
 public class ScanResultReceiver extends BroadcastReceiver{
 	WifiManager wifi = null;
@@ -30,8 +32,12 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	
 	private Thread t;
 	boolean loaded = false;
+	boolean loading = false;
 	
-	private float tempx = 20, tempy = 20;
+	private float tempx = 125, tempy = 120;
+	private Dialog downloadingDLG;
+	private boolean roomsDownloaded = false;
+	private boolean connected = false;
 
 	public ScanResultReceiver(iDocent iD) {
 		miD = iD;
@@ -44,41 +50,59 @@ public class ScanResultReceiver extends BroadcastReceiver{
 		// Code to execute when SCAN_RESULTS_AVAILABLE_ACTION event occurs
 		wifi = (WifiManager) c.getSystemService(Context.WIFI_SERVICE);
 		
-    	miD.UpdateLocation(tempx, tempy, 0);
-    	if(tempx < 125)
-    		tempx+=2;
-    	else
-    		tempy+=1;
+		if(connected && loaded)
+		{
+	    	miD.UpdateLocation(tempx, tempy, 0);
+	    	if(tempy > 25)
+	    		tempy-=1;
+	    	else
+	    		tempx-=1;
+		}
 		
 		if(wifi != null && wifi.isWifiEnabled() && wifi.getConnectionInfo().getBSSID()!=null)
 		{
-			if(!loaded)
+			if(!connected)
 			{
-				loaded = wsFactory.StartScanLoop();
-				if(loaded)
-					miD.DownloadRooms();
+				connected  = wsFactory.Connect();
 			}
 			
 			wifi.startScan();
 			
-			if(loaded)
+			if(connected)
 			{
-				iterations++;
-				scans = wifi.getScanResults(); // Returns a <list> of scanResults
-				if(scans != null)
+				if(!loaded && !loading)
 				{
-					if((t==null || !t.isAlive()))
-					{
-						ScanCounter sc = new ScanCounter(this, scans, wsFactory);
-						t = new Thread(sc);
-						t.setName("Scan Counter");
-						t.start();
-					}
+					loading = true;
+					miD.showLoadingAPDLG();
+					
+					Thread t = new Thread(new APDownloader(this, wsFactory));
+					t.start();
 				}
+				
+				if(loaded)
+				{
+					if(!roomsDownloaded)
+					{
+						//miD.DownloadRooms();
+						roomsDownloaded = miD.DownloadedRooms();//true;
+					}
+					iterations++;
+					scans = wifi.getScanResults(); // Returns a <list> of scanResults
+					if(scans != null)
+					{
+						if((t==null || !t.isAlive()))
+						{
+							ScanCounter sc = new ScanCounter(this, scans, wsFactory);
+							t = new Thread(sc);
+							t.setName("Scan Counter");
+							t.start();
+						}
+					}
+				}	
 			}
-		}	
+		}
 	}
-	
+
 	public void UpdateSums(float sX, float sY, int count)
 	{
 		sumX += sX;
@@ -130,5 +154,11 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	public void End()
 	{
 		wsFactory.EndScanLoop();
+	}
+
+	public void APsReady() {
+		loading = false;
+		loaded = true;
+		miD.APsReady();		
 	}
 }

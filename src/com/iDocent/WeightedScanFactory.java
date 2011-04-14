@@ -37,4 +37,8 @@ public class WeightedScanFactory {
 	public void EndScanLoop() {
 		locations.EndScanLoop();
 	}
+
+	public boolean Connect() {
+		return locations.Connect();
+	}
 }
