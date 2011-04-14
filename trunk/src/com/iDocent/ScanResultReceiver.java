@@ -34,8 +34,6 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	boolean loaded = false;
 	boolean loading = false;
 	
-	private float tempx = 125, tempy = 120;
-	private Dialog downloadingDLG;
 	private boolean roomsDownloaded = false;
 	private boolean connected = false;
 
@@ -49,15 +47,6 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	public void onReceive(Context c, Intent i){
 		// Code to execute when SCAN_RESULTS_AVAILABLE_ACTION event occurs
 		wifi = (WifiManager) c.getSystemService(Context.WIFI_SERVICE);
-		
-		if(connected && loaded)
-		{
-	    	miD.UpdateLocation(tempx, tempy, 0);
-	    	if(tempy > 25)
-	    		tempy-=1;
-	    	else
-	    		tempx-=1;
-		}
 		
 		if(wifi != null && wifi.isWifiEnabled() && wifi.getConnectionInfo().getBSSID()!=null)
 		{
