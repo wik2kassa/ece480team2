@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.net.wifi.WifiManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
@@ -76,12 +78,16 @@ public class iDocent extends Activity implements OnInitListener{
 	
 	LinkedList<Room> rooms;
 	HashMap<Integer, Room> RoomsByNumber;
+	private Dialog downloadingDLG;
+	private boolean downloadedRooms = false;
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.main);
+        
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         
         mGLView = new GLSurfaceView(this);
         mRenderer = new Renderer();
@@ -261,26 +267,27 @@ public class iDocent extends Activity implements OnInitListener{
 			return true;
 	    case R.id.select:
 	    	if(accessibilityOn)
+	    	{
+	    		tts.stop();
 				tts.speak("Select Destination", TextToSpeech.QUEUE_FLUSH, null);
+	    	}
 	        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-	        Spinner spinner = new SpokenSpinner(this, tts, accessibilityOn);
+	        Spinner spinner = new RoomSelectSpinner(this, tts, accessibilityOn, rooms);
 	        
-	        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item);
-	        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	        spinner.setAdapter(adapter);
-
-	        adapter.add("Select Room Number");
-	        for(Room r : rooms)
-	        {
-	        	adapter.add(r.getNumber()+" - "+r.getType().charAt(0)+r.getType().substring(1).toLowerCase());
-	        }
+//	        adapter.add("Select Room Number");
+//	        for(Room r : rooms)
+//	        {
+//	        	adapter.add(r.getNumber()+" - "+r.getType().charAt(0)+r.getType().substring(1).toLowerCase());
+//	        }
 	        
 	        alert.setView(spinner);
-	        final ArrayAdapter<CharSequence> a = adapter;
+	        
 	        final Spinner s = spinner;
 	        
           alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int whichButton) {
+  	        final ArrayAdapter<CharSequence> a = ((RoomSelectSpinner)s).getAdapter();
+
         	  String selected = (a.getItem(s.getLastVisiblePosition()).toString());
         	  if(s.getLastVisiblePosition() != 0)
         	  {
@@ -290,7 +297,7 @@ public class iDocent extends Activity implements OnInitListener{
 	              String tmp [] = selected.split(" - ");
 	              String roomNum = tmp[0];
 	              NavigationDownloader route = new NavigationDownloader(posX, posY, posZ, roomNum);
-	              mRenderer.setRoute(route.GetNodes(), RoomsByNumber);             
+	              mRenderer.setRoute(route.GetNodes(), RoomsByNumber);     
         	  }
           }
       });
@@ -311,14 +318,12 @@ public class iDocent extends Activity implements OnInitListener{
 	    	if(accessibilityOn)
 				tts.speak("Sound Options", TextToSpeech.QUEUE_FLUSH, null);
 	        final AlertDialog.Builder alert2 = new AlertDialog.Builder(this);
-
-	        //bar.setPadding(15, 10, 15, 10);
 	        
 	        SeekBar b = new SeekBar(this);
-	        b.setPadding(15, 10, 15, 10);
-	        b.layout(0, 0, 30, 10);
-	        b.setMinimumWidth(30);
+	        b.layout(0, 0, 150, 30);
 	        b.forceLayout();
+	        b.setPadding(15, 10, 15, 10);
+	        
 	        alert2.setView(b);
 	        
           alert2.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -427,21 +432,46 @@ public class iDocent extends Activity implements OnInitListener{
 	public void DownloadRooms() {
 			Thread t = new Thread(new RoomDownloader(this));
 			t.start();
-			downloadingAlert = new Dialog(this);
-			TextView v = new TextView(this);
-			v.setText("Downloading Room Locations");
-
-			downloadingAlert.setContentView(v);
-			
-			downloadingAlert.show();
+//			downloadingAlert = new Dialog(this);
+//			TextView v = new TextView(this);
+//			v.setText(" Downloading Room Locations ");
+//			v.setTextSize(16);
+//			v.setHeight(70);
+//
+//			downloadingAlert.setContentView(v);
+//			
+//			downloadingAlert.show();
 	}
 
 	public void RoomsReady(LinkedList<Room> rooms) {
+		downloadedRooms  = true;
 		this.rooms = rooms;
 		for(Room r : rooms)
 		{
 			RoomsByNumber.put(r.getNumber(), r);
 		}
-		downloadingAlert.dismiss();	             
+		downloadingDLG.dismiss();	             
+	}
+
+	public void showLoadingAPDLG() {
+		TextView tv = new TextView(this);
+		downloadingDLG = new Dialog(this);
+		tv.setText(" Downloading Information ");
+		tv.setTextSize(16);
+		tv.setHeight(70);
+		downloadingDLG.setContentView(tv);
+		downloadingDLG.setCancelable(false);
+		downloadingDLG.show();
+	}
+
+	public void APsReady() {
+//		downloadingDLG.dismiss();
+//		downloadingDLG = null;
+		DownloadRooms();
+	}
+
+	public boolean DownloadedRooms() {
+		// TODO Auto-generated method stub
+		return downloadedRooms;
 	}
 }
