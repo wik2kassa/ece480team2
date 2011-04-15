@@ -48,7 +48,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
 		// Code to execute when SCAN_RESULTS_AVAILABLE_ACTION event occurs
 		wifi = (WifiManager) c.getSystemService(Context.WIFI_SERVICE);
 		
-		if(wifi != null && wifi.isWifiEnabled() && wifi.getConnectionInfo().getBSSID()!=null)
+		if(wifi != null && wifi.isWifiEnabled())
 		{
 			if(!connected)
 			{
@@ -59,7 +59,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
 			
 			if(connected)
 			{
-				if(!loaded && !loading)
+				if(!loaded && !loading && wifi.getConnectionInfo().getBSSID()!=null)
 				{
 					loading = true;
 					miD.showLoadingAPDLG();
@@ -130,7 +130,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	}
 
 	public void UpdateLocation() {	
-		if(iterations >= 2)
+		if(iterations >= 4)
 		{
 			Map(sumX, sumY, count);
 			
