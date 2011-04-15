@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -90,7 +91,7 @@ public class iDocent extends Activity implements OnInitListener{
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         
         mGLView = new GLSurfaceView(this);
-        mRenderer = new Renderer();
+        mRenderer = new Renderer(this);
         mGLView.setRenderer(mRenderer);
         mGLView.setKeepScreenOn(true);
         setContentView(mGLView);
@@ -319,25 +320,33 @@ public class iDocent extends Activity implements OnInitListener{
 				tts.speak("Sound Options", TextToSpeech.QUEUE_FLUSH, null);
 	        final AlertDialog.Builder alert2 = new AlertDialog.Builder(this);
 	        
-	        SeekBar b = new SeekBar(this);
+	        final SeekBar b = new SeekBar(this);
+	        
+	        b.measure(150, 30);
 	        b.layout(0, 0, 150, 30);
 	        b.forceLayout();
 	        b.setPadding(15, 10, 15, 10);
+	        
+	        final AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+	        double maxVol = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+	        double curVol = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+	        b.setProgress((int) (b.getMax()*curVol/maxVol));
 	        
 	        alert2.setView(b);
 	        
           alert2.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int whichButton) {
-	              Toast.makeText(getApplicationContext(), "yay",
-	                      Toast.LENGTH_SHORT).show();
+	             double curVol = b.getProgress();
+	             double maxVol = b.getMax();
+	             am.setStreamVolume(AudioManager.STREAM_MUSIC, 
+	            		 (int) (curVol/maxVol*am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)), 0);
           }
       });
 
       alert2.setNegativeButton("Cancel",
               new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int whichButton) {
-                	  tts.speak("Canceling new room selection", TextToSpeech.QUEUE_FLUSH, null);
-                      dialog.cancel();
+                	  dialog.cancel();
                   }
               });
 	        

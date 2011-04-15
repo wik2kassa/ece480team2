@@ -4,15 +4,15 @@ import java.nio.*;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class Square extends GraphicsObject{
-	// Our vertices.
-	private float vertices[] = {
-		      -1.0f,  1.0f, 0.0f,  // 0, Top Left
-		      -1.0f, -1.0f, 0.0f,  // 1, Bottom Left
-		       1.0f, -1.0f, 0.0f,  // 2, Bottom Right
-		       1.0f,  1.0f, 0.0f,  // 3, Top Right
-		};
-	
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.opengl.GLUtils;
+import android.widget.TextView;
+
+public class Square extends GraphicsObject{	
 	// The order we like to connect them.
 	private short[] indices = { 0, 1, 2, 0, 2, 3 };
 	
@@ -22,7 +22,81 @@ public class Square extends GraphicsObject{
 	// Our index buffer.
 	private ShortBuffer indexBuffer;
 	
-	public Square() {
+	private float[] color = {0,0,0,0};
+	private Line[] bound = new Line[4];
+	
+	public Square(float doorX, float doorY, String hallSide, String doorLocation, float width, float height, String colorString) {
+		color[3] = 0.25f;
+		if(colorString.toLowerCase().equals("blue"))
+		{
+			color[2] = 1.0f;
+		}
+		else if(colorString.toLowerCase().equals("red"))
+		{
+			color[0] = 1.0f;
+		}
+		else if(colorString.toLowerCase().equals("green"))
+		{
+			color[1] = 1.0f;
+		}
+		else if(colorString.toLowerCase().equals("yellow"))
+		{
+			color[0] = color[1] = 1.0f;
+		}
+		else if(colorString.toLowerCase().equals("white"))
+		{
+			color[0] = color[1] = color[2] = 1;
+		}
+		else if(colorString.toLowerCase().equals("gray"))
+		{
+			color[0] = color[1] = color[2] = 0;
+		}
+		// Our vertices.
+		float left=doorX-width, right = doorX, top = doorY+height/2f, bottom = doorY-height/2f;
+		if(hallSide.toLowerCase().equals("right"))
+		{
+			left = doorX;
+			right = doorX+width;
+		}
+		else if(hallSide.toLowerCase().equals("top"))
+		{
+			top = doorY+height;
+			bottom = doorY;
+		}
+		else if(hallSide.toLowerCase().equals("bottom"))
+		{
+			top = doorY;
+			bottom = doorY-height;
+		}
+		
+		if(doorLocation.toLowerCase().equals("top"))
+		{
+			top = doorY;
+			bottom = doorY-height;
+		}
+		else if(doorLocation.toLowerCase().equals("left"))
+		{
+			left = doorX;
+			right = doorX+width;
+		}
+		else if(doorLocation.toLowerCase().equals("bottom"))
+		{
+			top = doorY+height;
+			bottom = doorY;
+		}
+		float vertices[] = {
+			      left,  top, 0.0f,  // 0, Top Left
+			      left, bottom, 0.0f,  // 1, Bottom Left
+			      right, bottom, 0.0f,  // 2, Bottom Right
+			      right, top, 0.0f,  // 3, Top Right
+			};
+		
+		bound[0] = new Line(left, top, left, bottom);//TL to BL
+		bound[1] = new Line(left, bottom, right, bottom);//BL to BR
+		bound[2] = new Line(right, bottom, right, top);//BR to TR
+		bound[3] = new Line(right, top, left, top);//TR to TL
+		
+		
 		// a float is 4 bytes, therefore we multiply the number if 
 		// vertices with 4.
 		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
@@ -45,6 +119,13 @@ public class Square extends GraphicsObject{
 	 * @param gl
 	 */
 	public void Draw(GL10 gl) {
+		gl.glEnable(GL10.GL_ALPHA_BITS);
+		
+		gl.glEnable(GL10.GL_BLEND);    
+		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		
+		gl.glColor4f(color[0], color[1], color[2], color[3]);
+
 		// Counter-clockwise winding.
 		gl.glFrontFace(GL10.GL_CCW);
 		// Enable face culling.
@@ -66,6 +147,13 @@ public class Square extends GraphicsObject{
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		// Disable face culling.
 		gl.glDisable(GL10.GL_CULL_FACE);
+		gl.glDisable(GL10.GL_ALPHA_BITS);
+		gl.glDisable(GL10.GL_BLEND);   
+		
+		for(Line l : bound)
+		{
+			l.Draw(gl);
+		}
 	}
 	
 }

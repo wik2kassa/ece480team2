@@ -51,10 +51,10 @@ public class DirectionsMap extends GraphicsObject{
 			}
 			
 			Line l = new Line(x1, -y1, x2, -y2);
-			l.setColor(255, 0, 0, 0);
+			l.setColor(1, 0, 0, 0);
 			Children.add(l);
 			Dot d = new Dot(x1, -y1, 0);
-			d.setColor(0, 0, 255, 0);
+			d.setColor(0, 0, 1, 0);
 			Children.add(d);
 		}
 	}
