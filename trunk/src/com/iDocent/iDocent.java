@@ -81,6 +81,7 @@ public class iDocent extends Activity implements OnInitListener{
 	HashMap<Integer, Room> RoomsByNumber;
 	private Dialog downloadingDLG;
 	private boolean downloadedRooms = false;
+	private int networkID = -1;
 	
     /** Called when the activity is first created. */
     @Override
@@ -297,7 +298,9 @@ public class iDocent extends Activity implements OnInitListener{
 	              tts.speak("Navigating to "+selected, TextToSpeech.QUEUE_FLUSH, null);
 	              String tmp [] = selected.split(" - ");
 	              String roomNum = tmp[0];
+	              wifi.reconnect();
 	              NavigationDownloader route = new NavigationDownloader(posX, posY, posZ, roomNum);
+	              wifi.disconnect();
 	              mRenderer.setRoute(route.GetNodes(), RoomsByNumber);     
         	  }
           }
@@ -384,7 +387,7 @@ public class iDocent extends Activity implements OnInitListener{
     public void UpdateLocation(float x, float y, float z)
     {
     	posX = x;
-    	posY = y;
+    	posY = Math.abs(y);
     	posZ = z;
     	
 		if(posY > 28.4)
@@ -459,7 +462,9 @@ public class iDocent extends Activity implements OnInitListener{
 		{
 			RoomsByNumber.put(r.getNumber(), r);
 		}
-		downloadingDLG.dismiss();	             
+		downloadingDLG.dismiss();	     
+		networkID  = wifi.getConnectionInfo().getNetworkId();
+		wifi.disconnect();
 	}
 
 	public void showLoadingAPDLG() {
