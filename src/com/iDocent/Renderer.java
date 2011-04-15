@@ -23,7 +23,7 @@ class Renderer implements GLSurfaceView.Renderer {
 	
 	boolean routeSet = false;
 	
-	public Renderer(){
+	public Renderer(iDocent iDocent){
 		map = new Map();
 		dMap = new DirectionsMap();
 	}
