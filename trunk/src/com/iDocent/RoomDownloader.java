@@ -53,8 +53,8 @@ public class RoomDownloader implements Runnable {
 							Float.parseFloat(args[3]),Float.parseFloat(args[4]));
 					rooms.add(r);
 				}
-				miD.RoomsReady(rooms);
 				conn.close();
+				miD.RoomsReady(rooms);
 			}
 		} 
 		catch (UnknownHostException e) {

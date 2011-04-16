@@ -20,6 +20,11 @@ public class RoomSelectSpinner extends Spinner {
 	private static final int first2H=5;
 	private static final int first3H=6;
 	private static final int firstR=7;
+	private static final int secondH=8;
+	private static final int second2H=9;
+	private static final int second3H=10;
+	private static final int secondR=11;
+	
 	
 	private int state = floor;
 	
@@ -34,6 +39,11 @@ public class RoomSelectSpinner extends Spinner {
 	ArrayAdapter<CharSequence> FirstFloor2H;
 	ArrayAdapter<CharSequence> FirstFloor3H;
 	ArrayAdapter<CharSequence> FirstFloorR;
+	
+	ArrayAdapter<CharSequence> SecondFloorH;
+	ArrayAdapter<CharSequence> SecondFloor2H;
+	ArrayAdapter<CharSequence> SecondFloor3H;
+	ArrayAdapter<CharSequence> SecondFloorR;
 	
 	ArrayAdapter<CharSequence> current;
 	
@@ -56,6 +66,11 @@ public class RoomSelectSpinner extends Spinner {
         FirstFloor3H = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_item);
         FirstFloorR = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_item);
         
+        SecondFloorH = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_item);
+        SecondFloor2H = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_item);
+        SecondFloor3H = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_item);
+        SecondFloorR = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_item);
+        
         Floor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.setAdapter(Floor);
         current = Floor;
@@ -77,6 +92,7 @@ public class RoomSelectSpinner extends Spinner {
         SecondFloor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SecondFloor.add("Select Room Range");
         SecondFloor.add("Back to Floor Selection");
+        SecondFloor.add("Nearest Exit");
         SecondFloor.add("2100 - 2199");
         SecondFloor.add("2200 - 2299");
         SecondFloor.add("2300 - 2399");
@@ -84,6 +100,7 @@ public class RoomSelectSpinner extends Spinner {
         ThirdFloor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ThirdFloor.add("Select Room Range");
         ThirdFloor.add("Back to Floor Selection");
+        ThirdFloor.add("Nearest Exit");
         ThirdFloor.add("3100 - 3199");
         ThirdFloor.add("3200 - 3299");
         ThirdFloor.add("3300 - 3399");
@@ -104,6 +121,22 @@ public class RoomSelectSpinner extends Spinner {
         FirstFloorR.add("Men's Restroom");
         FirstFloorR.add("Women's Restroom");
         
+        SecondFloorH.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        SecondFloor2H.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        SecondFloor3H.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        SecondFloorR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        
+        SecondFloorH.add("Select Room Number");
+        SecondFloorH.add("Back to Range Select");
+        SecondFloor2H.add("Select Room Number");
+        SecondFloor2H.add("Back to Range Select");
+        SecondFloor3H.add("Select Room Number");
+        SecondFloor3H.add("Back to Range Select");
+        SecondFloorR.add("Select Restroom");
+        SecondFloorR.add("Back to Range Select");
+        SecondFloorR.add("Men's Restroom");
+        SecondFloorR.add("Women's Restroom");
+        
         for(Room r : rooms)
         {
         	int num = r.getNumber();
@@ -116,6 +149,12 @@ public class RoomSelectSpinner extends Spinner {
         		FirstFloor2H.add(num+" - "+type);
         	else if(num >= 1300 && num < 1400)
         		FirstFloor3H.add(num+" - "+type);
+        	else if(num >= 2100 && num < 2200)
+        		SecondFloorH.add(num+" - "+type);
+        	else if(num >= 2200 && num < 2300)
+        		SecondFloor2H.add(num+" - "+type);
+        	else if(num >= 2300 && num < 2400)
+        		SecondFloor3H.add(num+" - "+type);
         }
 	}
 	
@@ -264,6 +303,109 @@ public class RoomSelectSpinner extends Spinner {
 					state = first;
 					this.setAdapter(FirstFloor);
 					current = FirstFloor;
+					break;
+				}
+				else
+				{
+					super.onClick(dialog, whichButton);
+					end = true;
+					break;
+				}
+				
+			case second:
+				if(whichButton == 1)
+				{
+					state = floor;
+					this.setAdapter(Floor);
+					current = Floor;
+					break;
+				}
+				else if(whichButton == 2)
+				{
+					super.onClick(dialog, whichButton);
+					end = true;
+					break;
+				}
+				else if(whichButton == 3)
+				{
+					state = secondH;
+					this.setAdapter(SecondFloorH);
+					current = SecondFloorH;
+					break;
+				}
+				else if(whichButton == 4)
+				{
+					state = second2H;
+					this.setAdapter(SecondFloor2H);
+					current = SecondFloor2H;
+					break;
+				}
+				else if(whichButton == 5)
+				{
+					state = second3H;
+					this.setAdapter(SecondFloor3H);
+					current = SecondFloor3H;
+					break;
+				}
+				else if(whichButton == 6)
+				{
+					state = secondR;
+					this.setAdapter(SecondFloorR);
+					current = SecondFloorR;
+					break;
+				}
+				
+			case secondH:
+				if(whichButton == 1)
+				{
+					state = second;
+					this.setAdapter(SecondFloor);
+					current = SecondFloor;
+					break;
+				}
+				else
+				{
+					super.onClick(dialog, whichButton);
+					end = true;
+					break;
+				}
+				
+			case second2H:
+				if(whichButton == 1)
+				{
+					state = second;
+					this.setAdapter(SecondFloor);
+					current = SecondFloor;
+					break;
+				}
+				else
+				{
+					super.onClick(dialog, whichButton);
+					end = true;
+					break;
+				}
+				
+			case second3H:
+				if(whichButton == 1)
+				{
+					state = second;
+					this.setAdapter(SecondFloor);
+					current = SecondFloor;
+					break;
+				}
+				else
+				{
+					super.onClick(dialog, whichButton);
+					end = true;
+					break;
+				}
+				
+			case secondR:
+				if(whichButton == 1)
+				{
+					state = second;
+					this.setAdapter(SecondFloor);
+					current = SecondFloor;
 					break;
 				}
 				else

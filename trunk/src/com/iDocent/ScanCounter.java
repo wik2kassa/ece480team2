@@ -12,6 +12,7 @@ public class ScanCounter implements Runnable {
 	
 	private float sumX = 0;
 	private float sumY = 0;
+	private float sumZ = 0;
 	private int count = 0;
 	
 	private static int x=0; 
@@ -40,11 +41,12 @@ public class ScanCounter implements Runnable {
 					wScan.SetLevel(level);
 					sumX += level*wScan.GetPos().get(x);
 					sumY += level*wScan.GetPos().get(y);
+					sumZ += level*wScan.GetPos().get(z);
 					count+=level;
 				}
 			}
 			
-			SRR.UpdateSums(sumX, sumY, count);
+			SRR.UpdateSums(sumX, sumY, sumZ, count);
 		}
 	}
 }
