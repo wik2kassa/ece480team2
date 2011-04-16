@@ -9,9 +9,11 @@ public class Room {
 	{
 		number=n;
 		type=t;
-		this.x=x;
-		this.y=y;
-		this.z=z;
+		
+		float[] normalLoc = LocationNormalizer.Normalize(x, Math.abs(y), z);
+    	this.x = normalLoc[0];
+    	this.y = normalLoc[1];
+    	this.z = normalLoc[2];
 	}
 	
 	public int getNumber()

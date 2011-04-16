@@ -28,71 +28,6 @@ public class AccessPointDB {
 		macs = new ArrayList<String>();
 		accessPoints = new HashMap<String, LinkedList<Float>>();
 		irl = new InetRLookup();
-		FillMap();
-	}
-	
-	/**
-	 * Fill the map with ssid and xyz location sets
-	                          
-
-import java.util.LinkedList;
-
-//A database that will map an ssid to an xyz location
-public class AccessPointDB {
-	private TreeMap<String, LinkedList<Float>> accessPoints;
-	
-	private static int x=0; 
-	private static int y=1; 
-	private static int z=2; 
-	
-	public AccessPointDB()
-	{
-		accessPoints = new HashMap<String, Li
-	{@link FillMap}. 
-	 *
-	                         
-	@param  none
-	 *   
-	 */
-	private void FillMap()
-	{		
-		//1-07
-		AddAccessPoint("00:24:6c:d0:77:00");
-		AddAccessPoint("00:24:6c:d0:77:10");
-		
-		//1-08
-		AddAccessPoint("00:24:6c:d0:76:a0");
-		AddAccessPoint("00:24:6c:d0:76:b0");
-		
-		//1-09
-		AddAccessPoint("00:24:6c:d0:79:00");
-		AddAccessPoint("00:24:6c:d0:79:10");
-		
-		//1-10
-		AddAccessPoint("00:24:6c:d0:76:c0");
-		AddAccessPoint("00:24:6c:d0:76:d0");
-		
-		//1-11
-		AddAccessPoint("00:24:6c:d0:78:60");
-		AddAccessPoint("00:24:6c:d0:78:70");
-		
-		//1-33
-		AddAccessPoint("00:24:6c:d5:c7:c0");
-		AddAccessPoint("00:24:6c:d5:c7:d0");
-		
-		//1-34
-		AddAccessPoint("00:24:6c:d0:7f:20");
-		AddAccessPoint("00:24:6c:d0:7f:30");
-		
-		//1-35
-		AddAccessPoint("00:24:6c:d0:6a:80");
-		AddAccessPoint("00:24:6c:d0:6a:90");
-		
-		//1-36
-		AddAccessPoint("00:24:6c:d0:84:20");
-		AddAccessPoint("00:24:6c:d0:84:30");
-		
-		//AddAccessPoint("C0:C1:C0:45:BE:7D", 10, 10, 0);
 	}
 	
 	/**
@@ -129,21 +64,10 @@ public class AccessPointDB {
 		//while(!irl.isConnected());
 		if(!irl.isConnected())
 			return false;
-		for(String s : macs)
-		{
-			irl.setMac("\'"+s+"\'");
-			irl.run();
-			if(irl.WasFound())
-			{
-				Float[] coords = irl.getCoords();
-				
-				LinkedList<Float> loc = new LinkedList<Float>();				
-				loc.add(x, coords[x]);
-				loc.add(y, coords[y]);
-				loc.add(z, coords[z]);
-				accessPoints.put(s.toLowerCase(), loc);
-			}
-		}
+		irl.setMode(InetRLookup.Modes.All);
+		irl.run();
+		accessPoints = irl.getList();
+
 		irl.Disconnect();
 		return true;
 	}

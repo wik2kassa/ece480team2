@@ -104,7 +104,4 @@ public class Dot extends GraphicsObject{
 		indexBuffer.put(indices);
 		indexBuffer.position(0);
 	}
-	
-	
-
 }

@@ -2,6 +2,8 @@ package com.iDocent;
 
 import java.lang.reflect.Array;
 import java.net.*;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.io.*;
 
 public class InetRLookup {
@@ -10,11 +12,15 @@ public class InetRLookup {
 	//private final String DNS = "480team2.dyndns-server.com";
 	private final int Port = 1024;
 	
-	Socket conn;
-	DataInputStream is;
-	PrintStream os;
+	private Socket conn;
+	private DataInputStream is;
+	private PrintStream os;
 	
-	Float coords [];
+	HashMap<String, LinkedList<Float>> APs;
+	float coords [];
+	
+	public static enum Modes {Individual, All};
+	private Modes mode;
 	
 	boolean found;
 	
@@ -24,45 +30,87 @@ public class InetRLookup {
 	}
 	
 	public InetRLookup(){
-		coords = new Float[3];
+		coords = new float[3];
 		found = false;
 	}
 	
-	public void run() {
-		try {		
-			if(conn != null && conn.isConnected())
-			{
-				os.println("get-router-coord " + mac);
-				String tmp;
-				while((tmp = is.readLine()) != null && !tmp.equals("INVALID COMMAND")){
-					String args [] = tmp.split(" ");
-					if(args[0].equals("ERROR:") || (Array.getLength(args) < 4))
-						break;
-					if (args[0].equals(mac)){
-						coords[0] = Float.valueOf(args[1]);
-						coords[1] = Float.valueOf(args[2]);
-						coords[2] = Float.valueOf(args[3]);
-						found = true;
-						break;
+	public void run() {	
+		if(conn != null && conn.isConnected())
+		{
+			switch(mode){
+			case Individual:
+				Individual();
+				break;
+				
+			case All:
+				All();
+				break;
+			}
+		}
+	}
+	private void All() {
+		os.println("get-routers");
+		String tmp;
+		APs = new HashMap<String, LinkedList<Float>>();
+		try {
+			while((tmp = is.readLine()) != null && !tmp.equals("INVALID COMMAND")){
+				String args [] = tmp.split(" ");
+				if(args[0].equals("ERROR:") || (Array.getLength(args) < 4))
+					break;
+				int length = Array.getLength(args);
+				for(int i=0; i < length && (i + 3) < length;i+=4)
+				{
+					if (args[i].equals(mac)){
+						LinkedList<Float> l = new LinkedList<Float>();
+						float[] f=LocationNormalizer.Normalize(Float.valueOf(args[i+1]), Float.valueOf(args[i+2]), 
+								Float.valueOf(args[i+3]));
+						l.add(f[0]);
+						l.add(f[1]);
+						l.add(f[2]);
+						APs.put(mac, l);
 					}
 				}
+				found = true;
+				break;
 			}
-		} 
-		catch (UnknownHostException e) {
+		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		catch (IOException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
+
+	private void Individual(){
+		os.println("get-router-coord " + mac);
+		String tmp;
+		try {
+			while((tmp = is.readLine()) != null && !tmp.equals("INVALID COMMAND")){
+				String args [] = tmp.split(" ");
+				if(args[0].equals("ERROR:") || (Array.getLength(args) < 4))
+					break;
+				if (args[0].equals(mac)){
+					coords = LocationNormalizer.Normalize(Float.valueOf(args[1]), Float.valueOf(args[2]), 
+							Float.valueOf(args[3]));
+					found = true;
+					break;
+				}
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public void setMac(String x){
 		mac = x;
 	}
 	
-	public Float[] getCoords(){
+	public float[] getCoords(){
 		found = false;
 		return coords;
 	}
@@ -99,5 +147,14 @@ public class InetRLookup {
 
 	public boolean isConnected() {
 		return (conn != null && conn.isConnected());
+	}
+
+	public HashMap<String, LinkedList<Float>> getList() {
+		found = false;
+		return APs;
+	}
+
+	public void setMode(Modes m) {
+		mode = m;
 	}
 }

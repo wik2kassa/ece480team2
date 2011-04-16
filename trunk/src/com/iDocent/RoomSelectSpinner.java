@@ -100,8 +100,9 @@ public class RoomSelectSpinner extends Spinner {
         FirstFloor3H.add("Select Room Number");
         FirstFloor3H.add("Back to Range Select");
         FirstFloorR.add("Select Restroom");
-        FirstFloorR.add("Men's");
-        FirstFloorR.add("Women's");
+        FirstFloorR.add("Back to Range Select");
+        FirstFloorR.add("Men's Restroom");
+        FirstFloorR.add("Women's Restroom");
         
         for(Room r : rooms)
         {
@@ -243,6 +244,21 @@ public class RoomSelectSpinner extends Spinner {
 				}
 				
 			case first3H:
+				if(whichButton == 1)
+				{
+					state = first;
+					this.setAdapter(FirstFloor);
+					current = FirstFloor;
+					break;
+				}
+				else
+				{
+					super.onClick(dialog, whichButton);
+					end = true;
+					break;
+				}
+				
+			case firstR:
 				if(whichButton == 1)
 				{
 					state = first;
