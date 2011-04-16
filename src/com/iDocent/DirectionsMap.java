@@ -30,10 +30,14 @@ public class DirectionsMap extends GraphicsObject{
 			x2 = RoomsByNumber.get(nodes.get(i+1)).getX();
 			y2 = RoomsByNumber.get(nodes.get(i+1)).getY();
 			
-			Line l = new Line(x1, -y1, x2, -y2);
+			float f[] = LocationNormalizer.Normalize(x1, y1, 0);
+			float f2[] = LocationNormalizer.Normalize(x2, y2, 0);
+			
+			Line l = new Line(f[0], f[1], f2[0], f2[1]);
 			l.setColor(1, 0, 0, 0);
+			l.setZ(f[2]);
 			Children.add(l);
-			Dot d = new Dot(x1, -y1, 0);
+			Dot d = new Dot(f[0], f[1], 0);
 			d.setColor(0, 0, 1, 0);
 			Children.add(d);
 		}
@@ -47,34 +51,42 @@ public class DirectionsMap extends GraphicsObject{
 			if(g instanceof Line)
 			{
 				float[] v = ((Line) g).getVertices();
-				float x2 = v[0];
-				float y2 = -v[1];
-				float x1 = v[2];
-				float y1 = -v[3];
-				
-				boolean up = (Math.abs(y2)-Math.abs(y1)) < 0;
-				boolean right = (x2-x1) > 0;
-				
-				if((up && Math.abs(posY) < Math.abs(y1)) || (!up && Math.abs(posY) > Math.abs(y1)) && x2 > 120)
-				{
+				float z = ((Line) g).getZ();
+				if(z != posZ)
 					draw = false;
-					if((up && Math.abs(y2) - Math.abs(posY) < 0) || (!up && Math.abs(y2)-Math.abs(posY) > 0 && posX > 120))
+				else
+				{
+					float[] f = LocationNormalizer.Normalize(v[0], v[1], 0.0f);
+					float[] f2 = LocationNormalizer.Normalize(v[2], v[3], 0.0f);
+					float x2 = f2[0];
+					float y2 = f2[1];
+					float x1 = f[0];
+					float y1 = f[1];
+					
+					boolean up = (Math.abs(y2)-Math.abs(y1)) > 0;
+					boolean right = (x2-x1) > 0;
+					
+					if((up && Math.abs(posY) < Math.abs(y1)) || (!up && Math.abs(posY) > Math.abs(y1)) && x2 > 120)
 					{
-						Line temp = new Line(x2, -y2, posX, posY);
-						temp.setColor(255, 0, 0, 0);
-						temp.Draw(gl);
+						draw = false;
+						if((up && Math.abs(y2) - Math.abs(posY) < 0) || (!up && Math.abs(y2)-Math.abs(posY) > 0 && posX > 120))
+						{
+							Line temp = new Line(x2, y2, posX, posY);
+							temp.setColor(255, 0, 0, 0);
+							temp.Draw(gl);
+						}
 					}
+					else if(((right && posX > x1) ||  (!right && posX < x1)) && y2 < 28)
+					{
+						draw = false;
+						if((right && x2 - posX > 0) || (!right && x2 - posX < 0 && Math.abs(posY) < 28))
+						{
+							Line temp = new Line(x2, y2, posX, posY);
+							temp.setColor(255, 0, 0, 0);
+							temp.Draw(gl);
+						}
+					}	
 				}
-				else if(((right && posX > x1) ||  (!right && posX < x1)) && y2 < 28)
-				{
-					draw = false;
-					if((right && x2 - posX > 0) || (!right && x2 - posX < 0 && Math.abs(posY) < 28))
-					{
-						Line temp = new Line(x2, -y2, posX, posY);
-						temp.setColor(255, 0, 0, 0);
-						temp.Draw(gl);
-					}
-				}						
 			}	
 			
 			if(draw)

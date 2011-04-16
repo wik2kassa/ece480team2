@@ -17,6 +17,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
     
 	private float sumX = 0;
 	private float sumY = 0;
+	private float sumZ = 0;
 	private int count = 0;
     
 	private static int x=0; 
@@ -77,6 +78,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
 					}
 					iterations++;
 					scans = wifi.getScanResults(); // Returns a <list> of scanResults
+
 					if(scans != null)
 					{
 						if((t==null || !t.isAlive()))
@@ -92,22 +94,25 @@ public class ScanResultReceiver extends BroadcastReceiver{
 		}
 	}
 
-	public void UpdateSums(float sX, float sY, int count)
+	public void UpdateSums(float sX, float sY, float sZ, int count)
 	{
 		sumX += sX;
 		sumY += sY;
+		sumZ += sZ;
 		this.count += count;
-		UpdateLocation();
+		if(iterations >= 4)
+			UpdateLocation();
 	}
 
-	private void Map(float sX, float sY, int count) {
+	private void Map(float sX, float sY, float sZ, int count) {
     	iterations = 0;
-		float[] loc = {0,0};
+		float[] loc = {0,0,0};
     	if(count > 0)
     	{			
 			//Calculations of position
-			loc[0] += sX/(float)count;
-			loc[1] += sY/(float)count;		
+			loc[x] += sX/(float)count;
+			loc[y] += sY/(float)count;	
+			loc[z] += sZ/(float)count;
     	}
     	else
     	{
@@ -119,9 +124,9 @@ public class ScanResultReceiver extends BroadcastReceiver{
     	float filteredX = oldX[0]*alpha+loc[x]*(1-alpha);
     	float filteredY = oldY[0]*alpha+loc[y]*(1-alpha);
     	if(loc[x] != 0 && loc[y] != 0 && oldY[0] != 0 && oldX[0] != 0)
-    		miD.UpdateLocation(filteredX, -filteredY, 0);
+    		miD.UpdateLocation(filteredX, -filteredY, loc[z]);
     	else if(loc[x] != 0 && loc[y] != 0)
-    		miD.UpdateLocation(loc[x], -loc[y], 0);
+    		miD.UpdateLocation(loc[x], -loc[y], loc[z]);
     	
     	oldX[1] = oldX[0];
     	oldY[1] = oldY[0];
@@ -132,11 +137,12 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	public void UpdateLocation() {	
 		if(iterations >= 4)
 		{
-			Map(sumX, sumY, count);
+			Map(sumX, sumY, sumZ, count);
 			
 			count = 0;
 			sumX = 0;
 			sumY = 0;
+			sumZ = 0;
 		}
 	}
 	

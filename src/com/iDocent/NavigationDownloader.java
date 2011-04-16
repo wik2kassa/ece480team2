@@ -28,6 +28,10 @@ public class NavigationDownloader {
 	
 	public NavigationDownloader(float posX, float posY, float posZ, String destination)
 	{
+		float[] f = LocationNormalizer.Normalize(posX, posY, posZ);
+		posX = f[0];
+		posY = f[1];
+		posZ = f[2];
 		if(destination.toLowerCase().contains("men's"))
 		{
 			mode = Modes.Mens;

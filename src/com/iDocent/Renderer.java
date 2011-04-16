@@ -83,7 +83,8 @@ class Renderer implements GLSurfaceView.Renderer {
 		posY = y;
 		posZ = z;
 		map.UpdateLoction(posX, posY, posZ);
-		dMap.UpdateLocation(posX, posY, posZ);
+		if(routeSet)
+			dMap.UpdateLocation(posX, posY, posZ);
 	}
 
 	public void zoomOut() {
@@ -109,10 +110,11 @@ class Renderer implements GLSurfaceView.Renderer {
 	}
 
 	public void setRoute(ArrayList<Integer> nodes,
-			HashMap<Integer, Room> roomsByNumber) {
+			HashMap<Integer, Room> roomsByNumber, String destination) {
 		routeSet = false;
-		dMap.setRoute(nodes, roomsByNumber);		
+		map.setDestination(Integer.parseInt(destination));
+		if(nodes != null && roomsByNumber != null)
+			dMap.setRoute(nodes, roomsByNumber);		
 		routeSet = true;
 	}
-
 }

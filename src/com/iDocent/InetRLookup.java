@@ -60,15 +60,13 @@ public class InetRLookup {
 				int length = Array.getLength(args);
 				for(int i=0; i < length && (i + 3) < length;i+=4)
 				{
-					if (args[i].equals(mac)){
-						LinkedList<Float> l = new LinkedList<Float>();
-						float[] f=LocationNormalizer.Normalize(Float.valueOf(args[i+1]), Float.valueOf(args[i+2]), 
-								Float.valueOf(args[i+3]));
-						l.add(f[0]);
-						l.add(f[1]);
-						l.add(f[2]);
-						APs.put(mac, l);
-					}
+					LinkedList<Float> l = new LinkedList<Float>();
+					float[] f=LocationNormalizer.Normalize(Float.valueOf(args[i+1]), Float.valueOf(args[i+2]), 
+							Float.valueOf(args[i+3]));
+					l.add(f[0]);
+					l.add(f[1]);
+					l.add(f[2]);
+					APs.put(args[i], l);
 				}
 				found = true;
 				break;

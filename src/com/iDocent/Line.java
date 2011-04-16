@@ -8,6 +8,8 @@ public class Line extends GraphicsObject{
 	
 	private float x1,y1,x2,y2;
 	
+	private float z;
+	
 	public float[] getVertices()
 	{
 		float[] v = new float[4];
@@ -85,5 +87,15 @@ public class Line extends GraphicsObject{
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		// Disable face culling.
 		gl.glDisable(GL10.GL_CULL_FACE);
+	}
+	
+	public void setZ(float z)
+	{
+		this.z = z;
+	}
+	
+	public float getZ()
+	{
+		return z;
 	}
 }

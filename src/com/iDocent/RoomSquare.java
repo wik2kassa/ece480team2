@@ -26,6 +26,7 @@ public class RoomSquare extends GraphicsObject{
 	private ShortBuffer indexBuffer;
 	
 	private float[] color = {0,0,0,0};
+	private float[] selectedColor = {1,0,0,0.25f};
 	private Line[] bound = new Line[4];
 	
 	private iDocent miD;
@@ -33,9 +34,11 @@ public class RoomSquare extends GraphicsObject{
 	private float[] vertices;
 	
 	private TexturedSquare TexSq;
+
+	private boolean selected = false;
 	
 	public RoomSquare(float doorX, float doorY, String hallSide, String doorLocation, float width, 
-			float height, String colorString, iDocent iD) {
+			float height, String colorString, iDocent iD, int i) {
 		
 		miD = iD;
 		color[3] = 0.25f;
@@ -104,6 +107,7 @@ public class RoomSquare extends GraphicsObject{
 			};
 		
 		TexSq = new TexturedSquare(left, right, top, bottom);
+		TexSq.setRoomNumber(i);
 		
 		bound[0] = new Line(left, top, left, bottom);//TL to BL
 		bound[1] = new Line(left, bottom, right, bottom);//BL to BR
@@ -131,14 +135,18 @@ public class RoomSquare extends GraphicsObject{
 	 * This function draws our square on screen.
 	 * @param gl
 	 */
-	public void Draw(GL10 gl) {		
-		TexSq.Draw(gl);
+	public void Draw(GL10 gl) {	
+		if(miD.ShowRoomNums() && TexSq.getTextureNum() != -1)
+			TexSq.Draw(gl);
 		gl.glEnable(GL10.GL_ALPHA_BITS);
 		
 		gl.glEnable(GL10.GL_BLEND);    
 		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		
 		gl.glColor4f(color[0], color[1], color[2], color[3]);
+		
+		if(selected)
+			gl.glColor4f(selectedColor[0], selectedColor[1], selectedColor[2], selectedColor[3]);
 
 		// Counter-clockwise winding.
 		gl.glFrontFace(GL10.GL_CCW);
@@ -169,9 +177,15 @@ public class RoomSquare extends GraphicsObject{
 			l.Draw(gl);
 		}
 	
+		selected = false;
 	}
 
 	public void loadGLTexture(GL10 gl, iDocent miD) {
-		TexSq.loadGLTexture(gl, miD);
+		if(TexSq.getTextureNum() != -1)
+			TexSq.loadGLTexture(gl, miD);
+	}
+
+	public void setSelected() {
+		selected  = true;
 	}
 }
