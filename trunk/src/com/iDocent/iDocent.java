@@ -99,13 +99,13 @@ public class iDocent extends Activity implements OnInitListener{
         
         UpdateLocation(posX, posY, posZ);
         
-        //Start the timer running the scanner
-		timer = new Timer();		
-		scanner = new ScanTask(wifi, this);	
-        
         //Obtain access to and turn on WiFi
         wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         wifiWasEnabled = wifi.isWifiEnabled();
+        
+        //Start the timer running the scanner
+		timer = new Timer();		
+		scanner = new ScanTask(wifi, this);	
         
         if(wifiWasEnabled)
         {
