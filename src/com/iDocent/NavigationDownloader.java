@@ -16,6 +16,9 @@ public class NavigationDownloader {
 	DataInputStream is;
 	PrintStream os;
 	
+	private static enum Modes {Room, Exit, Mens, Womens};
+	private Modes mode = Modes.Room;
+	
 	private ArrayList<Integer> nodes;
 	
 	ArrayList<Integer> GetNodes()
@@ -25,6 +28,18 @@ public class NavigationDownloader {
 	
 	public NavigationDownloader(float posX, float posY, float posZ, String destination)
 	{
+		if(destination.toLowerCase().contains("men's"))
+		{
+			mode = Modes.Mens;
+		}
+		else if(destination.toLowerCase().contains("women's"))
+		{
+			mode = Modes.Womens;
+		}
+		else if(destination.toLowerCase().contains("exit"))
+		{
+			mode = Modes.Exit;
+		}
 		nodes = new ArrayList<Integer>(); 
 		try {	
 			try {
@@ -42,8 +57,24 @@ public class NavigationDownloader {
 			}
 			if(conn != null && conn.isConnected())
 			{
-				os.println("directions "+posX+" "+posY+" "+posZ+" "+destination);
 				String tmp;
+				switch(mode){
+				case Room:
+					os.println("directions "+posX+" "+posY+" "+posZ+" "+destination);
+					break;
+					
+				case Mens:
+					os.println("nearest-mens-restroom "+posX+" "+posY+" "+posZ);
+					break;
+					
+				case Womens:
+					os.println("nearest-womens-restroom "+posX+" "+posY+" "+posZ);
+					break;
+					
+				case Exit:
+					os.println("nearest-exit "+posX+" "+posY+" "+posZ);
+					break;
+				}
 
 				while((tmp = is.readLine()) != null && !tmp.equals("DONE")){
 					nodes.add(Integer.parseInt(tmp));

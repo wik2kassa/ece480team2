@@ -99,11 +99,24 @@ public class iDocent extends Activity implements OnInitListener{
         
         UpdateLocation(posX, posY, posZ);
         
+        //Start the timer running the scanner
+		timer = new Timer();		
+		scanner = new ScanTask(wifi, this);	
+        
         //Obtain access to and turn on WiFi
         wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         wifiWasEnabled = wifi.isWifiEnabled();
-        wifi.setWifiEnabled(true);
         
+        if(wifiWasEnabled)
+        {
+        	wifi.reassociate();
+        	wifi.startScan();
+        }
+        else
+        {        
+        	wifi.setWifiEnabled(true);
+    		timer.scheduleAtFixedRate(scanner, 0, scanRate);
+        }
         AccessibilityManager access = (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
         accessibilityOn = access.isEnabled();
         
@@ -112,11 +125,6 @@ public class iDocent extends Activity implements OnInitListener{
 		IntentFilter i = new IntentFilter();
 		i.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 		registerReceiver(SRR,i);
-		
-        //Start the timer running the scanner
-		timer = new Timer();		
-		scanner = new ScanTask(wifi, this);	
-		timer.scheduleAtFixedRate(scanner, 0, scanRate);
 		
 		//Test for TTS
 		Intent checkIntent = new Intent();
@@ -314,7 +322,9 @@ public class iDocent extends Activity implements OnInitListener{
                   }
               });
 	        
-	        alert.show();
+      		AlertDialog aDLG = alert.create();
+      		aDLG.setTitle("Navigate to Room...");
+	        aDLG.show();
 	        
 	    	return true;
 	    	
@@ -323,26 +333,24 @@ public class iDocent extends Activity implements OnInitListener{
 				tts.speak("Sound Options", TextToSpeech.QUEUE_FLUSH, null);
 	        final AlertDialog.Builder alert2 = new AlertDialog.Builder(this);
 	        
-	        final SeekBar b = new SeekBar(this);
+	        final AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+	        double maxVol = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+	        final double curVol = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+	        
+	        final VolumeBar b = new VolumeBar(this, tts, am);
 	        
 	        b.measure(150, 30);
 	        b.layout(0, 0, 150, 30);
 	        b.forceLayout();
 	        b.setPadding(15, 10, 15, 10);
 	        
-	        final AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-	        double maxVol = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-	        double curVol = am.getStreamVolume(AudioManager.STREAM_MUSIC);
 	        b.setProgress((int) (b.getMax()*curVol/maxVol));
 	        
 	        alert2.setView(b);
 	        
           alert2.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int whichButton) {
-	             double curVol = b.getProgress();
-	             double maxVol = b.getMax();
-	             am.setStreamVolume(AudioManager.STREAM_MUSIC, 
-	            		 (int) (curVol/maxVol*am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)), 0);
+
           }
       });
 
@@ -350,12 +358,16 @@ public class iDocent extends Activity implements OnInitListener{
               new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int whichButton) {
                 	  dialog.cancel();
+                	  am.setStreamVolume(AudioManager.STREAM_MUSIC, (int) curVol, 0);
                   }
               });
-	        
-	        alert2.show();
-	        
-	    	return true;
+	              
+		Dialog alertDialog = alert2.create();
+		alertDialog.setTitle("Set voice volume...");
+		//alertDialog.getWindow().setLayout(15, 10);
+		alertDialog.show();
+		        
+		return true;
 	    	
 	    default:
 	        return super.onOptionsItemSelected(item);
@@ -386,21 +398,12 @@ public class iDocent extends Activity implements OnInitListener{
 	 */
     public void UpdateLocation(float x, float y, float z)
     {
-    	posX = x;
-    	posY = Math.abs(y);
-    	posZ = z;
+    	float[] normalLoc = LocationNormalizer.Normalize(x, Math.abs(y), z);
+    	posX = normalLoc[0];
+    	posY = normalLoc[1];
+    	posZ = normalLoc[2];
     	
-		if(posY > 28.4)
-			posX = (132f+120f)/2.0f;
-		else if(posX < 120)
-			posY = (28.4f+16.4f)/2.0f;
-		else if(posY < 28.4 && posX > 120)
-		{
-			posX = (132f+120f)/2.0f;
-			posY = (28.4f+16.4f)/2.0f;
-		}
-    	
-    	mRenderer.UpdateLocation(posX, -posY, posZ);
+    	mRenderer.UpdateLocation(posX, posY, posZ);
     }
     
 	/**
@@ -470,11 +473,13 @@ public class iDocent extends Activity implements OnInitListener{
 	public void showLoadingAPDLG() {
 		TextView tv = new TextView(this);
 		downloadingDLG = new Dialog(this);
-		tv.setText(" Downloading Information ");
-		tv.setTextSize(16);
-		tv.setHeight(70);
+		tv.setText("\tDownloading Information     \n");
+		tv.setTextSize(20);
+		//tv.setHeight(70);
 		downloadingDLG.setContentView(tv);
 		downloadingDLG.setCancelable(false);
+		//downloadingDLG.getWindow().setLayout(300, 120);
+		downloadingDLG.setTitle("Please wait....");
 		downloadingDLG.show();
 	}
 
