@@ -27,7 +27,7 @@ public class ScanTask extends TimerTask{
         {
             public void run() 
             {
-        		if(wifi.isWifiEnabled())
+        		if(wifi != null && wifi.isWifiEnabled())
         		{
         			if(!started)
         			{

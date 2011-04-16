@@ -1,9 +1,12 @@
 package com.iDocent;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.*;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,9 +15,9 @@ import android.graphics.drawable.Drawable;
 import android.opengl.GLUtils;
 import android.widget.TextView;
 
-public class Square extends GraphicsObject{	
+public class RoomSquare extends GraphicsObject{	
 	// The order we like to connect them.
-	private short[] indices = { 0, 1, 2, 0, 2, 3 };
+	private short[] indices = { 0, 1, 3, 0, 3, 2 };
 	
 	// Our vertex buffer.
 	private FloatBuffer vertexBuffer;
@@ -25,7 +28,16 @@ public class Square extends GraphicsObject{
 	private float[] color = {0,0,0,0};
 	private Line[] bound = new Line[4];
 	
-	public Square(float doorX, float doorY, String hallSide, String doorLocation, float width, float height, String colorString) {
+	private iDocent miD;
+	
+	private float[] vertices;
+	
+	private TexturedSquare TexSq;
+	
+	public RoomSquare(float doorX, float doorY, String hallSide, String doorLocation, float width, 
+			float height, String colorString, iDocent iD) {
+		
+		miD = iD;
 		color[3] = 0.25f;
 		if(colorString.toLowerCase().equals("blue"))
 		{
@@ -84,18 +96,19 @@ public class Square extends GraphicsObject{
 			top = doorY+height;
 			bottom = doorY;
 		}
-		float vertices[] = {
-			      left,  top, 0.0f,  // 0, Top Left
+		vertices = new float[]{
 			      left, bottom, 0.0f,  // 1, Bottom Left
 			      right, bottom, 0.0f,  // 2, Bottom Right
+			      left,  top, 0.0f,  // 0, Top Left
 			      right, top, 0.0f,  // 3, Top Right
 			};
+		
+		TexSq = new TexturedSquare(left, right, top, bottom);
 		
 		bound[0] = new Line(left, top, left, bottom);//TL to BL
 		bound[1] = new Line(left, bottom, right, bottom);//BL to BR
 		bound[2] = new Line(right, bottom, right, top);//BR to TR
 		bound[3] = new Line(right, top, left, top);//TR to TL
-		
 		
 		// a float is 4 bytes, therefore we multiply the number if 
 		// vertices with 4.
@@ -118,7 +131,8 @@ public class Square extends GraphicsObject{
 	 * This function draws our square on screen.
 	 * @param gl
 	 */
-	public void Draw(GL10 gl) {
+	public void Draw(GL10 gl) {		
+		TexSq.Draw(gl);
 		gl.glEnable(GL10.GL_ALPHA_BITS);
 		
 		gl.glEnable(GL10.GL_BLEND);    
@@ -154,6 +168,10 @@ public class Square extends GraphicsObject{
 		{
 			l.Draw(gl);
 		}
-	}
 	
+	}
+
+	public void loadGLTexture(GL10 gl, iDocent miD) {
+		TexSq.loadGLTexture(gl, miD);
+	}
 }

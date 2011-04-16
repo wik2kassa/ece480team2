@@ -22,13 +22,17 @@ class Renderer implements GLSurfaceView.Renderer {
 	private float zoom = -200;
 	
 	boolean routeSet = false;
+	iDocent miD;
 	
 	public Renderer(iDocent iDocent){
-		map = new Map();
+		map = new Map(iDocent);
 		dMap = new DirectionsMap();
+		miD = iDocent;
 	}
 	
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+    	map.loadTexture(gl, miD);
+    	gl.glEnable(GL10.GL_TEXTURE_2D);
     	// Set the background color to black ( rgba ).
 		gl.glClearColor(255.0f, 255.0f, 255.0f, 0.5f);
 		// Enable Smooth Shading, default not really needed.
@@ -65,7 +69,7 @@ class Renderer implements GLSurfaceView.Renderer {
 		// Replace the current matrix with the identity matrix
 		gl.glLoadIdentity();
 		gl.glTranslatef(-(posX+xOffset), -(posY+yOffset), zoom); 
-        map.Draw(gl);
+		map.Draw(gl);
         
         if(routeSet)
         	dMap.Draw(gl);
