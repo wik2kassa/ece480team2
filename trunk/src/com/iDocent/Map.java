@@ -287,6 +287,12 @@ public class Map extends GraphicsObject{
 			if(g instanceof RoomSquare)
 				destination = ((RoomSquare) g);
 		}
+		else if (num >= 2000 && num < 3000)
+		{
+			GraphicsObject g = SecondFloor.get(roomSquarePos2.get(num));
+			if(g instanceof RoomSquare)
+				destination = ((RoomSquare) g);
+		}
 	}
 
 }

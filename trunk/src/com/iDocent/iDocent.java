@@ -235,6 +235,7 @@ public class iDocent extends Activity implements OnInitListener{
     		if(resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS){
     			//Libraries are there
     			tts = new TextToSpeech(this, this);
+    			mRenderer.setTTS(tts);
     		}
     		else{
     			///Missing proper libraries, download them
@@ -314,6 +315,9 @@ public class iDocent extends Activity implements OnInitListener{
 	        b.setPadding(15, 10, 15, 10);
 	        
 	        b.setProgress((int) (b.getMax()*curVol/maxVol));
+	        TextView tv = new TextView(this);
+	        tv.setText("  Speech Volume:");
+	        ll.addView(tv);
 	        ll.addView(b);
 	        final CheckBox cb = new CheckBox(this);
 	        cb.setText("Show room numbers");

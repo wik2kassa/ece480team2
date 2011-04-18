@@ -9,6 +9,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
+import android.speech.tts.TextToSpeech;
 
 class Renderer implements GLSurfaceView.Renderer {
 	private Map map;
@@ -116,5 +117,9 @@ class Renderer implements GLSurfaceView.Renderer {
 		if(nodes != null && roomsByNumber != null)
 			dMap.setRoute(nodes, roomsByNumber);		
 		routeSet = true;
+	}
+
+	public void setTTS(TextToSpeech tts) {
+		dMap.setTTS(tts);
 	}
 }
