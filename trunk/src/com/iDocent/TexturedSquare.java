@@ -18,6 +18,9 @@ public class TexturedSquare extends GraphicsObject {
 	// The order we like to connect them.
 	private short[] indices = { 0, 1, 3, 0, 3, 2 };
 	
+	private final int stair = 8000;
+	private final int spartys = 6000;
+	
 	private int textureNum;
 	private int roomNum;
 	
@@ -55,11 +58,13 @@ public class TexturedSquare extends GraphicsObject {
 			texture = landscape;
 		else
 			texture = portrait;
+		
+		float sizer = 6.0f;
 		vertices = new float[]{
-			      left+x/4.0f, bottom+y/4.0f, 0.0f,  // 1, Bottom Left
-			      right-x/4.0f, bottom+y/4.0f, 0.0f,  // 2, Bottom Right
-			      left+x/4.0f,  top-y/4.0f, 0.0f,  // 0, Top Left
-			      right-x/4.0f, top-y/4.0f, 0.0f,  // 3, Top Right
+			      left+x/sizer, bottom+y/sizer, 0.0f,  // 1, Bottom Left
+			      right-x/sizer, bottom+y/sizer, 0.0f,  // 2, Bottom Right
+			      left+x/sizer,  top-y/sizer, 0.0f,  // 0, Top Left
+			      right-x/sizer, top-y/sizer, 0.0f,  // 3, Top Right
 			};
 		
 		// a float is 4 bytes, therefore we multiply the number if 
@@ -89,10 +94,10 @@ public class TexturedSquare extends GraphicsObject {
 	@Override
 	public void Draw(GL10 gl) {
 		gl.glColor4f(1, 1, 1, 1);
-		//gl.glEnable(GL10.GL_ALPHA_BITS);
-		
-		//gl.glEnable(GL10.GL_BLEND);    
-		//gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+//		gl.glEnable(GL10.GL_ALPHA_BITS);
+//		
+//		gl.glEnable(GL10.GL_BLEND);    
+//		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		//Bind our only previously generated texture in this case
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
 
@@ -284,7 +289,7 @@ public class TexturedSquare extends GraphicsObject {
 			textureNum = R.drawable.r2200;
 			break;
 		case 2201:
-			textureNum = R.drawable.r2201;
+			textureNum = R.drawable.rmens;
 			break;
 		case 2203:
 			textureNum = R.drawable.r2203;
@@ -345,6 +350,12 @@ public class TexturedSquare extends GraphicsObject {
 			break;
 		case 2400:
 			textureNum = R.drawable.r2400;
+			break;
+		case stair:
+			textureNum = R.drawable.rstairs;
+			break;
+		case spartys:
+			textureNum = R.drawable.rspartys;
 			break;
 		default:
 			textureNum = -1;

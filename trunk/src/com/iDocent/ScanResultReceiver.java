@@ -40,6 +40,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
 
 	public ScanResultReceiver(iDocent iD) {
 		miD = iD;
+		wifi = miD.getWifi();
         wsFactory = new WeightedScanFactory(miD);
 //		wsFactory.StartScanLoop();
 	}
@@ -47,8 +48,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	@Override
 	public void onReceive(Context c, Intent i){
 		// Code to execute when SCAN_RESULTS_AVAILABLE_ACTION event occurs
-		wifi = (WifiManager) c.getSystemService(Context.WIFI_SERVICE);
-		
+		wifi = miD.getWifi();
 		if(wifi != null && wifi.isWifiEnabled())
 		{
 			if(!connected)

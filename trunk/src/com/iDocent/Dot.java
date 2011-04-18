@@ -104,4 +104,8 @@ public class Dot extends GraphicsObject{
 		indexBuffer.put(indices);
 		indexBuffer.position(0);
 	}
+
+	public float getZ() {
+		return z1;
+	}
 }
