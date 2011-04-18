@@ -135,7 +135,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	}
 
 	public void UpdateLocation() {	
-		if(iterations >= 4)
+		if(iterations >= 2)
 		{
 			Map(sumX, sumY, sumZ, count);
 			
