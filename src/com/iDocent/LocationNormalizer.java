@@ -25,7 +25,7 @@ public class LocationNormalizer {
 		else
 			posZ = tfz;
 		
-		posZ=0;
+		//posZ=0;
 		
 		float[] l = {posX, -posY, posZ};
 		return l;

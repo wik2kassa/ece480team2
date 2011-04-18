@@ -27,13 +27,14 @@ public class ScanTask extends TimerTask{
         {
             public void run() 
             {
-        		if(wifi != null && wifi.isWifiEnabled())
+            	wifi = iD.getWifi();
+        		if(wifi != null)
         		{
-        			if(!started)
+        			//if(!started)
         			{
         				wifi.startScan();
-        				started = true;
-        				iD.EndTimer();        				
+        				//started = true;
+        				//iD.EndTimer();        				
         			}
         		}
             }

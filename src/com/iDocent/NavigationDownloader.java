@@ -62,6 +62,7 @@ public class NavigationDownloader {
 			if(conn != null && conn.isConnected())
 			{
 				String tmp;
+				posY = Math.abs(posY);
 				switch(mode){
 				case Room:
 					os.println("directions "+posX+" "+posY+" "+posZ+" "+destination);
