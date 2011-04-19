@@ -221,7 +221,7 @@ public class Map extends GraphicsObject{
 		
 		SecondFloor.add(new RoomSquare(47f, -16.4f, "top", "left", 30f, 30f, lab, miD, 2314));//2314
 		roomSquarePos2.put(2314, pos2++); 
-		SecondFloor.add(new RoomSquare(77f, -16.4f, "top", "left", 140f, 30f, unknown, miD, -1));//junk
+		SecondFloor.add(new RoomSquare(77f, -16.4f, "top", "left", 43f, 30f, unknown, miD, -1));//junk
 		roomSquarePos2.put(-16, pos2++); 
 		SecondFloor.add(new RoomSquare(-120f, -16.4f, "top", "left", 167f, 30f, unknown, miD, -1));//junk
 		roomSquarePos2.put(-18, pos2++); 
@@ -230,6 +230,10 @@ public class Map extends GraphicsObject{
 		
 		SecondFloor.add(new RoomSquare(-120f, -16.4f, "left", "top", 40f, 30f, classroom, miD, 2400));//2400
 		roomSquarePos2.put(2400, pos2++); 
+		SecondFloor.add(new RoomSquare(120f, -16.4f, "top", "left", 45f, 30f, classroom, miD, 2200));//2200
+		roomSquarePos2.put(2200, pos2++); 
+		SecondFloor.add(new RoomSquare(165f, -16.4f, "top", "left", 43f, 30f, unknown, miD, -1));//junk
+		roomSquarePos2.put(-20, pos2++); 
 		
 		Children = FirstFloor;
 	}

@@ -32,8 +32,8 @@ class Renderer implements GLSurfaceView.Renderer {
 	}
 	
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-    	map.loadTexture(gl, miD);
     	gl.glEnable(GL10.GL_TEXTURE_2D);
+    	map.loadTexture(gl, miD);
     	// Set the background color to black ( rgba ).
 		gl.glClearColor(255.0f, 255.0f, 255.0f, 0.5f);
 		// Enable Smooth Shading, default not really needed.

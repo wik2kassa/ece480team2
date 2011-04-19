@@ -19,9 +19,9 @@ public class LocationNormalizer {
 		}
 		else if(posY > 28.4 && posX < -120)
 			posY = 80;
-		else if(posX < 120 && posX > -108 && posY < 35)
+		else if(posX < 120 && posX > -108)
 			posY = (28.4f+16.4f)/2.0f;
-		else if(posY < 28.4 && posX > 120)
+		else if(posY < 35 && posX > 120)
 		{
 			posX = (132f+120f)/2.0f;
 			posY = (28.4f+16.4f)/2.0f;
