@@ -23,7 +23,6 @@ public class DirectionsMap extends GraphicsObject{
 	
 	private LinkedList<Boolean> drawLine = new LinkedList<Boolean>();
 	private LinkedList<DistanceAndDirection> path = new LinkedList<DistanceAndDirection>();
-	private LinkedList<DistanceAndDirection> endPoints = new LinkedList<DistanceAndDirection>();
 	
 	public void setRoute(ArrayList<Integer> nodes,
 			HashMap<Integer, Room> roomsByNumber) {
@@ -98,7 +97,6 @@ public class DirectionsMap extends GraphicsObject{
 				path.get(0).distance = distance;
 				path.get(0).x = x1;
 				path.get(0).y = y1;
-				endPoints.add(new DistanceAndDirection(x1, y1));
 				distance = 0;
 				path.addFirst(new DistanceAndDirection(direction));
 			}
@@ -137,7 +135,6 @@ public class DirectionsMap extends GraphicsObject{
 		path.get(0).distance = distance;
 		path.get(0).x = x1;
 		path.get(0).y = y1;
-		endPoints.add(new DistanceAndDirection(x1, y1));
 	}
 	
 	@Override
@@ -151,6 +148,7 @@ public class DirectionsMap extends GraphicsObject{
 				boolean draw = true;
 				if(g instanceof Line)
 				{
+					first = false;
 					float[] v = ((Line) g).getVertices();
 					float z = ((Line) g).getZ();
 					if(z != posZ)

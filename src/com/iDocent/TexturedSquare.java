@@ -114,9 +114,9 @@ public class TexturedSquare extends GraphicsObject {
 		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 		// Specifies the location and data format of an array of vertex
 		// coordinates to use when rendering.
-		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
 		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
-		
+		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+	
 		gl.glDrawElements(GL10.GL_TRIANGLES, indices.length, 
 				GL10.GL_UNSIGNED_SHORT, indexBuffer);
 		

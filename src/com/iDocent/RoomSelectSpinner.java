@@ -23,6 +23,7 @@ public class RoomSelectSpinner extends Spinner {
 	private static final int secondH=8;
 	private static final int second2H=9;
 	private static final int second3H=10;
+	private static final int second4H=12;
 	private static final int secondR=11;
 	
 	
@@ -97,11 +98,12 @@ public class RoomSelectSpinner extends Spinner {
         SecondFloor.add("2100 - 2199");
         SecondFloor.add("2200 - 2299");
         SecondFloor.add("2300 - 2399");
+       // SecondFloor.add("2400 - 2499");
         
         ThirdFloor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ThirdFloor.add("Select Room Range");
-        ThirdFloor.add("Nearest Exit");
         ThirdFloor.add("Back to Floor Selection");
+        ThirdFloor.add("Nearest Exit");
         ThirdFloor.add("3100 - 3199");
         ThirdFloor.add("3200 - 3299");
         ThirdFloor.add("3300 - 3399");
@@ -401,6 +403,21 @@ public class RoomSelectSpinner extends Spinner {
 					break;
 				}
 				
+			case second4H:
+				if(whichButton == 1)
+				{
+					state = second;
+					this.setAdapter(SecondFloor);
+					current = SecondFloor;
+					break;
+				}
+				else
+				{
+					super.onClick(dialog, whichButton);
+					end = true;
+					break;
+				}
+				
 			case secondR:
 				if(whichButton == 1)
 				{
@@ -410,6 +427,21 @@ public class RoomSelectSpinner extends Spinner {
 					break;
 				}
 				else
+				{
+					super.onClick(dialog, whichButton);
+					end = true;
+					break;
+				}
+				
+			case third:
+				if(whichButton == 1)
+				{
+					state = floor;
+					this.setAdapter(Floor);
+					current = Floor;
+					break;
+				}
+				else if(whichButton == 2)
 				{
 					super.onClick(dialog, whichButton);
 					end = true;
