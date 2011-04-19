@@ -131,6 +131,7 @@ public class TexturedSquare extends GraphicsObject {
 	
 	public void loadGLTexture(GL10 gl, Context context)
 	{
+		setTextureNumber();
 		//Get the texture from the Android resource directory
 		InputStream is = context.getResources().openRawResource(textureNum);
 		Bitmap bitmap = null;
