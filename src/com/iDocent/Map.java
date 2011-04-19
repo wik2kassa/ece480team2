@@ -251,6 +251,10 @@ public class Map extends GraphicsObject{
 			destination.setSelected();
 		
 		for (GraphicsObject i:Children){
+			if(i instanceof RoomSquare)
+			{
+				((RoomSquare)i).DrawTexture(GL);
+			}
 			i.Draw(GL);
 		}
 		mDot.Draw(GL);

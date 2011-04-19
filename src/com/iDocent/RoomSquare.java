@@ -136,8 +136,6 @@ public class RoomSquare extends GraphicsObject{
 	 * @param gl
 	 */
 	public void Draw(GL10 gl) {	
-		if(miD.ShowRoomNums() && TexSq.getTextureNum() != -1)
-			TexSq.Draw(gl);
 		gl.glEnable(GL10.GL_ALPHA_BITS);
 		
 		gl.glEnable(GL10.GL_BLEND);    
@@ -187,5 +185,10 @@ public class RoomSquare extends GraphicsObject{
 
 	public void setSelected() {
 		selected  = true;
+	}
+
+	public void DrawTexture(GL10 gL) {
+		if(miD.ShowRoomNums() && TexSq.getTextureNum() != -1)
+			TexSq.Draw(gL);
 	}
 }
