@@ -164,9 +164,12 @@ public class iDocent extends Activity implements OnInitListener{
     		scanner.cancel();
 			timer.cancel();	
 			timer.purge();
+			wifi.setWifiEnabled(false);
 			wifi.setWifiEnabled(wifiWasEnabled);
 			if(wifiWasEnabled)
+			{
 				wifi.enableNetwork(networkID, true);
+			}
 			tts.speak("Goodbye", TextToSpeech.QUEUE_FLUSH, null);
 			tts.shutdown();
 			mGLView.setKeepScreenOn(false);
@@ -371,6 +374,8 @@ public class iDocent extends Activity implements OnInitListener{
   	  {
             Toast.makeText(getApplicationContext(), selected,
                     Toast.LENGTH_SHORT).show();
+            if(!selected.toLowerCase().contains("clear"))
+            {
             tts.speak("Navigating to "+selected, TextToSpeech.QUEUE_FLUSH, null);
             String tmp [] = selected.split(" - ");
             String roomNum = tmp[0];	              
@@ -381,6 +386,11 @@ public class iDocent extends Activity implements OnInitListener{
             stayActive = false;
 			wifi.disconnect();
 			wifi.disableNetwork(networkID);
+			wifi.startScan();
+			SRR.startLocationDLG();
+            }
+            else
+            	mRenderer.clearRoute();
   	  }
     }
 });
