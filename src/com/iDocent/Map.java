@@ -303,4 +303,8 @@ public class Map extends GraphicsObject{
 		}
 	}
 
+	public void clearDestination() {
+		destination = null;	
+	}
+
 }

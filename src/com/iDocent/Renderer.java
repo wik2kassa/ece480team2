@@ -115,11 +115,17 @@ class Renderer implements GLSurfaceView.Renderer {
 		routeSet = false;
 		map.setDestination(Integer.parseInt(destination));
 		if(nodes != null && roomsByNumber != null)
-			dMap.setRoute(nodes, roomsByNumber);		
+			dMap.setRoute(nodes, roomsByNumber);
+		dMap.UpdateLocation(posX, posY, posZ);
 		routeSet = true;
 	}
 
 	public void setTTS(TextToSpeech tts) {
 		dMap.setTTS(tts);
+	}
+
+	public void clearRoute() {
+		dMap.clearRoute();
+		map.clearDestination();
 	}
 }

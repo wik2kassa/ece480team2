@@ -15,6 +15,8 @@ public class ScanResultReceiver extends BroadcastReceiver{
     WeightedScanFactory wsFactory;
     iDocent miD;
     
+	Dialog restartingLocation = null;
+    
 	private float sumX = 0;
 	private float sumY = 0;
 	private float sumZ = 0;
@@ -37,6 +39,8 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	
 	private boolean roomsDownloaded = false;
 	private boolean connected = false;
+	
+//	float dX = 40, dY=-20, dZ=0;
 
 	public ScanResultReceiver(iDocent iD) {
 		miD = iD;
@@ -47,8 +51,26 @@ public class ScanResultReceiver extends BroadcastReceiver{
 
 	@Override
 	public void onReceive(Context c, Intent i){
+//		if(dX < 120)
+//			dX+=3;
+//		else
+//		{
+//			dX=125;
+//			dY-=3;
+//			if(dY<-70)
+//				dZ=20;
+//		}
+		
+		if(restartingLocation!=null)
+		{
+			restartingLocation.dismiss();
+			restartingLocation = null;
+		}
+		
+//		miD.UpdateLocation(dX, dY, dZ);
 		// Code to execute when SCAN_RESULTS_AVAILABLE_ACTION event occurs
 		wifi = miD.getWifi();
+		wifi.startScan();
 		if(wifi != null && wifi.isWifiEnabled())
 		{
 			if(!connected)
@@ -155,5 +177,15 @@ public class ScanResultReceiver extends BroadcastReceiver{
 		loading = false;
 		loaded = true;
 		miD.APsReady();		
+	}
+	
+	public void startLocationDLG()
+	{
+		TextView tv = new TextView(miD);
+		tv.setText("  Reactivating Location Sensing...  \n");
+		restartingLocation = new Dialog(miD);
+		restartingLocation.setContentView(tv);
+		restartingLocation.setTitle("Please wait...");
+		restartingLocation.show();
 	}
 }

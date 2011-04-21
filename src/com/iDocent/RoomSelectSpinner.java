@@ -81,6 +81,7 @@ public class RoomSelectSpinner extends Spinner {
         Floor.add("First Floor");
         Floor.add("Second Floor");
         Floor.add("Third Floor");
+        Floor.add("Clear Route");
         
         FirstFloor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         FirstFloor.add("Select Room Range");
@@ -215,6 +216,12 @@ public class RoomSelectSpinner extends Spinner {
 					state = third;
 					this.setAdapter(ThirdFloor);
 					current = ThirdFloor;
+					break;
+				}
+				if(whichButton == 5)
+				{
+					super.onClick(dialog, whichButton);
+					end = true;
 					break;
 				}
 				
