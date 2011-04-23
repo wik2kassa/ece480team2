@@ -1,5 +1,6 @@
 package com.iDocent;
 
+//A static class to normalize all locations to work with the maps
 public class LocationNormalizer {
 	public static final float ffz = 0;
 	public static final float sfz = 20;
@@ -7,6 +8,7 @@ public class LocationNormalizer {
 	
 	public static float[] Normalize(float posX, float posY, float posZ)
 	{
+		//Normalize X and Y
 		posY = Math.abs(posY);
 		if(posY > 28.4 && posX > 110)
 			posX = (132f+120f)/2.0f;
@@ -27,6 +29,7 @@ public class LocationNormalizer {
 			posY = (28.4f+16.4f)/2.0f;
 		}
 		
+		//Normalize Z
 		if(posZ < sfz/2)
 			posZ = ffz;
 		else if(posZ >= sfz/2 && posZ < sfz*3/2)

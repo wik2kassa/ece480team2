@@ -6,8 +6,8 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Stack;
 
+//download the route to the destination
 public class NavigationDownloader {
 	private final String DNS = "480team2.dyndns-server.com";
 	private final int Port = 1024;
@@ -32,6 +32,7 @@ public class NavigationDownloader {
 		posX = f[0];
 		posY = f[1];
 		posZ = f[2];
+		//find out which type of room to navigate to
 		if(destination.toLowerCase().contains("men's"))
 		{
 			mode = Modes.Mens;
@@ -61,6 +62,7 @@ public class NavigationDownloader {
 			}
 			if(conn != null && conn.isConnected())
 			{
+				//print the appropriate navigation request
 				String tmp;
 				posY = Math.abs(posY);
 				switch(mode){

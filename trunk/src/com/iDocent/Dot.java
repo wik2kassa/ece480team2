@@ -1,10 +1,10 @@
 package com.iDocent;
 
 import java.nio.*;
-import java.util.ArrayList;
-
 import javax.microedition.khronos.opengles.GL10;
 
+//A class to draw an object to show location of user
+//This is currently an X
 public class Dot extends GraphicsObject{
 	
 	private float x1,y1,z1;
@@ -69,26 +69,7 @@ public class Dot extends GraphicsObject{
 				x1+2, y1-2,0,
 				x1+2, y1+2,0,
 				x1-2, y1-2,0};
-		//ArrayList<Float> v = new ArrayList<Float>();
-		//double angle = 0;
-		//Push Back Center		
-		//v.add(x);
-		//v.add(y);
-		
-		//Outside vertices
-		//float x1 = 2;
-		//float y2 = 2;
-		//for(int i = 0; i < 360.0; i++){
-		//	x1 = (float) (x * Math.cos(i * (3.14159/180.)) - (y * Math.sin(i * (3.14159/180.))));
-		//	y1 = (float) (x * Math.sin(i * (3.14159/180.)) + (y * Math.cos(i * (3.14159/180.))));
-		//	v.add(x1);
-		//	v.add(y1);
-		//}
-		
-		//float[] vertices = new float [v.size()];
-		//for(int i = 0; i< v.size(); i++){
-		//	vertices[i] = v.get(i);
-		//}
+
 
 		ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
 		vbb.order(ByteOrder.nativeOrder());

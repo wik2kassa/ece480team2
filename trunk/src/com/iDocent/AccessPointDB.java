@@ -1,47 +1,26 @@
 package com.iDocent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
-import android.app.Dialog;
-import android.widget.TextView;
 
 //A database that will map an ssid to an xyz location
 public class AccessPointDB {
 	private HashMap<String, LinkedList<Float>> accessPoints;
 	
-	private ArrayList<String> macs;
-	
     InetRLookup irl;
 	
-	private static final int x=0; 
-	private static final int y=1; 
-	private static final int z=2; 
-	
-	private iDocent miD;
+//	private static final int x=0; 
+//	private static final int y=1; 
+//	private static final int z=2; 
+//	
+//	private iDocent miD;
 	
 	public AccessPointDB(iDocent miD)
 	{
-		this.miD = miD;
-		macs = new ArrayList<String>();
+		//this.miD = miD;
 		accessPoints = new HashMap<String, LinkedList<Float>>();
 		irl = new InetRLookup();
-	}
-	
-	/**
-	 * Obtain the location of the user in the x direction
-	                          
-	{@link AddAccessPoint}. 
-	 *
-	                         
-	@param  mac - the mac address of the access point
-	 *   
-	 */
-	private void AddAccessPoint(String mac)
-	{
-		macs.add(mac.toLowerCase());
 	}
 	
 	/**
@@ -61,7 +40,7 @@ public class AccessPointDB {
 	}
 
 	public boolean StartScanLoop() {		
-		//while(!irl.isConnected());
+		//Download the list of access points from the server
 		if(!irl.isConnected())
 			return false;
 		irl.setMode(InetRLookup.Modes.All);

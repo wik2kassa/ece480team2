@@ -10,6 +10,8 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.widget.TextView;
 
+//An object to receive the event posted by the
+//System with the AP scan results
 public class ScanResultReceiver extends BroadcastReceiver{
 	WifiManager wifi = null;
     WeightedScanFactory wsFactory;
@@ -39,35 +41,21 @@ public class ScanResultReceiver extends BroadcastReceiver{
 	
 	private boolean roomsDownloaded = false;
 	private boolean connected = false;
-	
-//	float dX = 40, dY=-20, dZ=0;
 
 	public ScanResultReceiver(iDocent iD) {
 		miD = iD;
 		wifi = miD.getWifi();
         wsFactory = new WeightedScanFactory(miD);
-//		wsFactory.StartScanLoop();
 	}
 
 	@Override
-	public void onReceive(Context c, Intent i){
-//		if(dX < 120)
-//			dX+=3;
-//		else
-//		{
-//			dX=125;
-//			dY-=3;
-//			if(dY<-70)
-//				dZ=20;
-//		}
-		
+	public void onReceive(Context c, Intent i){		
 		if(restartingLocation!=null)
 		{
 			restartingLocation.dismiss();
 			restartingLocation = null;
 		}
 		
-//		miD.UpdateLocation(dX, dY, dZ);
 		// Code to execute when SCAN_RESULTS_AVAILABLE_ACTION event occurs
 		wifi = miD.getWifi();
 		wifi.startScan();
@@ -105,6 +93,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
 					{
 						if((t==null || !t.isAlive()))
 						{
+							//Average location
 							ScanCounter sc = new ScanCounter(this, scans, wsFactory);
 							t = new Thread(sc);
 							t.setName("Scan Counter");
@@ -142,6 +131,7 @@ public class ScanResultReceiver extends BroadcastReceiver{
     	}
     	//dX = dX+1;
     	
+    	//filter
     	float alpha = 0.1f;
     	float filteredX = oldX[0]*alpha+loc[x]*(1-alpha);
     	float filteredY = oldY[0]*alpha+loc[y]*(1-alpha);

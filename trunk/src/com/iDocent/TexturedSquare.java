@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
 
+//An object for drawing the room number texture.
 public class TexturedSquare extends GraphicsObject {
 	// The order we like to connect them.
 	private short[] indices = { 0, 1, 3, 0, 3, 2 };
@@ -131,6 +132,7 @@ public class TexturedSquare extends GraphicsObject {
 	
 	public void loadGLTexture(GL10 gl, Context context)
 	{
+		//Load the right texture
 		setTextureNumber();
 		//Get the texture from the Android resource directory
 		InputStream is = context.getResources().openRawResource(textureNum);
@@ -168,6 +170,8 @@ public class TexturedSquare extends GraphicsObject {
 	}
 
 	private void setTextureNumber() {
+		//Set the texture reference for this room
+		//based on the room number
 		switch(roomNum){
 		case 1200:
 			textureNum = R.drawable.r1200;

@@ -21,6 +21,7 @@ public class ScanTask extends TimerTask{
         this.iD = iD;
     }
 
+    //This timer will initialize the scanning.
     public void run() 
     {
         handler.post(new Runnable() 
