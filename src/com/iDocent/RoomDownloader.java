@@ -3,11 +3,11 @@ package com.iDocent;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
 
+//Download all rooms from the server.
 public class RoomDownloader implements Runnable {
 	iDocent miD;
 	
@@ -48,7 +48,8 @@ public class RoomDownloader implements Runnable {
 				Room r;
 				while((tmp = is.readLine()) != null && !tmp.equals("DONE")){
 					String args [] = tmp.split(" ");
-					
+					//received String in format:
+					//number, type, x, y, z
 					r = new Room(Integer.parseInt(args[0]), args[1], Float.parseFloat(args[2]),
 							Float.parseFloat(args[3]),Float.parseFloat(args[4]));
 					rooms.add(r);

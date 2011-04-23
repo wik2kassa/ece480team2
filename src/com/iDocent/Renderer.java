@@ -2,7 +2,6 @@ package com.iDocent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Stack;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -11,6 +10,8 @@ import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.speech.tts.TextToSpeech;
 
+//The main OpenGL renderer
+//Handles drawing the maps
 class Renderer implements GLSurfaceView.Renderer {
 	private Map map;
 	private DirectionsMap dMap;
@@ -69,6 +70,7 @@ class Renderer implements GLSurfaceView.Renderer {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		// Replace the current matrix with the identity matrix
 		gl.glLoadIdentity();
+		//draw frame at right zoom and temporary translation
 		gl.glTranslatef(-(posX+xOffset), -(posY+yOffset), zoom); 
 		map.Draw(gl);
         

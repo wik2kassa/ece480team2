@@ -1,11 +1,8 @@
 package com.iDocent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Stack;
 import java.util.Timer;
-import java.util.jar.Attributes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,30 +13,20 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
-import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
-import android.util.AttributeSet;
-import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.SeekBar;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -185,6 +172,7 @@ public class iDocent extends Activity implements OnInitListener{
     
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		//Handle touch events to move the map around
 		if(event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			xStart=event.getX();
@@ -300,10 +288,12 @@ public class iDocent extends Activity implements OnInitListener{
 	    	return true;
 	    	
 	    case R.id.options:
+	    	//Handle the options menu
 	    	if(accessibilityOn)
 				tts.speak("Options", TextToSpeech.QUEUE_FLUSH, null);
 	        final AlertDialog.Builder alert2 = new AlertDialog.Builder(this);
 	        
+	        //get the toold to change the media volume of the phone
 	        final AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 	        double maxVol = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 	        final double curVol = am.getStreamVolume(AudioManager.STREAM_MUSIC);
@@ -317,11 +307,13 @@ public class iDocent extends Activity implements OnInitListener{
 	        b.forceLayout();
 	        b.setPadding(15, 10, 15, 10);
 	        
+	        //Set up the bar to start at the current volume
 	        b.setProgress((int) (b.getMax()*curVol/maxVol));
 	        TextView tv = new TextView(this);
 	        tv.setText("  Speech Volume:");
 	        ll.addView(tv);
 	        ll.addView(b);
+	        //a check box to disable/enable room number drawing
 	        final CheckBox cb = new CheckBox(this);
 	        cb.setText("Show room numbers");
 	        cb.setChecked(mShowRoomNums);
@@ -355,6 +347,7 @@ public class iDocent extends Activity implements OnInitListener{
 	}
 	
     private void SelectButton() {  	
+    	//handle room selection
     	stayActive = true;
     	wifi.enableNetwork(networkID, true);
     	wifi.reconnect();
@@ -384,6 +377,8 @@ public class iDocent extends Activity implements OnInitListener{
   		  
             mRenderer.setRoute(route.GetNodes(), RoomsByNumber, roomNum); 
             stayActive = false;
+            
+            //disable the network connection
 			wifi.disconnect();
 			wifi.disableNetwork(networkID);
 			wifi.startScan();

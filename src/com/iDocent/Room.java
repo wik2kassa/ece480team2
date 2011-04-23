@@ -1,5 +1,7 @@
 package com.iDocent;
 
+//An object to hold relevant information about a room
+//number, location, type
 public class Room {
 	private int number;
 	private String type;

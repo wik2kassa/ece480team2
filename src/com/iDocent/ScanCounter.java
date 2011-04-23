@@ -5,6 +5,7 @@ import java.util.List;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 
+//An object to add up and average the AP locations
 public class ScanCounter implements Runnable {
 	private List<ScanResult> scans;
 	private WeightedScanFactory wsFactory;

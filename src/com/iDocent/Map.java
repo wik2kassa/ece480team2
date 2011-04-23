@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Vector;
 import javax.microedition.khronos.opengles.GL10;
 
+//The map with all rooms and halls for all floors
 public class Map extends GraphicsObject{
 	
 	private Vector<GraphicsObject> Children;
@@ -40,6 +41,7 @@ public class Map extends GraphicsObject{
 		FirstFloor.add(new Line(120, -468.4f, 132, -468.4f));pos1++;
 		//FirstFloor.add(new Line(132, -153.4f, 142, -153.4f));
 		
+		//Previous halls are shared in all floors
 		SecondFloor = new Vector<GraphicsObject>(FirstFloor);
 		int pos2 = pos1;
 		

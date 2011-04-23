@@ -1,5 +1,7 @@
 package com.iDocent;
 
+//A simple object to hold both distance and direction
+//and the end point of the path
 public class DistanceAndDirection {
 	public DistanceAndDirection(String string) {
 		direction = string;

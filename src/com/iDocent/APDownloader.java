@@ -1,5 +1,6 @@
 package com.iDocent;
 
+//A class to start the AP list downloading process within a separate thread
 public class APDownloader implements Runnable {
 	ScanResultReceiver SRR;
 	WeightedScanFactory wsFactory;

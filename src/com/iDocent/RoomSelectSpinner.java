@@ -8,10 +8,12 @@ import android.speech.tts.TextToSpeech;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+//The spinner to select the room
 public class RoomSelectSpinner extends Spinner {
 	TextToSpeech tts;
 	boolean accessibilityOn;
 	
+	//possible states
 	private static final int floor=0;
 	private static final int first=1;
 	private static final int second=2;
@@ -29,7 +31,7 @@ public class RoomSelectSpinner extends Spinner {
 	
 	private int state = floor;
 	
-	private LinkedList<Room> rooms;
+	//private LinkedList<Room> rooms;
 	
 	ArrayAdapter<CharSequence> Floor;
 	ArrayAdapter<CharSequence> FirstFloor;
@@ -55,7 +57,7 @@ public class RoomSelectSpinner extends Spinner {
 		this.context = context;
 		this.tts = tts;
 		this.accessibilityOn = accessibilityOn;
-		this.rooms = rooms;
+		//this.rooms = rooms;
 		
         Floor = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_item);
         FirstFloor = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_item);
@@ -76,6 +78,7 @@ public class RoomSelectSpinner extends Spinner {
         this.setAdapter(Floor);
         current = Floor;
 
+        //Fill in the lists for each drop down menu list
         Floor.add("Select Floor");
         Floor.add("Nearest Exit");
         Floor.add("First Floor");
@@ -141,6 +144,7 @@ public class RoomSelectSpinner extends Spinner {
         SecondFloorR.add("Men's Restroom");
         SecondFloorR.add("Women's Restroom");
         
+        //add all the possible rooms
         for(Room r : rooms)
         {
         	int num = r.getNumber();
@@ -189,6 +193,7 @@ public class RoomSelectSpinner extends Spinner {
 		}
 		else
 		{
+			//Handle state switching
 			switch(state){
 			case floor:
 				if(whichButton == 1)

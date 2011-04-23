@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.io.*;
 
+//Internet Router Lookup to download AP location
 public class InetRLookup {
 	private String mac;
 	private final String DNS = "72.44.121.49";
@@ -49,6 +50,7 @@ public class InetRLookup {
 		}
 	}
 	private void All() {
+		//If a list of all routers is needed
 		os.println("get-routers");
 		String tmp;
 		APs = new HashMap<String, LinkedList<Float>>();
@@ -58,6 +60,7 @@ public class InetRLookup {
 				if(args[0].equals("ERROR:") || (Array.getLength(args) < 4))
 					break;
 				int length = Array.getLength(args);
+				//server returns one long string so it needs to be parsed
 				for(int i=0; i < length && (i + 3) < length;i+=4)
 				{
 					LinkedList<Float> l = new LinkedList<Float>();
@@ -81,11 +84,13 @@ public class InetRLookup {
 	}
 
 	private void Individual(){
+		//get the location of 1 AP
 		os.println("get-router-coord " + mac);
 		String tmp;
 		try {
 			while((tmp = is.readLine()) != null && !tmp.equals("INVALID COMMAND")){
 				String args [] = tmp.split(" ");
+				//returned string of form: mac x y z
 				if(args[0].equals("ERROR:") || (Array.getLength(args) < 4))
 					break;
 				if (args[0].equals(mac)){

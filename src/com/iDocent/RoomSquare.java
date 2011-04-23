@@ -1,20 +1,13 @@
 package com.iDocent;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.*;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.opengl.GLUtils;
-import android.widget.TextView;
-
+//Object to store info for drawing rooms.
 public class RoomSquare extends GraphicsObject{	
 	// The order we like to connect them.
 	private short[] indices = { 0, 1, 3, 0, 3, 2 };
@@ -33,14 +26,19 @@ public class RoomSquare extends GraphicsObject{
 	
 	private float[] vertices;
 	
+	//Object to draw room number texture
 	private TexturedSquare TexSq;
 
 	private boolean selected = false;
 	
+	//Constructor: X Y location of the door, which side of the hall it is on, where the door is
+	//width and height of the room, color of room, reference to iDocent, and the room number
 	public RoomSquare(float doorX, float doorY, String hallSide, String doorLocation, float width, 
 			float height, String colorString, iDocent iD, int i) {
 		
 		miD = iD;
+		
+		//set the color
 		color[3] = 0.25f;
 		if(colorString.toLowerCase().equals("blue"))
 		{
@@ -67,6 +65,7 @@ public class RoomSquare extends GraphicsObject{
 			color[0] = color[1] = color[2] = 0;
 		}
 		// Our vertices.
+		//The vertices are placed based on the infor passed into the constructor
 		float left=doorX-width, right = doorX, top = doorY+height/2f, bottom = doorY-height/2f;
 		if(hallSide.toLowerCase().equals("right"))
 		{
@@ -100,9 +99,9 @@ public class RoomSquare extends GraphicsObject{
 			bottom = doorY;
 		}
 		vertices = new float[]{
-			      left, bottom, 0.0f,  // 1, Bottom Left
-			      right, bottom, 0.0f,  // 2, Bottom Right
-			      left,  top, 0.0f,  // 0, Top Left
+			      left, bottom, 0.0f,  // 0, Bottom Left
+			      right, bottom, 0.0f,  // 1, Bottom Right
+			      left,  top, 0.0f,  // 2, Top Left
 			      right, top, 0.0f,  // 3, Top Right
 			};
 		

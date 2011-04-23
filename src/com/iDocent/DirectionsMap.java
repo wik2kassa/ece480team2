@@ -3,22 +3,29 @@ package com.iDocent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Stack;
 import java.util.Vector;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import android.speech.tts.TextToSpeech;
 
+//A map to draw the navigation path
 public class DirectionsMap extends GraphicsObject{
+	//HashMap to map a room number to the corresponding room object
 	HashMap<Integer, Room> RoomsByNumber;
+	
+	//the nodes in the path to the destination
 	ArrayList<Integer> nodes;
+	
+	//Vectors to hold the lines to draw
 	Vector<GraphicsObject> Children = new Vector<GraphicsObject>();
 	Vector<Line> FirstFloorLines = new Vector<Line>();
 	Vector<Line> SecondFloorLines = new Vector<Line>();
 	Vector<Line> ThirdFloorLines = new Vector<Line>();
 	
+	//current location
 	float posX, posY, posZ;
+	
 	private TextToSpeech tts;
 	
 	private int speakPos=0;
@@ -29,9 +36,13 @@ public class DirectionsMap extends GraphicsObject{
 	
 	public void setRoute(ArrayList<Integer> nodes,
 			HashMap<Integer, Room> roomsByNumber) {
+		/*
+		 * init fields
+		 */
 		FirstFloorLines = new Vector<Line>();
 		SecondFloorLines = new Vector<Line>();
 		ThirdFloorLines = new Vector<Line>();
+		
 		path = new LinkedList<DistanceAndDirection>();
 		drawLine = new LinkedList<Boolean>();
 		speakPos = 0;
@@ -44,10 +55,16 @@ public class DirectionsMap extends GraphicsObject{
 		String direction = "";
 		int distance = 0;
 		float x1=0,x2=0,y1=0,y2=0;
-		int z=0;
+		//int z=0;
 		
 		String prevType = "";
 		
+		/*
+		 * End init
+		 */
+		
+		//iterate through the list of nodes on the path and add lines
+		//between them
 		for(int i=0; i<nodes.size()-1; i++)
 		{	
 			Room room1 = RoomsByNumber.get(nodes.get(i));
@@ -76,6 +93,7 @@ public class DirectionsMap extends GraphicsObject{
 				path.add(new DistanceAndDirection());
 			}
 			
+			//determine the direction of the path
 			if(x1>x2 && Math.abs(y1-y2) < 0.01)
 			{
 				direction = "east";
@@ -93,6 +111,8 @@ public class DirectionsMap extends GraphicsObject{
 				direction = "north";
 			}
 			
+			//An intersection means a new branch of the path
+			//store the distance from last intersection to this one
 			if(RoomsByNumber.get(nodes.get(i)).getType().toLowerCase().equals("intersection"))
 			{
 				if(direction.equals("east"))
@@ -123,6 +143,7 @@ public class DirectionsMap extends GraphicsObject{
 				path.get(0).direction = direction;
 			}
 			
+			//Keep track of the distance of this portion of the path
 			if(direction.equals("east"))
 			{
 				distance += x1-x2;
@@ -140,6 +161,8 @@ public class DirectionsMap extends GraphicsObject{
 				distance += y1-y2;
 			}	
 			
+			//If it is a stair case connect it to itself so it draws
+			//draw a blue X to indicate the path traverses a staircase
 			if((room1.getType().toLowerCase().contains("stair") && room2.getType().toLowerCase().contains("stair")) || 
 			   (room1.getType().toLowerCase().contains("stair") && prevType.toLowerCase().contains("stair")))
 			{
@@ -153,12 +176,13 @@ public class DirectionsMap extends GraphicsObject{
 				Children.add(d);
 			}
 			
+			//Add the line to the correct floor list
 			prevType = room1.getType();
 			
 			Line l = new Line(f[0], f[1], f2[0], f2[1]);
 			l.setColor(1, 0, 0, 0);
 			l.setZ(f[2]);
-			z=(int) f[2];
+//			z=(int) f[2];
 			if(f[2] == LocationNormalizer.ffz)
 				FirstFloorLines.add(l);
 			else if(f[2] == LocationNormalizer.sfz)
@@ -166,9 +190,6 @@ public class DirectionsMap extends GraphicsObject{
 			else if(f[2] == LocationNormalizer.tfz)
 				SecondFloorLines.add(l);
 			drawLine.add(new Boolean(true));
-//			Dot d = new Dot(f[0], f[1], f[2]);
-//			d.setColor(0, 0, 1, 0);
-//			Children.add(d);
 		}
 		if(!path.isEmpty())
 		{
@@ -180,6 +201,7 @@ public class DirectionsMap extends GraphicsObject{
 	
 	@Override
 	public void Draw(GL10 gl) {	
+		//Draw any non path objects like dots
 		if(posZ == LocationNormalizer.ffz)
 			DrawLines(FirstFloorLines, gl);
 		if(posZ == LocationNormalizer.sfz)
@@ -202,6 +224,8 @@ public class DirectionsMap extends GraphicsObject{
 	}
 
 	private void DrawLines(Vector<Line> lines, GL10 gl) {
+		//Draw the lines in the forward path
+		//draw none behind the user
 		float[] nl = LocationNormalizer.Normalize(posX, posY, posZ);
 		this.posX = nl[0];
 		this.posY = nl[1];
@@ -217,7 +241,7 @@ public class DirectionsMap extends GraphicsObject{
 			boolean draw = true;
 
 			float[] v = ((Line) l).getVertices();
-			float z = ((Line) l).getZ();
+			//float z = ((Line) l).getZ();
 			
 			float[] f = LocationNormalizer.Normalize(v[0], v[1], 0.0f);
 			float[] f2 = LocationNormalizer.Normalize(v[2], v[3], 0.0f);
@@ -226,11 +250,7 @@ public class DirectionsMap extends GraphicsObject{
 			float x2 = f2[0];
 			float y2 = f2[1];
 			
-//			if(z != posZ)
-//			{
-//				draw = false;
-//				notDrawn++;
-//			}
+			//All the logic to determine if a line should not be drawn
 			if(x1==x2 && y1==y2)
 			{
 				draw = false;
@@ -261,11 +281,11 @@ public class DirectionsMap extends GraphicsObject{
 					boolean right = x1 > x2;
 					//your destination is always closer to x1,y1
 					
-					boolean inVertHall = x2 > 120 || x2 < -108;
-					boolean inHoriHall = y2 < 28;
-					
-					boolean userInVertHall = posX > 120 || posX < -108;
-					boolean userInHoriHall = Math.abs(posY) < 28;
+//					boolean inVertHall = x2 > 120 || x2 < -108;
+//					boolean inHoriHall = y2 < 28;
+//					
+//					boolean userInVertHall = posX > 120 || posX < -108;
+//					boolean userInHoriHall = Math.abs(posY) < 28;
 					
 					if(up && Math.abs(posY) < Math.abs(y2))
 					{
@@ -294,13 +314,6 @@ public class DirectionsMap extends GraphicsObject{
 					temp.setColor(1, 0, 0, 1);
 					temp.Draw(gl);
 				}
-				
-//				if(i == Lines.size()-1 && !draw)
-//				{
-//					Line temp = new Line(x1, y1, posX, posY);
-//					temp.setColor(1, 0, 0, 1);
-//					temp.Draw(gl);
-//				}
 				
 				if(draw)
 				{		
