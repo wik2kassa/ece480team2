@@ -218,6 +218,8 @@ public class Map extends GraphicsObject{
 		
 		SecondFloor.add(new RoomSquare(90f, -28.4f, "bottom", "right", 50f, 30f, office, miD, 2308));//2308 group
 		roomSquarePos2.put(2308, pos2++);  
+		SecondFloor.add(new RoomSquare(27f, -28.4f, "bottom", "right", 12f, 30f, stair, miD, 8000));//stair
+		roomSquarePos.put(-6, pos1++);
 		
 		SecondFloor.add(new RoomSquare(47f, -16.4f, "top", "left", 30f, 30f, lab, miD, 2314));//2314
 		roomSquarePos2.put(2314, pos2++); 
@@ -225,7 +227,9 @@ public class Map extends GraphicsObject{
 		roomSquarePos2.put(-16, pos2++); 
 		SecondFloor.add(new RoomSquare(-120f, -16.4f, "top", "left", 167f, 30f, unknown, miD, -1));//junk
 		roomSquarePos2.put(-18, pos2++); 
-		SecondFloor.add(new RoomSquare(40f, -28.4f, "bottom", "right", 148f, 30f, unknown, miD, -1));//junk
+		SecondFloor.add(new RoomSquare(40f, -28.4f, "bottom", "right", 13f, 30f, unknown, miD, -1));//junk
+		roomSquarePos2.put(-17, pos2++); 
+		SecondFloor.add(new RoomSquare(15f, -28.4f, "bottom", "right", 123f, 30f, unknown, miD, -1));//junk
 		roomSquarePos2.put(-17, pos2++); 
 		
 		SecondFloor.add(new RoomSquare(-120f, -16.4f, "left", "top", 40f, 30f, classroom, miD, 2400));//2400
