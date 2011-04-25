@@ -39,7 +39,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//Main activity class
+/**Main activity class*/
 public class iDocent extends Activity implements OnInitListener{
 	static final int DIALOG_SET_SCAN_RATE = 0;
 	WifiManager wifi;
@@ -178,6 +178,9 @@ public class iDocent extends Activity implements OnInitListener{
     		return super.onKeyDown(keyCode, event);
     }
     
+    /**
+     * Handles touch events to change the position of the view.
+     */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		//Handle touch events to move the map around
@@ -486,6 +489,9 @@ alert.setNegativeButton("Cancel",
     	return(posY);
     }
 
+    /**
+     * End the timer running if it is no longer needed.
+     */
 	public void EndTimer() {
 		scanner.cancel();
 		timer.cancel();	
@@ -494,11 +500,18 @@ alert.setNegativeButton("Cancel",
 		networkID = wifi.getConnectionInfo().getNetworkId();
 	}
 
+	/**
+	 * Creates a new thread to download all the rooms from the server
+	 */
 	public void DownloadRooms() {
 			Thread t = new Thread(new RoomDownloader(this));
 			t.start();
 	}
 
+	/**
+	 * This is called when the list of rooms has been downloaded from the server
+	 * @param rooms - the list of the rooms
+	 */
 	public void RoomsReady(LinkedList<Room> rooms) {
 		downloadedRooms  = true;
 		this.rooms = rooms;
@@ -512,6 +525,10 @@ alert.setNegativeButton("Cancel",
 		wifi.disableNetwork(networkID);
 	}
 
+	/**
+	 * Activates the Dialog box that states that the app is 
+	 * "Downloading Information"
+	 */
 	public void showLoadingAPDLG() {
 		TextView tv = new TextView(this);
 		downloadingDLG = new Dialog(this);

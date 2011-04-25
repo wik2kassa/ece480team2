@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.io.*;
 
-//Internet Router Lookup to download AP location
+/**Internet Router Lookup to download AP location*/
 public class InetRLookup {
 	private String mac;
 	private final String DNS = "72.44.121.49";
@@ -43,6 +43,9 @@ public class InetRLookup {
 		found = false;
 	}
 	
+	/**
+	 * This is called to download the appropiate AP or APs
+	 */
 	public void run() {	
 		if(conn != null && conn.isConnected())
 		{

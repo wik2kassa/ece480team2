@@ -33,6 +33,9 @@ public class RoomDownloader implements Runnable {
 		rooms = new LinkedList<Room>();
 	}
 
+	/**
+	 * This is run when the thread is started and downloads the list of rooms from the server
+	 */
 	@Override
 	public void run() {
 		try {	

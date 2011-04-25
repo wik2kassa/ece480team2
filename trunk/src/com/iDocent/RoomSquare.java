@@ -39,8 +39,19 @@ public class RoomSquare extends GraphicsObject{
 
 	private boolean selected = false;
 	
-	//Constructor: X Y location of the door, which side of the hall it is on, where the door is
-	//width and height of the room, color of room, reference to iDocent, and the room number
+	/**
+	 * Constructor:
+	 * 
+	 * @param doorX - x location of the door
+	 * @param doorY - y location of the door
+	 * @param hallSide - which side of the all the room is located
+	 * @param doorLocation - the side of the room the door is located
+	 * @param width - the size of the room in the x direction
+	 * @param height - the size of the room in the y direction
+	 * @param colorString - the color to draw the room
+	 * @param iD - a reference to the main activity
+	 * @param i - the room number
+	 */
 	public RoomSquare(float doorX, float doorY, String hallSide, String doorLocation, float width, 
 			float height, String colorString, iDocent iD, int i) {
 		
@@ -185,6 +196,11 @@ public class RoomSquare extends GraphicsObject{
 		selected = false;
 	}
 
+	/**
+	 * Set the texture to draw
+	 * @param gl - The OpenGL draw object
+	 * @param miD - the main activity
+	 */
 	public void loadGLTexture(GL10 gl, iDocent miD) {
 		if(TexSq.getTextureNum() != -1)
 			TexSq.loadGLTexture(gl, miD);

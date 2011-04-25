@@ -11,7 +11,7 @@ package com.iDocent;
 import java.util.LinkedList;
 import java.util.List;
 
-//An object to hold the important information of a access point scan
+/**An object to hold the important information of a access point*/
 public class WeightedScan {
 	private int level;
 	private String MAC;

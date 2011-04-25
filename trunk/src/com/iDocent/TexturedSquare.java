@@ -22,7 +22,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
 
-//An object for drawing the room number texture.
+/**An object for drawing the room number texture.*/
 public class TexturedSquare extends GraphicsObject {
 	// The order we like to connect them.
 	private short[] indices = { 0, 1, 3, 0, 3, 2 };

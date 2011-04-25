@@ -11,7 +11,10 @@ package com.iDocent;
 
 import java.util.LinkedList;
 import java.util.List;
-
+/**
+ * A factory object to create a weighted scan
+ *
+ */
 public class WeightedScanFactory {
 	//A database that will map an ssid to an xyz location
 	AccessPointDB locations;

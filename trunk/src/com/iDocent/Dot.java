@@ -11,8 +11,9 @@ package com.iDocent;
 import java.nio.*;
 import javax.microedition.khronos.opengles.GL10;
 
-//A class to draw an object to show location of user
-//This is currently an X
+/**A class to draw an object to show location of user
+*This is currently an X
+**/
 public class Dot extends GraphicsObject{
 	
 	private float x1,y1,z1;
@@ -24,6 +25,13 @@ public class Dot extends GraphicsObject{
 	
 	private short[] indices = {0, 1, 2, 3};
 	
+	/**
+	 * Set the color of the "Dot"
+	 * @param r - red
+	 * @param g - green
+	 * @param b - blue
+	 * @param a - alpha
+	 */
 	public void setColor(float r, float g, float b, float a)
 	{
 		color[0] = r;
@@ -41,6 +49,10 @@ public class Dot extends GraphicsObject{
 		color[2] = 0;
 		color[3] = 0;
 	}
+	
+	/**
+	 * This draws the dot on the screen using OpenGL
+	 */
 	@Override
 	public void Draw(GL10 gl) {
 		gl.glColor4f(color[0], color[1], color[2], color[3]);
@@ -68,6 +80,12 @@ public class Dot extends GraphicsObject{
 		
 	}
 	
+	/**
+	 * Update the stored location of the user
+	 * @param x - the user's x location
+	 * @param y - the user's y location
+	 * @param z - the user's z location
+	 */
 	public void UpdateLocation(float x, float y, float z){
 		x1 = x;
 		y1 = y;

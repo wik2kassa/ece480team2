@@ -13,8 +13,10 @@ import android.speech.tts.TextToSpeech;
 import android.view.MotionEvent;
 import android.widget.SeekBar;
 
-//An object for changing the phone's volume
-//This object adds text to speech to test the new volume
+/**
+ *An object for changing the phone's volume
+ *This object adds text to speech to test the new volume
+ */
 public class VolumeBar extends SeekBar {
 
 	private TextToSpeech tts;

@@ -8,13 +8,22 @@
  */
 package com.iDocent;
 
-//An object to hold relevant information about a room
-//number, location, type
+/**An object to hold relevant information about a room
+*number, location, type 
+*/
 public class Room {
 	private int number;
 	private String type;
 	private Float x,y,z;
 	
+	/**
+	 * Constructor
+	 * @param n - room number
+	 * @param t - type of room
+	 * @param x - x location
+	 * @param y - y location
+	 * @param z - z location
+	 */
 	public Room(int n, String t, Float x, Float y, Float z)
 	{
 		number=n;
