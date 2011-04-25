@@ -17,6 +17,10 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.speech.tts.TextToSpeech;
 
+/**
+ * This object stores and draws the path from the user to their desired destination
+ *
+ */
 //A map to draw the navigation path
 public class DirectionsMap extends GraphicsObject{
 	//HashMap to map a room number to the corresponding room object
@@ -42,6 +46,12 @@ public class DirectionsMap extends GraphicsObject{
 	private LinkedList<DistanceAndDirection> path = new LinkedList<DistanceAndDirection>();
 	private LinkedList<Boolean> drawLine = new LinkedList<Boolean>();
 	
+	/**
+	 * Set the route from the user to the destination
+	 * @param nodes - the rooms in the path from the destination back to the user
+	 * @param roomsByNumber - a HashMap that maps room objects to their room number
+	 * see also: {@link Room}
+	 */
 	public void setRoute(ArrayList<Integer> nodes,
 			HashMap<Integer, Room> roomsByNumber) {
 		/*
@@ -207,6 +217,9 @@ public class DirectionsMap extends GraphicsObject{
 		}
 	}
 	
+	/**
+	 * Draws the path.
+	 */
 	@Override
 	public void Draw(GL10 gl) {	
 		//Draw any non path objects like dots
@@ -349,6 +362,12 @@ public class DirectionsMap extends GraphicsObject{
 		}
 	}
 
+	/**
+	 * Update the stored location of the user
+	 * @param posX - the user's x location
+	 * @param posY - the user's y location
+	 * @param posZ - the user's z location
+	 */
 	public void UpdateLocation(float posX, float posY, float posZ) {
 		float[] f = LocationNormalizer.Normalize(posX, posY, posZ);
 		this.posX = f[0];
@@ -356,10 +375,17 @@ public class DirectionsMap extends GraphicsObject{
 		this.posZ = f[2];
 	}
 
+	/**
+	 * Sets the text-to-speech object to be used.
+	 * @param tts - the TextToSpeech object
+	 */
 	public void setTTS(TextToSpeech tts) {
 		this.tts = tts;
 	}
 
+	/**
+	 * Clears the route so no lines are drawn.
+	 */
 	public void clearRoute() {
 		FirstFloorLines = new Vector<Line>();
 		SecondFloorLines = new Vector<Line>();

@@ -8,12 +8,23 @@
  */
 package com.iDocent;
 
+/**
+ * A static class for forcing a given location to fit on the map
+ *
+ */
 //A static class to normalize all locations to work with the maps
 public class LocationNormalizer {
 	public static final float ffz = 0;
 	public static final float sfz = 20;
 	public static final float tfz = 40;
 	
+	/**
+	 * Normalizes the passed in location to fit in the map
+	 * @param posX - the x location
+	 * @param posY - the y location
+	 * @param posZ - the z location
+	 * @return - an array of float with the normalized x y and z
+	 */
 	public static float[] Normalize(float posX, float posY, float posZ)
 	{
 		//Normalize X and Y

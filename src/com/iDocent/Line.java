@@ -12,7 +12,7 @@ import java.nio.*;
 
 import javax.microedition.khronos.opengles.GL10;
 
-//A graphics object to draw a line
+/**A graphics object to draw a line*/
 public class Line extends GraphicsObject{
 	
 	private float x1,y1,x2,y2;

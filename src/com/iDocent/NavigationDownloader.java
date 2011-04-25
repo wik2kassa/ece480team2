@@ -15,7 +15,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-//download the route to the destination
+/**download the route to the destination*/
 public class NavigationDownloader {
 	private final String DNS = "480team2.dyndns-server.com";
 	private final int Port = 1024;

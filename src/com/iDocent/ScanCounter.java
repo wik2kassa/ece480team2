@@ -13,7 +13,7 @@ import java.util.List;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 
-//An object to add up and average the AP locations
+/**An object to add up and average the AP locations*/
 public class ScanCounter implements Runnable {
 	private List<ScanResult> scans;
 	private WeightedScanFactory wsFactory;
@@ -34,6 +34,10 @@ public class ScanCounter implements Runnable {
 		SRR = scanResultReceiver;
 	}
 	
+	/**
+	 * This is run when the thread is started.  It runs through the list of APs in range
+	 * and determines the location of the user.
+	 */
 	@Override
 	public void run() {
 		if(scans != null && !scans.isEmpty())

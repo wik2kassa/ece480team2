@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Vector;
 import javax.microedition.khronos.opengles.GL10;
 
-//The map with all rooms and halls for all floors
+/**The map with all rooms and halls for all floors*/
 public class Map extends GraphicsObject{
 	
 	private Vector<GraphicsObject> Children;
@@ -274,6 +274,12 @@ public class Map extends GraphicsObject{
 		mDot.Draw(GL);
 	}
 
+	/**
+	 * Update the stored location of the user
+	 * @param x - the user's x location
+	 * @param y - the user's y location
+	 * @param z - the user's z location
+	 */
 	public void UpdateLoction(float x, float y, float z) {
 		float[] f = LocationNormalizer.Normalize(x, y, z);
 		posX = f[0];
@@ -302,6 +308,10 @@ public class Map extends GraphicsObject{
 		}
 	}
 
+	/**
+	 * Set the room to be the destination to draw it red
+	 * @param num - the room number
+	 */
 	public void setDestination(int num) {
 		if(num < 2000)
 		{

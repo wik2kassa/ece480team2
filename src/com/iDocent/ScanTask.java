@@ -13,7 +13,7 @@ import java.util.TimerTask;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 
-//The task to be performed by the timer
+/**The task to be performed by the timer.  Start the first scan.*/
 public class ScanTask extends TimerTask{
     WifiManager wifi;
     iDocent iD;

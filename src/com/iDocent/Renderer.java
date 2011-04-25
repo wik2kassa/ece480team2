@@ -18,8 +18,11 @@ import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.speech.tts.TextToSpeech;
 
-//The main OpenGL renderer
-//Handles drawing the maps
+/**The main OpenGL renderer
+Handles drawing the maps
+ * 
+ *
+ */
 class Renderer implements GLSurfaceView.Renderer {
 	private Map map;
 	private DirectionsMap dMap;
@@ -89,6 +92,12 @@ class Renderer implements GLSurfaceView.Renderer {
 		gl.glLoadIdentity(); // OpenGL docs        
     }
 
+	/**
+	 * Update the stored location of the user
+	 * @param x - the user's x location
+	 * @param y - the user's y location
+	 * @param z - the user's z location
+	 */
 	public void UpdateLocation(float x, float y, float z) {
 		posX = x;
 		posY = y;
@@ -120,6 +129,14 @@ class Renderer implements GLSurfaceView.Renderer {
 		xOffset = yOffset = 0;
 	}
 
+	/**
+	 * Pass the route to the destination to the directions map
+	 * @param nodes - the list of rooms along the path from destination to ther user
+	 * @param roomsByNumber - a HashMap mapping Room objects to their room number
+	 * @param destination - the destination room number
+	 * see also: {@link Room}
+	 * 			 {@link DirectionsMap}
+	 */
 	public void setRoute(ArrayList<Integer> nodes,
 			HashMap<Integer, Room> roomsByNumber, String destination) {
 		routeSet = false;

@@ -18,8 +18,10 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.widget.TextView;
 
-//An object to receive the event posted by the
-//System with the AP scan results
+/**
+*An object to receive the event posted by the
+*System with the AP scan results
+*/
 public class ScanResultReceiver extends BroadcastReceiver{
 	WifiManager wifi = null;
     WeightedScanFactory wsFactory;

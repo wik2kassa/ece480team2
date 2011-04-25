@@ -16,7 +16,10 @@ import android.speech.tts.TextToSpeech;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-//The spinner to select the room
+/**The spinner to select the room
+ * 
+ *
+ */
 public class RoomSelectSpinner extends Spinner {
 	TextToSpeech tts;
 	boolean accessibilityOn;
@@ -180,6 +183,10 @@ public class RoomSelectSpinner extends Spinner {
 		return current;
 	}
 	
+	/**
+	 * Handle the event caused when an item is selected.  This will transition the machine to
+	 * the appropriate new state.
+	 */
 	@Override
 	public void onClick(DialogInterface dialog, int whichButton)
 	{
